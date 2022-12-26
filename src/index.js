@@ -1,1 +1,1 @@
-const axios = require('axios').default;
+import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './js/api';
