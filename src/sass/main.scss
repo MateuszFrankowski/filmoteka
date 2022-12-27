@@ -18,8 +18,10 @@ body {
 @import './utils/vars';
 // Style dla pliku z przykładem HTML fragmentu
 
-@import './components/header';
+@import './components/headerHome';
+@import './components/headerLibrary';
 @import './components/filmsDB';
+@import './components/modalFilmDetails';
 @import './components/pageSelector';
 @import './components/footer';
-@import './components/modal';
+@import './components/modalFooter';
