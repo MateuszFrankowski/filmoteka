@@ -1,0 +1,33 @@
+$errorValue: (
+  'errText': blue,
+  'errMedia': red,
+  'errFlex': green,
+  'errTransition': orange,
+);
+
+@mixin error($val) {
+  $errorColor: map-get($errorValue, $val);
+  background-image: linear-gradient(
+    to right bottom,
+    $errorColor 10%,
+    white 10%,
+    white 20%,
+    $errorColor 20%,
+    $errorColor 30%,
+    white 30%,
+    white 40%,
+    $errorColor 40%,
+    $errorColor 50%,
+    white 50%,
+    white 60%,
+    $errorColor 60%,
+    $errorColor 70%,
+    white 70%,
+    white 80%,
+    $errorColor 80%,
+    $errorColor 90%,
+    white 90%,
+    white 100%
+  );
+  box-shadow: 0 0 6px 6px $errorColor;
+}

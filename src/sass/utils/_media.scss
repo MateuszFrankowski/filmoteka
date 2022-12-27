@@ -1,0 +1,104 @@
+// Użycie:
+//   @include media-mapp($breakpoint1, $breakpoint2)
+//   gdzie:
+//     $breakpoint1 - wartość dla media (min-width: value)
+//     $breakpoint2 - wartość dla media (max-width: value)
+//     jako $breakpoint1 / $breakpoint2 użyj wartości z $breakpoint('small', 'medium', 'large') lub wprowadź wartość ręcznie
+//     jeżeli $breakpoint1 / $breakpoint2 jest niepotrzebny wprowadź null
+//     jako jednostek można używać px, em, rem
+
+// Przykłdy użycia:
+//   .selektor {
+//     background-color: grey;
+
+//     dla mediów do 768px wprowadzonych jako 'medium'
+//       @include media-mapp(null, 'medium') {
+//         background-color: green;
+//       };
+
+//     dla mediów od 800px do 1200px wprowadzonych jako wartość i 'large'
+//       @include media-mapp(800px, 'large') {
+//         background-color: blue;
+//       };
+
+//     dla mediów od 1200px wprowadzonych jako wartość w rem (dla html font-size:16px) i px (oba zapisy są poprawne, można pomijać null na końcu)
+//       @include media-mapp(75rem, null) {
+//         background-color: red;
+//       };
+//       @include media-mapp(1200px) {
+//         background-color: red;
+//       };
+
+//     błedy wprowadzenia - wygeneruje gradient w biało-czerwone paski
+//       @include media-mapp(null, null) {
+//         background-color: yellow;
+//       };
+//       @include media-mapp(null) {
+//         background-color: yellow;
+//       };
+//       @include media-mapp() {
+//         background-color: yellow;
+//       };
+//       @include media-mapp(480, 1200abc) {
+//         background-color: yellow;
+//       };
+//   }
+
+@import './error';
+
+$breakpoint: (
+  'phone': 480px,
+  'tablet': 768px,
+  'desktop': 1200px,
+);
+
+@function getBreakpoint($var) {
+  @return map-get($breakpoint, $var);
+}
+
+@mixin mapp($breakpoint1: null, $breakpoint2: null) {
+  $media-min: 0;
+  $media-max: 0;
+
+  @if type-of($breakpoint1) == 'number' {
+    $media-min: $breakpoint1;
+    @if index('px' 'em' 'rem', unit($media-min)) == null {
+      $media-min: 0;
+    }
+  } @else {
+    $media-min: getBreakpoint($breakpoint1);
+    @if type-of($media-min) != 'number' {
+      $media-min: 0;
+    }
+  }
+
+  @if type-of($breakpoint2) == 'number' {
+    $media-max: $breakpoint2;
+    @if index('px' 'em' 'rem', unit($media-max)) == null {
+      $media-max: 0;
+    }
+  } @else {
+    $media-max: getBreakpoint($breakpoint2);
+    @if type-of($media-max) != 'number' {
+      $media-max: 0;
+    }
+  }
+
+  @if ($media-min != 0 and $media-max == 0) {
+    @media screen and (min-width: $media-min) {
+      @content;
+    }
+  } @else if ($media-min == 0 and $media-max != 0) {
+    @media screen and (max-width: $media-max) {
+      @content;
+    }
+  } @else if ($media-min != 0 and $media-max != 0) {
+    @media screen and (min-width: $media-min) and (max-width: $media-max) {
+      @content;
+    }
+  } @else {
+    @media screen and (max-width: 1px) {
+      @content;
+    }
+  }
+}

@@ -1,0 +1,125 @@
+// Sposób użycia:
+//   @include font-type($weight, $size, $height, $spacing)
+//     gdzie:
+//       $weight - wartość font-weight w jednostkach 100-900
+//       $size - wartość font-size w px / em / rem
+//       $height - wartość line-height w mnożniku
+//       $spacing - wartość letter-spacing w jednostkach em
+//     Wszystkie zmienne są opcjonalne.
+//       Jeśli nie ma potrzeby użyć zmiennej należy wprowadzić wartość null.
+//       Jeśli nie używane są ostatnie zmienne można nie wprowadzać wartości.
+
+// Przykłady użycia:
+//   == letter-spacing takie samo jak w body / przodku
+//     .selektor {
+//       @include font-type(700, 32px, 1.5)
+//     }
+
+//   == font-weight i line-height takie samo jak w body / przodku
+//     .selektor {
+//       @include font-type(null, text-large, null, 0.02em)
+//     }
+
+//   == wszystkie elementy czcionki wprowadzone jako zmienne [nie zalecane używanie]
+//     .selektor {
+//       @include font-type(bold, header-normal, medium, large)
+//     }
+
+@import './error';
+
+$fontWeight: (
+  'normal': 400,
+  'medium': 500,
+  'bold': 700,
+  'black': 900,
+);
+@function getWeight($val) {
+  @return map-get($fontWeight, $val);
+}
+
+$fontSize: (
+  'text-little': 12px,
+  'text-small': 14px,
+  'text-normal': 16px,
+  'text-medium': 18px,
+  'text-big': 20px,
+  'text-height': 24px,
+  'text-large': 28px,
+  'header-normal': 32px,
+  'header-medium': 36px,
+  'header-big': 40px,
+  'header-height': 48px,
+  'header-large': 60px,
+);
+@function getSize($val) {
+  @return map-get($fontSize, $val);
+}
+
+$fontHeight: (
+  'little': 1.13,
+  'small': 1.25,
+  'normal': 1.5,
+  'medium': 1.75,
+  'big': 2,
+  'height': 2.5,
+  'large': 3,
+);
+@function getHeight($val) {
+  @return map-get($fontHeight, $val);
+}
+
+$fontSpacing: (
+  'small': 0.02em,
+  'normal': 0.03em,
+  'medium': 0.04em,
+  'big': 0.05em,
+  'large': 0.06em,
+);
+@function getSpacing($val) {
+  @return map-get($fontSpacing, $val);
+}
+
+@mixin type($weight: null, $size: null, $height: null, $spacing: null) {
+  $fontWeights: (100, 200, 300, 400, 500, 600, 700, 800, 900);
+  @if type-of($weight) == 'number' and index('', unit($weight)) {
+    @if index($fontWeights, $weight) {
+      font-weight: $weight;
+    } @else {
+      @include error('errText');
+    }
+  } @else {
+    @if #{getWeight($weight)} != '' {
+      font-weight: #{getWeight($weight)};
+    } @else if $weight == null {
+    } @else {
+      @include error('errText');
+    }
+  }
+
+  @if type-of($size) == 'number' and index('px' 'em' 'rem', unit($size)) {
+    font-size: #{$size};
+  } @else if #{getSize($size)} != '' {
+    font-size: getSize($size);
+  } @else if $size == null {
+  } @else {
+    @include error('errText');
+  }
+
+  @if type-of($height) == 'number' and index('', unit($height)) {
+    line-height: $height;
+  } @else if #{getHeight($height)} != '' {
+    line-height: getHeight($height);
+  } @else if $height == null {
+  } @else {
+    @include error('errText');
+  }
+
+  @if type-of($spacing) == 'number' and index('em', unit($spacing)) {
+    letter-spacing: $spacing;
+  } @else if #{getSpacing($spacing)} != '' {
+    letter-spacing: getSpacing($spacing);
+  } @else if $spacing == null {
+  } @else {
+    @include error('errText');
+  }
+}

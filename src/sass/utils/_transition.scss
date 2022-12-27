@@ -1,0 +1,72 @@
+// Sposób użycia:
+//   @include transition-add('transition-name-1' 'transition-name-2' ...)
+//     gdzie:
+//       transition-name-nr - kolejna nazwa elementu do animacji (nazwy takie same jak właściwości do animacji)
+//     Należy pamiętać o umieszczaniu o nieoddzielaniu nazw przecinkami.
+//
+// Przykłady użycia:
+//   animacja koloru czcionki
+//     .selektor {
+//       @include transition-add('color');
+//     }
+//
+//   animacja koloru tła i koloru ikony
+//     .selektor {
+//       @include transition-add('background-color' 'fill');
+//     }
+
+@import './error';
+
+$transitionProperty: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+$transition: (
+  'color': color $transitionProperty,
+  'fill': fill $transitionProperty,
+  'background-color': background-color $transitionProperty,
+  'border-color': border-color $transitionProperty,
+  'box-shadow': box-shadow $transitionProperty,
+  'transform': transform $transitionProperty,
+  'opacity': opacity $transitionProperty,
+  'visibility': visibility $transitionProperty,
+  'flex-basis': visibility $transitionProperty,
+  'filter': visibility $transitionProperty,
+);
+
+$transitionCheck: (
+  'color',
+  'fill',
+  'background-color',
+  'border-color',
+  'box-shadow',
+  'transform',
+  'opacity',
+  'visibility',
+  'flex-basis',
+  'filter'
+);
+
+@function getOneTransition($var) {
+  @return map-get($transition, $var);
+}
+
+@mixin add($var: []) {
+  $allTransition: '';
+  $check: 1;
+  $i: 0;
+  @each $type, $trans in $var {
+    $i: $i + 1;
+    @if $i>1 {
+      $allTransition: $allTransition + ', ';
+    }
+    @if index($transitionCheck, #{$type}) {
+    } @else {
+      $check: 0;
+    }
+    $allTransition: $allTransition + getOneTransition($type);
+  }
+  @if $check == 1 {
+    transition: #{$allTransition};
+  } @else {
+    @include error('errTransition');
+  }
+}
