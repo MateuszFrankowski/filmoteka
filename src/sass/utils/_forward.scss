@@ -1,0 +1,88 @@
+@forward './colors' as color-*;
+@forward './flex' as flex-*;
+@forward './font' as font-*;
+@forward './media' as media-*;
+@forward './transition' as transition-*;
+@forward './mixins' as mix-*;
+
+// <=====> IMPORT W .SCSS <=====>
+// w 1 linijce _moj-komponent.scss wpisać:
+// @use '../utils/forward' as *;
+
+// <=====> BŁĘDY <=====>
+// niepoprawne wpisanie utilsa spowoduje pojawienie się w elemencie ramki i pasków w kolorze błędu
+//   font - niebieski
+//   flex - zielony
+//   transition - pomarańczowy
+//   media - czerwony
+
+// <=====> UŻYWANIE KOLORÓW <=====>
+// property: color-get('variable');
+// property - właściwość w naszym .scss, do której podajemy kolor
+// 'variable' - zmienna koloru z pliku /utils/colors
+// <=> Przykład <=>
+// .selector {
+//   background-color: color-get('bg-primary');
+// }
+
+// <=====> CZCIONKA <=====>
+// @include font-type(font-weight, font-size, line-height, letter-spacing);
+// // jeśli nie chcemy podać, którejś właściwości wprowadzamy null, ostatnie niepodawane właściwości pomijamy
+// <=> Przykład 1 - font-size ze styli globalnych<=>
+// .selector {
+//   @include font-type(700, null, 1.5, 0.03em);
+// }
+// <=> Przykład 2 - line-height i letter-spacing ze styli globalnych <=>
+// .selector {
+//   @include font-type(900, 30px);
+// }
+
+// <=====> FLEX <=====>
+// @include flex-display(direction, gap, justify-content, align-items);
+// @include flex-basis(items_row_count, gap);
+// direction - do wyboru: 'row', 'column', 'wrap'
+// <=> Przykład 1 - elementy jeden pod drugim, wyśrodkowane<=>
+// .selector {
+//   @include flex-display('column', 30px, center, center);
+// }
+// <=> Przykład 2 - elementy zawijane z płynną szerokością <=>
+// .selector {
+//   @include flex-display('wrap', 30px);
+// }
+// .selector-child {
+//   @include flex-basis(4, 30px);
+// }
+
+// <=====> TRANSITION <=====>
+// @include transition-add(lista_właściwości);
+// lista_właściwości - podawana bez przecinka
+// <=> Przykład 1 <=>
+// .selector {
+//   @include transition-add('color')
+// }
+// <=> Przykład 2 <=>
+// .selector {
+//   @include transition-add('background-color' 'fill')
+// }
+
+// <=====> MEDIA <=====>
+// @include media-mapp(min-width, max-width)
+// można użyć jednostek (768px) lub zmiennych ('mobile', 'tablet', 'desktop')
+// <=> Przykład 1 - media do 768px <=>
+// .selector {
+//   @include media-mapp(null, 'tablet') {
+//     property: value;
+//   }
+// }
+// <=> Przykład 2 - media do 1200px <=>
+// .selector {
+//   @include media-mapp('desktop') {
+//     property: value;
+//   }
+// }
+// <=> Przykład 3 - media od 480px do 768px <=>
+// .selector {
+//   @include media-mapp('mobile', 'tablet') {
+//     property: value;
+//   }
+// }

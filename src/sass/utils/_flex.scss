@@ -1,0 +1,118 @@
+// Sposób użycia:
+//   w klasie kontenera:
+//     @include flex-display($direction, $gapVal, $justify, $align)
+//       gdzie:
+//         $direction - kierunek rozmieszczenia elementów (none, wrap, row, column)
+//         $gapVal - wartość właściwości gap (value, null)
+//         $justify - opcjonalne rozmieszczenie wzdłuż głównej osi (wartości justify-content)
+//         $align - opcjonalne rozmieszczenie wzdłuż osi poprzecznej (wartości aling-items),
+//                 aby podać wartość $align należy podać wartość $justify (przynajmniej null)
+
+//   w klasie elementu [dla użytego w rodzicu @include flex(wrap, $gapVal, ...)]:
+//     @include flex-basis($elementNr, $gapVal)
+//       gdzie:
+//         $elementNr - ilość elementów w linii
+//         $gapVal - wartość $gapVal rodzica
+
+// Przykłady użycia:
+//   dla siatki elementów:
+//     .selektor-rodzic {
+//       @include flex-display(wrap, 30px);
+//     }
+//     .selektor-element {
+//       @include flex-basis(4, 30px);
+//     }
+
+//   dla rozmieszczenia w linii poziomej wycentrowane tylko w poziomie:
+//     .selektor-rodzic {
+//       @include flex-display(row, 50px, null, center);
+//     }
+
+//   dla rozmieszczenia w linii pionowej wycentrowane tylko w pionie:
+//     .selektor-rodzic {
+//       @include flex-display(column, 40px, center);
+//     }
+
+// Zaleca się dla elementów, które będą siatką w mediach dla tabletów i desktopów
+//   użyć również dla komórek $direction: wrap i dla elementów podać $elementNr: 1.
+//   Pozwoli to na nieduplikowanie @include flex() w rodzicu.
+//   Warunkiem jest aby wartość gap była stała dla wszystkich mediów.
+
+@import './error';
+
+$justifyContent: (
+  null,
+  center,
+  space-between,
+  space-around,
+  start,
+  end,
+  flex-start,
+  flex-end,
+  left right
+);
+
+$alignItems: (
+  null,
+  normal,
+  stretch,
+  center,
+  start,
+  end,
+  flex-start,
+  flex-end,
+  baseline,
+  first baseline,
+  last baseline,
+  safe center,
+  unsafe center,
+  inherit,
+  initial,
+  revert,
+  revert-layer,
+  unset
+);
+
+@mixin display($direction: null, $gapVal: null, $justify: null, $align: null) {
+  display: flex;
+  @if $direction == wrap {
+    flex-wrap: $direction;
+  } @else if index(column row null, $direction) {
+    flex-direction: $direction;
+  } @else {
+    @include error('errFlex');
+  }
+  @if type-of($gapVal) == 'number' and index('px' 'em' 'rem', unit($gapVal)) {
+    gap: $gapVal;
+  } @else if $gapVal == null {
+  } @else {
+    @include error('errFlex');
+  }
+  @if index($justifyContent, $justify) {
+    justify-content: $justify;
+  } @else {
+    @include error('errFlex');
+  }
+  @if index($alignItems, $align) {
+    align-items: $align;
+  } @else {
+    @include error('errFlex');
+  }
+}
+
+@mixin basis($elementNr, $gapVal) {
+  $check: 1;
+  @if type-of($elementNr) == 'number' and index('', unit($elementNr)) {
+  } @else {
+    $check: 0;
+  }
+  @if type-of($gapVal) == 'number' and index('px' 'em' 'rem', unit($gapVal)) {
+  } @else {
+    $check: 0;
+  }
+  @if $check == 1 {
+    flex-basis: calc((100% - #{$gapVal * ($elementNr - 1)}) / #{$elementNr});
+  } @else {
+    @include error('errFlex');
+  }
+}

@@ -1,0 +1,24 @@
+$colors: (
+  // Text
+  'text-primary': #000000,
+  'text-secondary': #545454,
+  'text-alternative': #ffffff,
+  'text-accent': #ff6b08,
+  'text-shadow': #8c8c8c,
+
+  // Background
+  'bg-primary': #ffffff,
+  'bg-secondary': #f7f7f7,
+  'bg-decorative': #ff6b08,
+  'bg-alternative': #000000,
+
+  // Focus-btn
+  'btn-focus-primary': #dd5f0a,
+  'btn-focus-secondary': #d5cdcd,
+
+  //Shadows
+);
+
+@function get($var) {
+  @return map-get($colors, $var);
+}
