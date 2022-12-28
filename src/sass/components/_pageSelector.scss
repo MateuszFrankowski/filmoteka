@@ -1,6 +1,6 @@
 @use '../utils/forward' as *;
 
-.pagination {
+.pages {
   width: 100%;
   @include flex-display(null, null, center);
   @include font-type(500, 12px, 1.33);
@@ -56,7 +56,7 @@
     }
   }
 
-  &__page {
+  &__active {
     background-color: color-get('bg-decorative');
     color: color-get('text-alternative');
     height: 40px;
