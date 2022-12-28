@@ -1,0 +1,71 @@
+@use '../utils/forward' as *;
+
+.pagination {
+  width: 100%;
+  @include flex-display(null, null, center);
+  @include font-type(500, 12px, 1.33);
+
+  &--none {
+    display: none;
+
+    @include media-mapp('tablet') {
+      display: flex;
+    }
+  }
+
+  &__list {
+    list-style: none;
+    @include flex-display(row, 16px, center, center);
+  }
+
+  &__item {
+    transform: translateY(-30%);
+    @include flex-display(null, null, center, center);
+    height: 10px;
+  }
+
+  &__btn {
+    height: 40px;
+    @include flex-display(null, null, center, center);
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    cursor: pointer;
+
+    &:focus,
+    &:hover {
+      color: color-get('text-accent');
+      @include transition-add('color');
+    }
+  }
+
+  &__rim {
+    background-color: color-get('bg-secondary');
+    height: 40px;
+    width: 40px;
+    margin: 0;
+
+    &--disabled {
+      cursor: auto;
+
+      &:focus,
+      &:hover {
+        color: color-get('text-primary');
+        @include transition-add('color');
+      }
+    }
+  }
+
+  &__page {
+    background-color: color-get('bg-decorative');
+    color: color-get('text-alternative');
+    height: 40px;
+    width: 40px;
+
+    &:focus,
+    &:hover {
+      color: color-get('text-primary');
+      @include transition-add('color');
+    }
+  }
+}
