@@ -1,6 +1,38 @@
-.footer{
-    background-color: get(bg-secondary);
-    &__icon{
-        width:14px; 
-        height: 12px    }
+.footer {
+  max-width: 320px;
+  padding-top: 28.71px;
+  padding-bottom: 29.71px;
+  background-color: get(bg-secondary);
+  color: get(text-secondary);
+  text-align: center;
+  font-family: 'Roboto';
+  font-size: 14px;
+  line-height: 16.41px;
+  letter-spacing: 1px;
+  &__icon {
+    width: 14px;
+    height: 12px;
+  }
+  &__link {
+    &:hover,
+    &:focus {
+      cursor: pointer;
+    }
+  }
+}
+@media screen and (min-width: 768px) {
+  .footer {
+    max-width: 1023px;
+    // max-width: 768px;
+    padding-top: 30px;
+    padding-bottom: 28px;
+    font-size: 16px;
+    letter-spacing: normal;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .footer {
+    max-width: 1024px;
+  }
 }
