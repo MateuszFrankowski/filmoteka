@@ -3,7 +3,7 @@
 //   gdzie:
 //     $breakpoint1 - wartość dla media (min-width: value)
 //     $breakpoint2 - wartość dla media (max-width: value)
-//     jako $breakpoint1 / $breakpoint2 użyj wartości z $breakpoint('small', 'medium', 'large') lub wprowadź wartość ręcznie
+//     jako $breakpoint1 / $breakpoint2 użyj wartości z $breakpoint('mobile', 'tablet', 'desktop') lub wprowadź wartość ręcznie
 //     jeżeli $breakpoint1 / $breakpoint2 jest niepotrzebny wprowadź null
 //     jako jednostek można używać px, em, rem
 
@@ -12,12 +12,12 @@
 //     background-color: grey;
 
 //     dla mediów do 768px wprowadzonych jako 'medium'
-//       @include media-mapp(null, 'medium') {
+//       @include media-mapp(null, 'tablet') {
 //         background-color: green;
 //       };
 
 //     dla mediów od 800px do 1200px wprowadzonych jako wartość i 'large'
-//       @include media-mapp(800px, 'large') {
+//       @include media-mapp(800px, 'desktop') {
 //         background-color: blue;
 //       };
 
@@ -47,7 +47,7 @@
 @import './error';
 
 $breakpoint: (
-  'phone': 480px,
+  'mobile': 480px,
   'tablet': 768px,
   'desktop': 1200px,
 );
