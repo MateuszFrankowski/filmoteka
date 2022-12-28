@@ -10,9 +10,10 @@ import axios from 'axios';
 // searchQuery   -> serch text in movies list
 //
 // result: {
-//   page   -> nr of page,
+//   status:   -> true - list exist / false - no movies
+//   page:   -> nr of page,
 //   total_pages:   -> count of total pages,
-//   total_results   -> count of total movies,
+//   total_results:   -> count of total movies,
 //   data: [   -> array of movies
 //     {
 //       id   -> movie id (add to movie li in html to read with eventListener),
@@ -120,8 +121,14 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
     };
   }
   const response = await fetchTheMovieDB(urlSearch, params);
+  const page = response.data.page;
+  let total_pages = response.data.total_pages
+  let total_results = response.data.total_results
+  if (total_pages > 500) {
+    total_pages = 500;
+    total_results = 500 * 20;
+  };
   const genres = await fetchGenresNames();
-  const { page, total_pages, total_results } = response.data;
   let movies = {
     page,
     total_pages,
