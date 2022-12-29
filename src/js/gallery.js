@@ -1,3 +1,4 @@
+import { fetchTheMovieDBList } from './api'
 import { dataMovies } from "./home";
 
 dataMovies = {
@@ -5,16 +6,18 @@ dataMovies = {
        totalPages: 20, // nr of total pages
        query: "", // searching text in home
      };
-// 
+
+     await fetchTheMovieDBList(1, "avatar"); 
+
 // const movies = async () => {
-//     const result = await fetchTheMovieDBList(2);
+//     const movies = await fetchTheMovieDBList(2);
 //     console.log(movies) //list of movies
+//     ... <!-- use result -->
 // }
-
-
-const moviesArray = data.movies.map(movie => {
-    return movie.name;
-  });
+const moviesArray = movies.data.map(movie => {
+  return movie.title;
+});
+console.log(fetchTheMovieDB);
   const markup = `
 <li>
   <figure class="card">
