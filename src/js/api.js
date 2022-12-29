@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { dataMovies } from './global';
 
 // <========> IMPORT AXIOS FETCH <========>
 // import { fetchTheMovieDBList, fetchTheMovieDBMovie } from 'path/to/api'
@@ -75,6 +76,8 @@ const THEMOVIEDB_KEY = 'c8f343487431a47156d389fa5ccb000e';
 const THEMOVIEDB_URL = 'https://api.themoviedb.org/3';
 
 axios.defaults.baseURL = THEMOVIEDB_URL;
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
 const fetchTheMovieDB = async (urlSearch, parameters) => {
   const response = await axios
@@ -84,6 +87,7 @@ const fetchTheMovieDB = async (urlSearch, parameters) => {
         language: 'en-US',
         ...parameters,
       },
+      cancelToken: source.token,
     })
     .then(function (response) {
       return response;
@@ -102,6 +106,7 @@ const fetchGenresNames = async () => {
 };
 
 export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
+  if (pageNr !== dataMovies.page) { source.cancel(); }
   if (isNaN(pageNr)) {
     return alert('fetchTheMovieDBTrending(page) -> page must be number');
   }

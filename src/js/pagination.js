@@ -1,5 +1,5 @@
 import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api'
-import { dataMovies } from './home';
+import { dataMovies } from './global';
 
 // <========> HOW USE PAGINATION <========>
 //
@@ -124,27 +124,30 @@ const changePage = async (pageNr, fetchType, query) => {
     case "home":
         movies = await fetchTheMovieDBList(pageNr, query);
       break;
-    case "libary-watched":
-        // movies = await for fireBase API =========================================================================================
+    case "watched":
+        movies = await fetchTheMovieDBList(pageNr, query);
+        // change to // movies = await for fireBase API watched =========================================================================================
       break;
-    case "libary-queue":
-        // movies = await for fireBase API =========================================================================================
+    case "queue":
+        // add // movies = await for fireBase API queue =========================================================================================
       break;
     default:
       break;
   }
   if (movies.total_pages === 0) {
     return
-  }
-  pagination({
-    pageNr,
-    lastPage: dataMovies.totalPages
-  });
-  console.log(movies)
+  } 
+  // if (pageNr === dataMovies.page) {
+    pagination({
+      pageNr,
+      lastPage: dataMovies.totalPages
+    });
+    console.log(`${fetchType}:`, movies)
+  // }
   // Function to insert movies to gallery ==========================================================================================
 }
 
 export const loadPage = ({ fetchType, query }) => {
   const pages = document.querySelector(".pages__list")
-  pages.addEventListener("click", e => buttonListener(e, fetchType, query));
+  pages.addEventListener("click", e => buttonListener(e, fetchType, query),0);
 }
