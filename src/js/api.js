@@ -1,4 +1,4 @@
-//import axios from 'axios';
+import axios from 'axios';
 
 // <========> IMPORT AXIOS FETCH <========>
 // import { fetchTheMovieDBList, fetchTheMovieDBMovie } from 'path/to/api'
