@@ -15,7 +15,7 @@ import { dataMovies } from "./home";
 //     ... <!-- use result -->
 // }
 //test gallery
-const createMovies = async () => {
+export const createMovies = async () => {
     const galleryContainer = document.getElementsByClassName('gallery');
     console.log(galleryContainer[0]);
     const movies = await fetchTheMovieDBList(1, 'avatar');
