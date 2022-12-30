@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { dataMovies } from './global';
 
 // <========> IMPORT AXIOS FETCH <========>
 // import { fetchTheMovieDBList, fetchTheMovieDBMovie } from 'path/to/api'
@@ -10,9 +11,10 @@ import axios from 'axios';
 // searchQuery   -> serch text in movies list
 //
 // result: {
-//   page   -> nr of page,
+//   status:   -> true - list exist / false - no movies
+//   page:   -> nr of page,
 //   total_pages:   -> count of total pages,
-//   total_results   -> count of total movies,
+//   total_results:   -> count of total movies,
 //   data: [   -> array of movies
 //     {
 //       id   -> movie id (add to movie li in html to read with eventListener),
@@ -74,6 +76,8 @@ const THEMOVIEDB_KEY = 'c8f343487431a47156d389fa5ccb000e';
 const THEMOVIEDB_URL = 'https://api.themoviedb.org/3';
 
 axios.defaults.baseURL = THEMOVIEDB_URL;
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
 const fetchTheMovieDB = async (urlSearch, parameters) => {
   const response = await axios
@@ -83,6 +87,7 @@ const fetchTheMovieDB = async (urlSearch, parameters) => {
         language: 'en-US',
         ...parameters,
       },
+      cancelToken: source.token,
     })
     .then(function (response) {
       return response;
@@ -101,6 +106,7 @@ const fetchGenresNames = async () => {
 };
 
 export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
+  if (pageNr !== dataMovies.page) { source.cancel(); }
   if (isNaN(pageNr)) {
     return alert('fetchTheMovieDBTrending(page) -> page must be number');
   }
@@ -120,8 +126,14 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
     };
   }
   const response = await fetchTheMovieDB(urlSearch, params);
+  const page = response.data.page;
+  let total_pages = response.data.total_pages
+  let total_results = response.data.total_results
+  if (total_pages > 500) {
+    total_pages = 500;
+    total_results = 500 * 20;
+  };
   const genres = await fetchGenresNames();
-  const { page, total_pages, total_results } = response.data;
   let movies = {
     page,
     total_pages,

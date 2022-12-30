@@ -1,41 +1,75 @@
-export const pagination = (pageNr, countOfPages) => {
-  const paginationList = document.querySelector('#pagination');
-  const markup = markupPages(pageNr, countOfPages);
-  const markupList = createMarkupList(markup, pageNr, countOfPages);
+import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api'
+import { dataMovies } from './global';
+
+// <========> HOW USE PAGINATION <========>
+//
+// <===> Use pagination in start <===>
+// pagination({
+//   pageNr: number,
+//   lastPage: number,
+// });
+// // only create a page buttons
+// // pageNr -> page which you load from API (dataMovies.page)
+// // lastPage -> number of max pages from API (dataMovies.totalPages)
+//
+// <===> Listener for buttons <===>
+// loadPage({
+//   fetchType: string,
+//   query: string,
+// })
+// // eventListener to load movies when click a button
+// // fetchType -> to choose: "home", "library-watched", "library-queue"
+// // query -> searching text movie from index.js input (in library.html not usable)
+
+export const pagination = ({ pageNr, lastPage }) => {
+  const paginationList = document.querySelector('#pages');
+  const markup = markupPages(pageNr, lastPage);
+  const markupList = createMarkupList(markup, pageNr, lastPage);
   paginationList.innerHTML = markupList;
 };
 
-const markupPages = (pageNr, countOfPages) => {
+const markupPages = (pageNr, lastPage) => {
   let markup = [];
-
-  for (let i = -4; i < 5; i++) {
-    markup.push(pageNr + i);
+  
+  if (pageNr < 5) {
+    for (let i = 1; i < 10; i++) {
+      markup.push(i)
+    }
+  } else if (pageNr > lastPage - 4) {
+    for (let i = lastPage - 8; i < lastPage + 1; i++) {
+      markup.push(i)
+    }
+  } else {
+    for (let i = -4; i < 5; i++) {
+      markup.push(pageNr + i);
+    }
   }
   const markupFilter = markup.filter(
-    page => +page > 0 && +page <= countOfPages
+    page => page > 0 && page <= lastPage
   );
+  
   markupFilter[0] = 1;
-  markupFilter[markupFilter.length - 1] = countOfPages;
-  if (markupFilter[1] !== 2) {
+  if (lastPage > 1) {
+    markupFilter[markupFilter.length - 1] = lastPage;
+  }
+  if (!!markupFilter[1] && markupFilter[1] !== 2) {
     markupFilter[1] = '...';
   }
-  if (markupFilter[markupFilter.length - 2] !== countOfPages - 1) {
+  if (markupFilter[markupFilter.length - 2] !== lastPage - 1) {
     markupFilter[markupFilter.length - 2] = '...';
   }
 
   return markupFilter;
 };
 
-const createMarkupList = (markup, pageNr, countOfPages) => {
+const createMarkupList = (markup, pageNr, lastPage) => {
   let markupList = [];
   if (pageNr > 1) {
     markupList.push(
-      `<li id="pag-left"><button class="pagination__btn pagination__rim" type="button">
-          &#x3c;
-        </button></li>`
+      `<li><button class="pages__btn pages__rim" type="button" data-page="before">&#x3c;</button></li>`
     );
-  } else {
-    markupList.push(`<li><p class="pagination__btn pagination__rim pagination__rim--disabled">
+  } else if (lastPage > 1) {
+    markupList.push(`<li><p class="pages__btn pages__rim pages__rim--disabled">
           &#x3c;
         </p></li>`);
   }
@@ -43,35 +77,89 @@ const createMarkupList = (markup, pageNr, countOfPages) => {
     let classLi = '';
     let classPage = '';
     if (page < pageNr - 2 || page > pageNr + 2) {
-      classLi = ' pagination--none';
+      classLi = ' pages--none';
     }
     if (page === pageNr) {
-      classPage = ' pagination__page';
+      classPage = ' pages__active';
     }
     if (!isNaN(page)) {
       markupList.push(
-        `<li id="pag-${page}" class="${classLi}"><button class="pagination__btn${classPage}" type="button">${page}</button></li>`
+        `<li class="${classLi}"><button class="pages__btn${classPage}" type="button" data-page="${page}">${page}</button></li>`
       );
     }
     if (isNaN(page)) {
       markupList.push(
-        `<li class="pagination--none"><p class="pagination__item">...</p></li>`
+        `<li class="pages--none"><p class="pages__item">...</p></li>`
       );
     }
   });
-  if (pageNr < countOfPages) {
+  if (pageNr < lastPage) {
     markupList.push(
-      `<li id="pag-right"><button class="pagination__btn pagination__rim" type="button">
+      `<li><button class="pages__btn pages__rim" type="button" data-page="after">
           &#x3e;
         </button></li>`
     );
-  } else {
-    markupList.push(`<li><p class="pagination__btn pagination__rim pagination__rim--disabled">
+  } else if (lastPage > 1) {
+    markupList.push(`<li><p class="pages__btn pages__rim pages__rim--disabled">
           &#x3e;
         </p></li>`);
   }
   return markupList.join('\r\n');
 };
 
-const test = pagination(7, 13);
-test;
+///////////////////////////////////////
+
+const buttonListener = (e, fetchType, query) => {
+  if (e.target.type !== "button") {
+    return
+  }
+  const { page } = dataMovies;
+  const btn = e.target
+  const newPage = btn.dataset.page
+  if (Number(newPage) === page) {
+    return
+  }
+  if (!isNaN(newPage)) {
+    dataMovies.page = Number(newPage)
+  } else if (newPage==="after") {
+    dataMovies.page = page + 1
+  } else if (newPage === "before") {
+    dataMovies.page = page - 1
+  }
+
+  const movie = changePage(dataMovies.page, fetchType, query)
+}
+
+const changePage = async (pageNr, fetchType, query) => {
+  let movies={}
+  switch (fetchType) {
+    case "home":
+        movies = await fetchTheMovieDBList(pageNr, query);
+      break;
+    case "watched":
+        movies = await fetchTheMovieDBList(pageNr, query);
+        // change to // movies = await for fireBase API watched =========================================================================================
+      break;
+    case "queue":
+        // add // movies = await for fireBase API queue =========================================================================================
+      break;
+    default:
+      break;
+  }
+  if (movies.total_pages === 0) {
+    return
+  } 
+  // if (pageNr === dataMovies.page) {
+    pagination({
+      pageNr,
+      lastPage: dataMovies.totalPages
+    });
+    console.log(`${fetchType}:`, movies)
+  // }
+  // Function to insert movies to gallery ==========================================================================================
+}
+
+export const loadPage = ({ fetchType, query }) => {
+  const pages = document.querySelector(".pages__list")
+  pages.addEventListener("click", e => buttonListener(e, fetchType, query),0);
+}
