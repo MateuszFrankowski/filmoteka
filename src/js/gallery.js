@@ -34,9 +34,9 @@ export const createMovies = async (movies) => {
               </figure>
               </li>
           `);
-  };
-  galleryContainer.innerHTML = markup;
-
+  
+  galleryContainer[0].innerHTML = markup;
+};
 //
 // const moviesArray = movies.data.map(movie => {
 //   return movie.title;
