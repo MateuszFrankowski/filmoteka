@@ -1,4 +1,4 @@
-const modal = document.querySelector('.modal-backdrop');
+const modal = document.querySelector('.modal-footer-backdrop');
 const modalOpenButton = document.querySelector('.footer__link');
 const modalCloseButton = document.querySelector('.modal-footer__icon-close');
 const modalNextButton = document.querySelector('.modal-footer__icon-right');
