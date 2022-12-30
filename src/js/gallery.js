@@ -20,12 +20,8 @@ export const createMovies = async () => {
     console.log(galleryContainer[0]);
     const movies = await fetchTheMovieDBList(1, 'avatar');
     console.log(movies);
-    const moviesArray = movies.data.map(movie => {
-      return movie;
-    });
-    console.log(moviesArray);
-    moviesArray.forEach(data => {
-      const markup = `
+    const markup = movies.data.map(data => {
+    return `
           <li>
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
@@ -40,8 +36,8 @@ export const createMovies = async () => {
               </figure>
               </li>
           `;
-      galleryContainer[0].insertAdjacentHTML('beforeend', markup);
-    });
+  });
+  galleryContainer[0].innerHTML(markup);
   };
 //
 // const moviesArray = movies.data.map(movie => {
