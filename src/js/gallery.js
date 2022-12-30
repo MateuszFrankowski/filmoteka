@@ -15,10 +15,9 @@ import { dataMovies } from "./home";
 //     ... <!-- use result -->
 // }
 //test gallery
-export const createMovies(movies) = async () => {
+export const createMovies = async (movies) => {
     const galleryContainer = document.getElementsByClassName('gallery');
     console.log(galleryContainer[0]);
-     const createMovies = async (movies) => {
     console.log(movies);
     const markup = movies.data.map (data => 
       `<li>
@@ -37,7 +36,7 @@ export const createMovies(movies) = async () => {
           `);
   };
   galleryContainer.innerHTML = markup;
-  };
+
 //
 // const moviesArray = movies.data.map(movie => {
 //   return movie.title;
