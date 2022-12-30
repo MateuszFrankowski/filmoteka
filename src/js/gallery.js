@@ -44,33 +44,33 @@ export const createMovies = async () => {
     });
   };
 //
-const moviesArray = movies.data.map(movie => {
-  return movie.title;
-});
-console.log(fetchTheMovieDB);
-  const markup = `
-<li>
-  <figure class="card">
-    <div class="thumb" data-id="${data.id}">
-      <img class="img" src="https://www.themoviedb.org/t/p/w500${
-        data.poster_path
-      }" />
-    </div>
-    <figcaption>
-      <h3 class="title">${data.title}</h3>
-      <div class="details-wrapper">
-        <p class="details" data-film_id="${data.id}">${data.genres.join(
-    ', '
-  )} &#124; ${data.release_year}</p>
-        <div class="rating rating--visible">${roundTo1Comma(
-          data.vote_average
-        )}</div>
-      </div>
-    </figcaption>
-  </figure>
-</li>
-`;
-  libraryGrid.insertAdjacentHTML('beforeend', markup);
+// const moviesArray = movies.data.map(movie => {
+//   return movie.title;
+// });
+// console.log(fetchTheMovieDB);
+//   const markup = `
+// <li>
+//   <figure class="card">
+//     <div class="thumb" data-id="${data.id}">
+//       <img class="img" src="https://www.themoviedb.org/t/p/w500${
+//         data.poster_path
+//       }" />
+//     </div>
+//     <figcaption>
+//       <h3 class="title">${data.title}</h3>
+//       <div class="details-wrapper">
+//         <p class="details" data-film_id="${data.id}">${data.genres.join(
+//     ', '
+//   )} &#124; ${data.release_year}</p>
+//         <div class="rating rating--visible">${roundTo1Comma(
+//           data.vote_average
+//         )}</div>
+//       </div>
+//     </figcaption>
+//   </figure>
+// </li>
+// `;
+//   libraryGrid.insertAdjacentHTML('beforeend', markup);
 
 const roundTo1Comma = (num) => {
 let roundNum = Math.round(num * 10) / 10
