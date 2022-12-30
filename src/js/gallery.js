@@ -18,11 +18,10 @@ import { dataMovies } from "./home";
 export const createMovies = async () => {
     const galleryContainer = document.getElementsByClassName('gallery');
     console.log(galleryContainer[0]);
-    const movies = await fetchTheMovieDBList(1, 'avatar');
+     const createMovies = async (movies) => {
     console.log(movies);
-    const markup = movies.data.map(data => {
-    return `
-          <li>
+    const markup = movies.data.map (data => 
+      `<li>
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
                   <img class="img" src="https://www.themoviedb.org/t/p/w500${data.poster_path}" />
@@ -35,9 +34,9 @@ export const createMovies = async () => {
                   </figcaption>
               </figure>
               </li>
-          `;
-  });
-  galleryContainer[0].innerHTML(markup);
+          `);
+  };
+  galleryContainer.innerHTML = markup;
   };
 //
 // const moviesArray = movies.data.map(movie => {
