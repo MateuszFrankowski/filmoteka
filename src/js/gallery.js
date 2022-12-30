@@ -15,7 +15,7 @@ import { dataMovies } from "./home";
 //     ... <!-- use result -->
 // }
 //test gallery
-export const createMovies = async () => {
+export const createMovies(movies) = async () => {
     const galleryContainer = document.getElementsByClassName('gallery');
     console.log(galleryContainer[0]);
      const createMovies = async (movies) => {
