@@ -16,7 +16,7 @@ const startPage = async () => {
         pagination();
     }
     // function to creating gallery
-    createMovies();
+    createMovies(movies);
     //
     
     loadPage();
@@ -24,35 +24,6 @@ const startPage = async () => {
 
     //
 };
-//test gallery
-const createMovies = async () => {
-    const galleryContainer = document.getElementsByClassName('gallery');
-    console.log(galleryContainer[0]);
-    const movies = await fetchTheMovieDBList(1, 'avatar');
-    console.log(movies);
-    const moviesArray = movies.data.map(movie => {
-      return movie;
-    });
-    console.log(moviesArray);
-    moviesArray.forEach(data => {
-      const markup = `
-          <li>
-              <figure class="card">
-                  <div class="thumb" data-id="${data.id}">
-                  <img class="img" src="https://www.themoviedb.org/t/p/w500${data.poster_path}" />
-                  </div>
-                  <figcaption>
-                  <h3 class="title">${data.title}</h3>
-                  <div class="details-wrapper">
-                      <p class="details" data-film_id="${data.id}">
-                  </div>
-                  </figcaption>
-              </figure>
-              </li>
-          `;
-      galleryContainer[0].insertAdjacentHTML('beforeend', markup);
-    });
-  };
-//
+import { createMovies } from './gallery'
 startPage();
 
