@@ -4,22 +4,20 @@ import { dataMovies } from './global';
 // <========> HOW USE PAGINATION <========>
 //
 // <===> Use pagination in start <===>
-// pagination({
-//   pageNr: number,
-//   lastPage: number,
-// });
+// import { dataMovies } from './global';
+// dataMovies.page = number; // if you want change it
+// dataMovies.totalPages = number; // if you want change it
+// pagination();
 // // only create a page buttons
-// // pageNr -> page which you load from API (dataMovies.page)
-// // lastPage -> number of max pages from API (dataMovies.totalPages)
 //
 // <===> Listener for buttons <===>
-// loadPage({
-//   fetchType: string,
-//   query: string,
-// })
+// import { dataMovies } from './global';
+// dataMovies.fetchType = string; // if you want change it
+// dataMovies.query = string; // if you want change it
+// loadPage()
 // // eventListener to load movies when click a button
-// // fetchType -> to choose: "home", "library-watched", "library-queue"
-// // query -> searching text movie from index.js input (in library.html not usable)
+// // dataMovies.fetchType -> to choose: "home", "watched", "queue"
+// // dataMovies.query -> searching text movie from index.js input (in library.html not usable)
 
 export const pagination = () => {
   const paginationList = document.querySelector('#pages');
