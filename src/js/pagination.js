@@ -4,102 +4,110 @@ import { dataMovies } from './global';
 // <========> HOW USE PAGINATION <========>
 //
 // <===> Use pagination in start <===>
-// pagination({
-//   pageNr: number,
-//   lastPage: number,
-// });
+// import { dataMovies } from './global';
+// dataMovies.page = number; // if you want change it
+// dataMovies.totalPages = number; // if you want change it
+// pagination();
 // // only create a page buttons
-// // pageNr -> page which you load from API (dataMovies.page)
-// // lastPage -> number of max pages from API (dataMovies.totalPages)
 //
 // <===> Listener for buttons <===>
-// loadPage({
-//   fetchType: string,
-//   query: string,
-// })
+// import { dataMovies } from './global';
+// dataMovies.fetchType = string; // if you want change it
+// dataMovies.query = string; // if you want change it
+// loadPage()
 // // eventListener to load movies when click a button
-// // fetchType -> to choose: "home", "library-watched", "library-queue"
-// // query -> searching text movie from index.js input (in library.html not usable)
+// // dataMovies.fetchType -> to choose: "home", "watched", "queue"
+// // dataMovies.query -> searching text movie from index.js input (in library.html not usable)
 
-export const pagination = ({ pageNr, lastPage }) => {
+export const pagination = () => {
   const paginationList = document.querySelector('#pages');
-  const markup = markupPages(pageNr, lastPage);
-  const markupList = createMarkupList(markup, pageNr, lastPage);
+  const markup = markupPages();
+  const markupList = createMarkupList(markup);
   paginationList.innerHTML = markupList;
 };
 
-const markupPages = (pageNr, lastPage) => {
+const markupPages = () => {
+  const { page, totalPages } = dataMovies;
   let markup = [];
   
-  if (pageNr < 5) {
+  if (page < 5) {
     for (let i = 1; i < 10; i++) {
       markup.push(i)
     }
-  } else if (pageNr > lastPage - 4) {
-    for (let i = lastPage - 8; i < lastPage + 1; i++) {
+  } else if (page > totalPages - 4) {
+    for (let i = totalPages - 8; i < totalPages + 1; i++) {
       markup.push(i)
     }
   } else {
     for (let i = -4; i < 5; i++) {
-      markup.push(pageNr + i);
+      markup.push(page + i);
     }
   }
   const markupFilter = markup.filter(
-    page => page > 0 && page <= lastPage
+    page => page > 0 && page <= totalPages
   );
   
   markupFilter[0] = 1;
-  if (lastPage > 1) {
-    markupFilter[markupFilter.length - 1] = lastPage;
+  if (totalPages > 1) {
+    markupFilter[markupFilter.length - 1] = totalPages;
   }
   if (!!markupFilter[1] && markupFilter[1] !== 2) {
     markupFilter[1] = '...';
   }
-  if (markupFilter[markupFilter.length - 2] !== lastPage - 1) {
+  if (markupFilter[markupFilter.length - 2] !== totalPages - 1) {
     markupFilter[markupFilter.length - 2] = '...';
   }
 
   return markupFilter;
 };
 
-const createMarkupList = (markup, pageNr, lastPage) => {
+const createMarkupList = (markup) => {
+  const { page, totalPages } = dataMovies;
   let markupList = [];
-  if (pageNr > 1) {
+  if (page > 1) {
     markupList.push(
       `<li><button class="pages__btn pages__rim" type="button" data-page="before">&#x3c;</button></li>`
     );
-  } else if (lastPage > 1) {
+  } else if (totalPages > 1) {
     markupList.push(`<li><p class="pages__btn pages__rim pages__rim--disabled">
           &#x3c;
         </p></li>`);
   }
-  markup.forEach(page => {
+  markup.forEach(pageNr => {
     let classLi = '';
     let classPage = '';
-    if (page < pageNr - 2 || page > pageNr + 2) {
+    if (page < 3) {
+      if (pageNr > 5) { 
+        classLi = ' pages--none';
+      };
+    } else if (page > totalPages - 2) {
+      if (pageNr < totalPages - 4) { 
+        classLi = ' pages--none';
+      };
+    } else if (pageNr < page - 2 || pageNr > page + 2) {
       classLi = ' pages--none';
     }
-    if (page === pageNr) {
+    if (pageNr === page) {
       classPage = ' pages__active';
     }
-    if (!isNaN(page)) {
+    if (!isNaN(pageNr)) {
       markupList.push(
-        `<li class="${classLi}"><button class="pages__btn${classPage}" type="button" data-page="${page}">${page}</button></li>`
+        `<li class="${classLi}"><button class="pages__btn${classPage}" type="button" data-page="${pageNr}">${pageNr}</button></li>`
       );
     }
-    if (isNaN(page)) {
+    if (isNaN(pageNr)) {
       markupList.push(
         `<li class="pages--none"><p class="pages__item">...</p></li>`
       );
     }
   });
-  if (pageNr < lastPage) {
+  if (page < totalPages) {
     markupList.push(
       `<li><button class="pages__btn pages__rim" type="button" data-page="after">
           &#x3e;
         </button></li>`
     );
-  } else if (lastPage > 1) {
+  } else if (totalPages > 1) {
     markupList.push(`<li><p class="pages__btn pages__rim pages__rim--disabled">
           &#x3e;
         </p></li>`);
@@ -109,11 +117,11 @@ const createMarkupList = (markup, pageNr, lastPage) => {
 
 ///////////////////////////////////////
 
-const buttonListener = (e, fetchType, query) => {
+const buttonListener = (e) => {
   if (e.target.type !== "button") {
     return
   }
-  const { page } = dataMovies;
+  let { page } = dataMovies;
   const btn = e.target
   const newPage = btn.dataset.page
   if (Number(newPage) === page) {
@@ -127,21 +135,22 @@ const buttonListener = (e, fetchType, query) => {
     dataMovies.page = page - 1
   }
 
-  const movie = changePage(dataMovies.page, fetchType, query)
+  changePage();
 }
 
-const changePage = async (pageNr, fetchType, query) => {
+const changePage = async () => {
+  let {page, fetchType,query} = dataMovies
   let movies={}
   switch (fetchType) {
     case "home":
-        movies = await fetchTheMovieDBList(pageNr, query);
+        movies = await fetchTheMovieDBList(page, query);
       break;
     case "watched":
-        movies = await fetchTheMovieDBList(pageNr, query);
-        // change to // movies = await for fireBase API watched =========================================================================================
+        movies = await fetchTheMovieDBList(page, query);
+        // change to // movies = await for fireBase API watched ======================================================================
       break;
     case "queue":
-        // add // movies = await for fireBase API queue =========================================================================================
+        // add // movies = await for fireBase API queue ==============================================================================
       break;
     default:
       break;
@@ -149,17 +158,14 @@ const changePage = async (pageNr, fetchType, query) => {
   if (movies.total_pages === 0) {
     return
   } 
-  // if (pageNr === dataMovies.page) {
-    pagination({
-      pageNr,
-      lastPage: dataMovies.totalPages
-    });
+  if (page === dataMovies.page) {
+    pagination();
+    // Function to insert movies to gallery ==========================================================================================
     console.log(`${fetchType}:`, movies)
-  // }
-  // Function to insert movies to gallery ==========================================================================================
+  }
 }
 
-export const loadPage = ({ fetchType, query }) => {
+export const loadPage = () => {
   const pages = document.querySelector(".pages__list")
-  pages.addEventListener("click", e => buttonListener(e, fetchType, query),0);
+  pages.addEventListener("click", e => buttonListener(e),0);
 }

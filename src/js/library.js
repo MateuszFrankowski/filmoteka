@@ -11,17 +11,11 @@ const startPage = async () => {
     const movies = await fetchTheMovieDBList(1)
     dataMovies.page = movies.page;
     dataMovies.totalPages = movies.total_pages;
-    pagination({
-        pageNr: dataMovies.page,
-        lastPage: dataMovies.totalPages,
-    });
+    pagination();
     // function to creating gallery
 
     //
-    loadPage({
-        fetchType: dataMovies.fetchType,
-        query: dataMovies.query,
-    });
+    loadPage();
     // yours listeners using start movies variable in function
 
     //
