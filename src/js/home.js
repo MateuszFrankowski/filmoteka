@@ -13,19 +13,13 @@ const startPage = async () => {
     dataMovies.page = movies.page;
     dataMovies.totalPages = movies.total_pages;
     if (movies.total_pages > 0) {
-        pagination({
-            pageNr: dataMovies.page,
-            lastPage: dataMovies.totalPages,
-        });
+        pagination();
     }
     // function to creating gallery
 
     //
     
-    loadPage({
-        fetchType: dataMovies.fetchType,
-        query: dataMovies.query,
-    });
+    loadPage();
     // yours listeners using start movies variable in function
 
     //
