@@ -8,23 +8,27 @@ const startPage = async () => {
   dataMovies.query = null;
   // yours listeners no using start movies variable in function
 
-  //
-  const movies = await fetchTheMovieDBList(dataMovies.page, dataMovies.query);
-  dataMovies.page = movies.page;
-  dataMovies.totalPages = movies.total_pages;
-  if (movies.total_pages > 0) {
-    pagination();
-  }
-  // function to creating gallery
-  createMovies(movies);
-  //
+    // 
+    const movies = await fetchTheMovieDBList(dataMovies.page, dataMovies.query);
+    dataMovies.page = movies.page;
+    dataMovies.totalPages = movies.total_pages;
+    if (movies.total_pages > 0) {
+        pagination();
+    }
+    // function to creating gallery
+    createMovies(movies);
+    //
+    
+    loadPage();
+    // yours listeners using start movies variable in function
 
   loadPage();
   // yours listeners using start movies variable in function
 
   //
 };
-import { createMovies } from './gallery';
+
+import { createMovies } from './gallery'
 startPage();
 
 // LOADER SPINNER TO ADD

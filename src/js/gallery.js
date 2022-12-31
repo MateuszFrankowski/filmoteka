@@ -7,7 +7,8 @@ import { dataMovies } from './home';
 //        query: "", // searching text in home
 //      };
 
-//  await fetchTheMovieDBList(1, "avatar");
+
+    //  await fetchTheMovieDBList(1, "avatar"); 
 
 // const movies = async () => {
 //     const movies = await fetchTheMovieDBList(2);
@@ -15,12 +16,11 @@ import { dataMovies } from './home';
 //     ... <!-- use result -->
 // }
 //gallery
-export const createMovies = async movies => {
-  const galleryContainer = document.getElementsByClassName('gallery');
-  console.log(galleryContainer[0]);
-  console.log(movies);
-  const markup = movies.data.map(
-    data =>
+export const createMovies = async (movies) => {
+    const galleryContainer = document.getElementsByClassName('gallery');
+    console.log(galleryContainer[0]);
+    console.log(movies);
+    const markup = movies.data.map (data => 
       `<li>
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
@@ -34,9 +34,8 @@ export const createMovies = async movies => {
                   </figcaption>
               </figure>
               </li>
-          `
-  );
-
+          `);
+  
   galleryContainer[0].innerHTML = markup;
 };
 //
@@ -68,13 +67,13 @@ export const createMovies = async movies => {
 // `;
 //   libraryGrid.insertAdjacentHTML('beforeend', markup);
 
-const roundTo1Comma = num => {
-  let roundNum = Math.round(num * 10) / 10;
-  if (roundNum === Math.round(roundNum)) {
-    roundNum = roundNum + '.0';
-  }
-  return roundNum;
-};
+const roundTo1Comma = (num) => {
+let roundNum = Math.round(num * 10) / 10
+if (roundNum === Math.round(roundNum)) {
+roundNum = roundNum + ".0"
+}
+return roundNum
+}
 
 // LOADER SPINNER TO ADD
 // const loaderSpinner = document.createElement('span');
