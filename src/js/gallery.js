@@ -1,13 +1,13 @@
-import { fetchTheMovieDBList } from './api'
-import { dataMovies } from "./home";
+import { fetchTheMovieDBList } from './api';
+import { dataMovies } from './home';
 
 dataMovies = {
-       page: 1, // nr of actual page
-       totalPages: 20, // nr of total pages
-       query: "", // searching text in home
-     };
+  page: 1, // nr of actual page
+  totalPages: 20, // nr of total pages
+  query: '', // searching text in home
+};
 
-     await fetchTheMovieDBList(1, "avatar"); 
+await fetchTheMovieDBList(1, 'avatar');
 
 // const movies = async () => {
 //     const movies = await fetchTheMovieDBList(2);
@@ -18,7 +18,7 @@ const moviesArray = movies.data.map(movie => {
   return movie.title;
 });
 console.log(fetchTheMovieDB);
-  const markup = `
+const markup = `
 <li>
   <figure class="card">
     <div class="thumb" data-id="${data.id}">
@@ -30,8 +30,8 @@ console.log(fetchTheMovieDB);
       <h3 class="title">${data.title}</h3>
       <div class="details-wrapper">
         <p class="details" data-film_id="${data.id}">${genresArray.join(
-    ', '
-  )} &#124; ${yearWithDate.getFullYear()}</p>
+  ', '
+)} &#124; ${yearWithDate.getFullYear()}</p>
         <div class="rating rating--visible">${roundingMethodToFirstPlace(
           data.vote_average
         )}</div>
@@ -40,4 +40,8 @@ console.log(fetchTheMovieDB);
   </figure>
 </li>
 `;
-  libraryGrid.insertAdjacentHTML('beforeend', markup);
+libraryGrid.insertAdjacentHTML('beforeend', markup);
+
+// LOADER SPINNER TO ADD
+// const loaderSpinner = document.createElement('span');
+// loaderSpinner.className = 'loader';
