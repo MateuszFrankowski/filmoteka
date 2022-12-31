@@ -1,12 +1,12 @@
-import { pagination, loadPage } from "./pagination";
-import { fetchTheMovieDBList } from './api'
-import { dataMovies } from "./global";
+import { pagination, loadPage } from './pagination';
+import { fetchTheMovieDBList } from './api';
+import { dataMovies } from './global';
 
 const startPage = async () => {
-    dataMovies.fetchType="home"
-    dataMovies.page = 1;
-    dataMovies.query = null;
-    // yours listeners no using start movies variable in function
+  dataMovies.fetchType = 'home';
+  dataMovies.page = 1;
+  dataMovies.query = null;
+  // yours listeners no using start movies variable in function
 
     // 
     const movies = await fetchTheMovieDBList(dataMovies.page, dataMovies.query);
@@ -22,8 +22,15 @@ const startPage = async () => {
     loadPage();
     // yours listeners using start movies variable in function
 
-    //
+  loadPage();
+  // yours listeners using start movies variable in function
+
+  //
 };
+
 import { createMovies } from './gallery'
 startPage();
 
+// LOADER SPINNER TO ADD
+// const loaderSpinner = document.createElement('span');
+// loaderSpinner.className = 'loader';
