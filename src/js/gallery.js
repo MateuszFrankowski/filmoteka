@@ -1,5 +1,5 @@
+
 import { fetchTheMovieDBList } from './api';
-import { dataMovies } from './home';
 import { loaderSpinner } from './loaderSpinner';
 
 // LOADER SPINNER TO ADD
@@ -7,6 +7,7 @@ import { loaderSpinner } from './loaderSpinner';
 
 // LOADER SPINNER TO REMOVE
 // loaderSpinner.classList.remove('loader');
+
 
 // dataMovies = {
 //        page: 1, // nr of actual page
