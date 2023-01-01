@@ -1,6 +1,12 @@
-import { fetchTheMovieDBList } from './api'
-// import { dataMovies } from "./home";
 
+import { fetchTheMovieDBList } from './api';
+import { loaderSpinner } from './loaderSpinner';
+
+// LOADER SPINNER TO ADD
+// loaderSpinner.classList.add('loader');
+
+// LOADER SPINNER TO REMOVE
+// loaderSpinner.classList.remove('loader');
 
 
 // dataMovies = {
@@ -69,14 +75,10 @@ export const createMovies = async (movies) => {
 // `;
 //   libraryGrid.insertAdjacentHTML('beforeend', markup);
 
-const roundTo1Comma = (num) => {
-let roundNum = Math.round(num * 10) / 10
-if (roundNum === Math.round(roundNum)) {
-roundNum = roundNum + ".0"
-}
-return roundNum
-}
-
-// LOADER SPINNER TO ADD
-// const loaderSpinner = document.createElement('span');
-// loaderSpinner.className = 'loader';
+const roundTo1Comma = num => {
+  let roundNum = Math.round(num * 10) / 10;
+  if (roundNum === Math.round(roundNum)) {
+    roundNum = roundNum + '.0';
+  }
+  return roundNum;
+};

@@ -74,6 +74,7 @@
 .is-hidden {
   visibility: hidden;
   pointer-events: none;
+  opacity: 0;
 }
 @media screen and (min-width: 768px) {
   .modal-footer {
@@ -90,6 +91,7 @@
       display: unset;
       width: 300px;
       padding-top: 20px;
+      text-align: justify;
     }
   }
 }
