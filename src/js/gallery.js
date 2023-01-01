@@ -1,5 +1,7 @@
-import { fetchTheMovieDBList } from './api';
-import { dataMovies } from './home';
+import { fetchTheMovieDBList } from './api'
+// import { dataMovies } from "./home";
+
+
 
 // dataMovies = {
 //        page: 1, // nr of actual page
