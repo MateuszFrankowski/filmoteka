@@ -129,12 +129,12 @@ auth.onAuthStateChanged(async user => {
     unsubscribe = onSnapshot(q, querySnapshot => {
       const films = [];
       querySnapshot.forEach(doc => {
-        films.push(doc.data().name);
+        films.push(doc.data().filmID);
       });
-      // console.log(
-      //   'Current films for user, real-time update: ',
-      //   films.join(', ')
-      // );
+      console.log(
+        'Current films for user, real-time update: ',
+        films.join(', ')
+      );
     });
   } else {
     // Unsubscribe when the user signs out
