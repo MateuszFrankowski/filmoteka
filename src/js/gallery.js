@@ -1,5 +1,12 @@
 import { fetchTheMovieDBList } from './api';
 import { dataMovies } from './home';
+import { loaderSpinner } from './loaderSpinner';
+
+// LOADER SPINNER TO ADD
+// loaderSpinner.classList.add('loader');
+
+// LOADER SPINNER TO REMOVE
+// loaderSpinner.classList.remove('loader');
 
 // dataMovies = {
 //        page: 1, // nr of actual page
@@ -75,7 +82,3 @@ const roundTo1Comma = num => {
   }
   return roundNum;
 };
-
-// LOADER SPINNER TO ADD
-// const loaderSpinner = document.createElement('span');
-// loaderSpinner.className = 'loader';
