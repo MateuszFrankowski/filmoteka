@@ -27,5 +27,6 @@ const startPage = async () => {
 
   //
 };
-import { createMovies } from './gallery';
+
+import { createMovies } from './gallery'
 startPage();

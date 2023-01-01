@@ -14,7 +14,8 @@ import { loaderSpinner } from './loaderSpinner';
 //        query: "", // searching text in home
 //      };
 
-//  await fetchTheMovieDBList(1, "avatar");
+
+    //  await fetchTheMovieDBList(1, "avatar"); 
 
 // const movies = async () => {
 //     const movies = await fetchTheMovieDBList(2);
@@ -22,12 +23,11 @@ import { loaderSpinner } from './loaderSpinner';
 //     ... <!-- use result -->
 // }
 //gallery
-export const createMovies = async movies => {
-  const galleryContainer = document.getElementsByClassName('gallery');
-  console.log(galleryContainer[0]);
-  console.log(movies);
-  const markup = movies.data.map(
-    data =>
+export const createMovies = async (movies) => {
+    const galleryContainer = document.getElementsByClassName('gallery');
+    console.log(galleryContainer[0]);
+    console.log(movies);
+    const markup = movies.data.map (data => 
       `<li>
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
@@ -41,9 +41,8 @@ export const createMovies = async movies => {
                   </figcaption>
               </figure>
               </li>
-          `
-  );
-
+          `);
+  
   galleryContainer[0].innerHTML = markup;
 };
 //
