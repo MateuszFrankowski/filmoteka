@@ -1,11 +1,14 @@
 import { fetchTheMovieDBList } from './api'
 // import { dataMovies } from "./home";
 
+
+
 // dataMovies = {
 //        page: 1, // nr of actual page
 //        totalPages: 20, // nr of total pages
 //        query: "", // searching text in home
 //      };
+
 
     //  await fetchTheMovieDBList(1, "avatar"); 
 
@@ -73,3 +76,7 @@ roundNum = roundNum + ".0"
 }
 return roundNum
 }
+
+// LOADER SPINNER TO ADD
+// const loaderSpinner = document.createElement('span');
+// loaderSpinner.className = 'loader';
