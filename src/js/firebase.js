@@ -112,19 +112,19 @@ auth.onAuthStateChanged(async user => {
     //testy
     let data = await fetchUserDataFromFirestore(userUid);
     console.log('moje filmy', data);
-    addUserDataToFirestore(userUid, 'Avatar 2', 12055, false);
-    data = await fetchUserDataFromFirestore(userUid);
-    console.log('moje filmy po dodaniu filmu Avatar 2', data);
-    let data2 = await fetchUserFilmData(userUid, 12055);
-    console.log('sprawdzenie  danych filmu Avatar 2', data2);
-    updateUserFilmData(userUid, 12055, true);
-    data2 = await fetchUserFilmData(userUid, 12055);
-    console.log('zmiana danych filmu Avatar 2 -> obejrzano film', data2);
-    deleteUserFilmData(userUid, 12055);
-    data2 = await fetchUserFilmData(userUid, 12055);
-    console.log('usunięcie filmu Avatar 2', data2);
-    data = await fetchUserDataFromFirestore(userUid);
-    console.log('moje filmy po usunięciu filmu Avatar 2', data);
+    await addUserDataToFirestore(userUid, 'Avatar 2', 12055, false);
+    let data2 = await fetchUserDataFromFirestore(userUid);
+    console.log('moje filmy po dodaniu filmu Avatar 2', data2);
+    let data3 = await fetchUserFilmData(userUid, 12055);
+    console.log('sprawdzenie  danych filmu Avatar 2', data3);
+    await updateUserFilmData(userUid, 12055, true);
+    let data4 = await fetchUserFilmData(userUid, 12055);
+    console.log('zmiana danych filmu Avatar 2 -> obejrzano film', data4);
+    await deleteUserFilmData(userUid, 12055);
+    let data5 = await fetchUserFilmData(userUid, 12055);
+    console.log('usunięcie filmu Avatar 2', data5);
+    let data6 = await fetchUserDataFromFirestore(userUid);
+    console.log('moje filmy po usunięciu filmu Avatar 2', data6);
     //
     const q = query(
       collection(db, 'films'),
@@ -197,6 +197,28 @@ export const addUserDataToFirestore = async (
   watch = false
 ) => {
   // adding new film to user film base movie
+  // checking if the film is already in DB
+  const q = query(
+    collection(db, 'films'),
+    where('uid', '==', userId),
+    where('filmID', '==', movieId)
+  );
+  const querySnapshot = await getDocs(q);
+
+  let userFilm = [];
+  querySnapshot.forEach(doc => {
+    userFilm.push({
+      filmID: doc.data().filmID,
+      watched: doc.data().watched,
+      documentID: doc.id,
+    });
+  });
+  console.log('sprawdzam czy dokument istnieje', userFilm, userFilm.length);
+  if (userFilm.length != 0) {
+    console.log('coo');
+    throw new Error('Data for the film already exist in DB!');
+  }
+
   try {
     const docRef = await addDoc(collection(db, 'films'), {
       createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
@@ -236,7 +258,6 @@ export const updateUserFilmData = async (
   watchStaus = false
 ) => {
   // change user's data for specyfic movie
-
   const q = query(
     collection(db, 'films'),
     where('uid', '==', userId),
@@ -286,7 +307,3 @@ export const deleteUserFilmData = async (userId, movieId) => {
   console.log('Document deleted with ID:', { ...userFilm[0] }.documentID);
   return true;
 };
-export const currentData = query(
-  collection(db, 'cities'),
-  where('state', '==', 'CA')
-);
