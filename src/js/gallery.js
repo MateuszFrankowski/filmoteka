@@ -30,7 +30,7 @@ export const createMovies = async (movies) => {
                   <div class="details-wrapper">
                   <p>${data.genres.join(", ")}</p>
                   <p>${data.release_year}</p>
-                  <p>${roundTo1Comma(data.vote_average)}</p>
+                  <div class="rating rating--visible">${roundTo1Comma(data.vote_average)}</div>
                   </div>
                   </figcaption>
               </figure>
