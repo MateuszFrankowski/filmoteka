@@ -28,7 +28,7 @@ export const createMovies = async (movies) => {
                   <figcaption>
                   <h3 class="title">${data.title}</h3>
                   <div class="details-wrapper">
-                      <p class="details">
+                      <p class="details"=${data.genres.join(", "), data.vote_average}">
                   </div>
                   </figcaption>
               </figure>
