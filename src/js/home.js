@@ -12,6 +12,7 @@ import { createMovies } from './gallery';
 //   userSigned,
 // } from './firebase';
 
+
 const startPage = async () => {
   dataMovies.fetchType = 'home';
   dataMovies.page = 1;
