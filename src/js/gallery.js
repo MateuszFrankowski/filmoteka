@@ -73,3 +73,21 @@ roundNum = roundNum + ".0"
 }
 return roundNum
 }
+
+export const clickGallery = () => {
+    document.querySelector(".gallery").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) {
+        return
+      }
+      const movieId = goToLiElement(e.target).dataset.film_id
+      console.log(movieId);
+      // function to open modal with movie id
+    })
+  
+    const goToLiElement = (targetELement) => {
+    if (targetELement.tagName !== "LI") {
+      return goToLiElement(targetELement.parentElement)
+    }
+    return targetELement
+  }
+  }
