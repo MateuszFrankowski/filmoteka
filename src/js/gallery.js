@@ -28,9 +28,9 @@ export const createMovies = async (movies) => {
                   <figcaption>
                   <h3 class="title">${data.title}</h3>
                   <div class="details-wrapper">
-                  <p class="details">${data.genres.join(", ")}</p>
+                  <p>${data.genres.join(", ")}</p>
                   <p>${data.release_year}</p>
-                  <p>${data.vote_average}</p>
+                  <p>${roundTo1Comma(data.vote_average)}</p>
                   </div>
                   </figcaption>
               </figure>
@@ -39,7 +39,12 @@ export const createMovies = async (movies) => {
   
   galleryContainer[0].innerHTML = markup;
 };
-//
+//-------------- Function rounding rating to 1 place after comma--------------//
+// export function roundingMethodToFirstPlace(value) {
+//     let roundingValue = Number(Math.round(value + 'e+1') + 'e-1');
+//   return roundingValue
+//   };
+//-----------------------------------------------
 // const moviesArray = movies.data.map(movie => {
 //   return movie.title;
 // });
