@@ -2,7 +2,16 @@ import { pagination, loadPage } from './pagination';
 import { fetchTheMovieDBList } from './api';
 import { dataMovies } from './global';
 import { loaderSpinner } from './loaderSpinner';
-import { createMovies } from './gallery'
+import { createMovies } from './gallery';
+// import {
+//   fetchUserDataFromFirestore,
+//   addUserDataToFirestore,
+//   fetchUserFilmData,
+//   updateUserFilmData,
+//   deleteUserFilmData,
+//   userSigned,
+// } from './firebase';
+
 
 const startPage = async () => {
   dataMovies.fetchType = 'home';

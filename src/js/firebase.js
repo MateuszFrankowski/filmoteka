@@ -17,6 +17,9 @@ import {
   deleteField,
   Timestamp,
   updateDoc,
+  startAt,
+  limit,
+  startAfter,
 } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 
@@ -48,6 +51,7 @@ const db = getFirestore(app);
 //
 const whenSignedIn = document.getElementById('whenSignedIn');
 const whenSignedOut = document.getElementById('whenSignedOut');
+const myLibrary = document.getElementById('libraryBtn');
 
 const signInBtn = document.getElementById('signInBtn');
 const signOutBtn = document.getElementById('signOutBtn');
@@ -55,7 +59,8 @@ const signOutBtn = document.getElementById('signOutBtn');
 const userDetails = document.getElementById('userDetails');
 
 const provider = new GoogleAuthProvider();
-
+export let userSigned = false;
+export let userUid = '';
 /// Sign in event handlers
 
 signInBtn.onclick = () => signInWithPopup(auth, provider);
@@ -74,12 +79,21 @@ auth.onAuthStateChanged(user => {
     // signed in
     whenSignedIn.hidden = false;
     whenSignedOut.hidden = true;
-    userDetails.innerHTML = `<h3>Hello ${user.displayName}!</h3> <p>User ID: ${user.uid}</p>`;
+    userDetails.innerHTML = `<h3>Hello ${user.displayName}!</h3>`;
+    myLibrary.hidden = false;
+    userSigned = true;
   } else {
     // not signed in
     whenSignedIn.hidden = true;
     whenSignedOut.hidden = false;
     userDetails.innerHTML = '';
+    myLibrary.hidden = true;
+    userSigned = false;
+
+    if (window.location.href.search('index.html') === -1) {
+      console.log(window.location.href);
+      window.location.href = 'index.html';
+    }
   }
 });
 
@@ -89,7 +103,6 @@ let filmsRef;
 let unsubscribe;
 let filmName;
 let filmID;
-let userUid;
 
 auth.onAuthStateChanged(async user => {
   if (user) {
@@ -97,29 +110,37 @@ auth.onAuthStateChanged(async user => {
     filmsRef = collection(db, 'films');
     userUid = user.uid;
     //testy
-    const data = await fetchUserDataFromFirestore(userUid);
+    let data = await fetchUserDataFromFirestore(userUid);
     console.log('moje filmy', data);
-    addUserDataToFirestore(userUid, 'dodaje film', 129, false);
-    const data2 = await fetchUserFilmData(userUid, 707);
-    console.log('mój film', data2);
-    updateUserFilmData(userUid, 987, true);
-
-    deleteUserFilmData(userUid, 129);
+    await addUserDataToFirestore(userUid, 'Avatar 2', 12055, false);
+    let data2 = await fetchUserDataFromFirestore(userUid);
+    console.log('moje filmy po dodaniu filmu Avatar 2', data2);
+    let data3 = await fetchUserFilmData(userUid, 12055);
+    console.log('sprawdzenie  danych filmu Avatar 2', data3);
+    await updateUserFilmData(userUid, 12055, true);
+    let data4 = await fetchUserFilmData(userUid, 12055);
+    console.log('zmiana danych filmu Avatar 2 -> obejrzano film', data4);
+    await deleteUserFilmData(userUid, 12055);
+    let data5 = await fetchUserFilmData(userUid, 12055);
+    console.log('usunięcie filmu Avatar 2', data5);
+    let data6 = await fetchUserDataFromFirestore(userUid);
+    console.log('moje filmy po usunięciu filmu Avatar 2', data6);
     //
-
-    // Query
-    // (unsubscribe = filmsRef), where('uid', '==', user.uid);
-    // orderBy('createdAt'); // Requires a query
-    // onSnapshot(querySnapshot => {
-    //   // Map results
-
-    //   const items = querySnapshot.docs.map(doc => {
-    //     return { filmID: doc.data().filmID, watched: doc.data().watched };
-    //   });
-
-    //   console.log(items);
-    // });
-    // film remove
+    const q = query(
+      collection(db, 'films'),
+      where('uid', '==', userUid),
+      orderBy('createdAt')
+    );
+    unsubscribe = onSnapshot(q, querySnapshot => {
+      const films = [];
+      querySnapshot.forEach(doc => {
+        films.push(doc.data().filmID);
+      });
+      console.log(
+        'Current films for user, real-time update: ',
+        films.join(', ')
+      );
+    });
   } else {
     // Unsubscribe when the user signs out
     unsubscribe && unsubscribe();
@@ -144,6 +165,31 @@ export const fetchUserDataFromFirestore = async userId => {
   });
   return userFilms;
 };
+export const fetchPaginatedDataFromFirestore = async (
+  userId,
+  pageNr,
+  pageAmount
+) => {
+  //in test state
+  const q = query(
+    collection(db, 'films'),
+    where('uid', '==', userId),
+    orderBy('createdAt'),
+    startAfter(pageAmount * (pageNr - 1)),
+    limit(pageAmount)
+  );
+
+  const querySnapshot = await getDocs(q);
+  let userFilms = [];
+  querySnapshot.forEach(doc => {
+    // doc.data() is never undefined for query doc snapshots
+    userFilms.push({
+      filmID: doc.data().filmID,
+      watched: doc.data().watched,
+    });
+  });
+  return userFilms;
+};
 export const addUserDataToFirestore = async (
   userId,
   name,
@@ -151,6 +197,28 @@ export const addUserDataToFirestore = async (
   watch = false
 ) => {
   // adding new film to user film base movie
+  // checking if the film is already in DB
+  const q = query(
+    collection(db, 'films'),
+    where('uid', '==', userId),
+    where('filmID', '==', movieId)
+  );
+  const querySnapshot = await getDocs(q);
+
+  let userFilm = [];
+  querySnapshot.forEach(doc => {
+    userFilm.push({
+      filmID: doc.data().filmID,
+      watched: doc.data().watched,
+      documentID: doc.id,
+    });
+  });
+  console.log('sprawdzam czy dokument istnieje', userFilm, userFilm.length);
+  if (userFilm.length != 0) {
+    console.log('coo');
+    throw new Error('Data for the film already exist in DB!');
+  }
+
   try {
     const docRef = await addDoc(collection(db, 'films'), {
       createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
@@ -190,7 +258,6 @@ export const updateUserFilmData = async (
   watchStaus = false
 ) => {
   // change user's data for specyfic movie
-
   const q = query(
     collection(db, 'films'),
     where('uid', '==', userId),
