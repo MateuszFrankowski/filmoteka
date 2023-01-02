@@ -1,0 +1,39 @@
+<header class="library-header">
+  <div class="container">
+    <nav class="library-header__navigation">
+      <a class="library-header__home" href="index.html">
+        <svg class="library-header__logo">
+          <use href="./images/icons.svg#logo"></use>
+        </svg>
+        <span class="library-header__name">Filmoteka</span>
+      </a>
+      <div class="library-header__subsites">
+        <a href="index.html" class="library-header__subsite">Home</a>
+        <a
+          href="library.html"
+          class="library-header__subsite library-header__subsite--active"
+          id="libraryBtn"
+          hidden="true"
+          >My library</a
+        >
+      </div>
+    </nav>
+    <section class="library-header__no-user" id="whenSignedOut">
+      <button id="signInBtn" class="btn btn-primary">
+        Sign in with Google
+      </button>
+    </section>
+    <section
+      class="library-header__user-signed"
+      id="whenSignedIn"
+      hidden="true"
+    >
+      <div id="userDetails"></div>
+      <button id="signOutBtn" class="btn btn-primary">Sign Out</button>
+    </section>
+    <div class="buttons">
+      <button type="button" class="button watched active-button">Watched</button>
+      <button type="button" class="button queue">Queue</button>
+    </div>
+  </div>
+</header>

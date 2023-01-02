@@ -1,0 +1,100 @@
+.library-header {
+    background-image: url(../images/hdrBackgroundLibr-320.webp);
+    display: block;
+    background-size: cover;
+    @media (min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
+        background-image: url(../images/hdrBackgroundLibr-640.webp);
+    }
+    @media (min-width: 768px) {
+        background-image: url(../images/hdrBackgroundLibr-768.webp);
+    }
+    @media (min-device-pixel-ratio: 2) and (min-width: 768px), (min-resolution: 192dpi) and (min-width: 768px), (min-resolution: 2dppx) and (min-width: 768px) {
+        background-image: url(../images/hdrBackgroundLibr-1536.webp);
+    }
+    @media (min-width: 1024px) {
+        background-image: url(../images/hdrBackgroundLibr-1024.webp);
+    }
+    @media (min-device-pixel-ratio: 2) and (min-width: 1024px), (min-resolution: 192dpi) and (min-width: 1024px), (min-resolution: 2dppx) and (min-width: 1024px) {
+        background-image: url(../images/hdrBackgroundLibr-2048.webp);
+    }
+    &__navigation {
+        padding-top: 48px;
+        display: flex;
+        justify-content: space-between;
+    }
+    &__home {
+        text-decoration: none;
+    }
+    &__logo {
+        width: 24px;
+        height: 24px;
+    }
+    &__name {
+        display: none;
+        text-decoration: none;
+        color: #FFFFFF;
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 1.16;
+        @media (min-width: 768px) {
+            display: inline;
+        }
+    }
+    &__subsite {
+        text-transform: uppercase;
+        text-decoration: none;
+        font-weight: 500;
+        line-height: 1.17;
+        color: #FFFFFF;
+        &:first-child {
+            margin-right: 40px;
+        }
+        &--active {
+            position: relative;
+            &::after {
+                content: "";
+                background-color: #FF6B08;
+                width: 100%;
+                height: 4px;
+                border-radius: 2px;
+                display: block;
+                position: absolute;
+                top: 30px;
+                right: 0px;
+            }
+        }
+    }
+}
+
+.buttons {
+    padding-top: 49px;
+    padding-bottom: 65px;
+    text-align: center;
+}
+
+.button {
+    text-align: center;
+    height: 44px;
+    width: 136px;
+    border-radius: 5px;
+    border: 1px solid #FFFFFF;
+    background: none;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    &:first-child {
+        margin-right: 10px;
+    }
+    &:last-child {
+        margin-left: 10px;
+    }
+    @media (max-width: 340px) {
+        width: calc(50% - 20px);
+    }
+}
+
+.active-button {
+    background-color: #FF6B01;
+    border: none;
+}

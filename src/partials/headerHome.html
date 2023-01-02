@@ -1,0 +1,45 @@
+<header class="home-header">
+  <div class="container">
+    <nav class="home-header__navigation">
+      <a class="home-header__home" href="index.html">
+        <svg class="home-header__logo">
+          <use href="./images/icons.svg#logo"></use>
+        </svg>
+        <span class="home-header__name">Filmoteka</span>
+      </a>
+      <div class="home-header__subsites">
+        <a
+          href="index.html"
+          class="home-header__subsite home-header__subsite--active"
+          >Home</a
+        >
+        <a
+          href="library.html"
+          id="libraryBtn"
+          class="home-header__subsite home-header__subsite--library"
+          hidden="true"
+          >My library</a
+        >
+      </div>
+    </nav>
+    <section class="home-header__no-user" id="whenSignedOut">
+      <button id="signInBtn" class="btn btn-primary">
+        Sign in with Google
+      </button>
+    </section>
+    <section class="home-header__user-signed" id="whenSignedIn" hidden="true">
+      <div id="userDetails"></div>
+      <button id="signOutBtn" class="btn btn-primary">Sign Out</button>
+    </section>
+    <form class="home-header__search-form">
+      <input
+        placeholder="Szukaj Filmu"
+        type="text"
+        class="home-header__searchbar"
+      />
+      <svg class="home-header__loupe">
+        <use href="./images/icons.svg#loupe"></use>
+      </svg>
+    </form>
+  </div>
+</header>

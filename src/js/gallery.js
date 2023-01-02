@@ -1,11 +1,20 @@
-import { fetchTheMovieDBList } from './api'
-// import { dataMovies } from "./home";
+
+import { fetchTheMovieDBList } from './api';
+import { loaderSpinner } from './loaderSpinner';
+
+// LOADER SPINNER TO ADD
+// loaderSpinner.classList.add('loader');
+
+// LOADER SPINNER TO REMOVE
+// loaderSpinner.classList.remove('loader');
+
 
 // dataMovies = {
 //        page: 1, // nr of actual page
 //        totalPages: 20, // nr of total pages
 //        query: "", // searching text in home
 //      };
+
 
     //  await fetchTheMovieDBList(1, "avatar"); 
 
@@ -73,13 +82,13 @@ export const createMovies = async (movies) => {
 // `;
 //   libraryGrid.insertAdjacentHTML('beforeend', markup);
 
-const roundTo1Comma = (num) => {
-let roundNum = Math.round(num * 10) / 10
-if (roundNum === Math.round(roundNum)) {
-roundNum = roundNum + ".0"
-}
-return roundNum
-}
+const roundTo1Comma = num => {
+  let roundNum = Math.round(num * 10) / 10;
+  if (roundNum === Math.round(roundNum)) {
+    roundNum = roundNum + '.0';
+  }
+  return roundNum;
+};
 
 export const clickGallery = () => {
     document.querySelector(".gallery").addEventListener("click", (e) => {
@@ -97,4 +106,4 @@ export const clickGallery = () => {
     }
     return targetELement
   }
-  }
+}
