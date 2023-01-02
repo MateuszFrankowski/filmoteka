@@ -16,7 +16,7 @@ const startPage = async () => {
     dataMovies.page = movies.page;
     dataMovies.totalPages = movies.total_pages;
     pagination();
-  loaderSpinner.classList.remove('loader');
+    loaderSpinner.classList.remove('loader');
     // function to creating gallery
     createMovies(movies)
     //
