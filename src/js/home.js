@@ -2,6 +2,7 @@ import { pagination, loadPage } from './pagination';
 import { fetchTheMovieDBList } from './api';
 import { dataMovies } from './global';
 import { loaderSpinner } from './loaderSpinner';
+import { createMovies } from './gallery'
 
 const startPage = async () => {
   dataMovies.fetchType = 'home';
@@ -28,5 +29,4 @@ const startPage = async () => {
   //
 };
 
-import { createMovies } from './gallery'
 startPage();

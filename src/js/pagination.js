@@ -1,5 +1,6 @@
 import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api'
 import { dataMovies } from './global';
+import { createMovies } from './gallery'
 
 // <========> HOW USE PAGINATION <========>
 //
@@ -160,7 +161,8 @@ const changePage = async () => {
   } 
   if (page === dataMovies.page) {
     pagination();
-    // Function to insert movies to gallery ==========================================================================================
+    await createMovies(movies)
+    document.querySelector('.gallery').scrollIntoView(true);
     console.log(`${fetchType}:`, movies)
   }
 }
