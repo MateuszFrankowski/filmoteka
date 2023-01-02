@@ -20,7 +20,7 @@ export const createMovies = async (movies) => {
     console.log(galleryContainer[0]);
     console.log(movies);
     const markup = movies.data.map (data => 
-      `<li>
+      `<li  data-film_id="${data.id}">
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
                   <img class="img" src="https://www.themoviedb.org/t/p/w500${data.poster_path}" />
@@ -28,7 +28,7 @@ export const createMovies = async (movies) => {
                   <figcaption>
                   <h3 class="title">${data.title}</h3>
                   <div class="details-wrapper">
-                      <p class="details" data-film_id="${data.id}">
+                      <p class="details">
                   </div>
                   </figcaption>
               </figure>
