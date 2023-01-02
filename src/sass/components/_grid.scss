@@ -1,0 +1,27 @@
+
+// Mobile 320-768//
+
+.grid,
+.library__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  list-style-type: none;
+  position: relative;
+}
+
+// Tablet 768-1200//
+@media screen and (min-width: 768px) {
+  .grid,
+  .library__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+// Desktop 1200+//
+@media screen and (min-width: 1200px) {
+  .grid,
+  .library__grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
