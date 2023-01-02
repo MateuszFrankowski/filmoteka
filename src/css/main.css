@@ -217,7 +217,7 @@ body {
 .library-header__name {
   display: none;
   text-decoration: none;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 30px;
   font-weight: 500;
   line-height: 1.16;
@@ -227,12 +227,18 @@ body {
     display: inline;
   }
 }
+.library-header__no-user {
+  color: #ffffff;
+}
+.library-header__user-signed {
+  color: #ffffff;
+}
 .library-header__subsite {
   text-transform: uppercase;
   text-decoration: none;
   font-weight: 500;
   line-height: 1.17;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .library-header__subsite:first-child {
   margin-right: 40px;
@@ -242,7 +248,7 @@ body {
 }
 .library-header__subsite--active::after {
   content: "";
-  background-color: #FF6B08;
+  background-color: #ff6b08;
   width: 100%;
   height: 4px;
   border-radius: 2px;
@@ -263,10 +269,10 @@ body {
   height: 44px;
   width: 136px;
   border-radius: 5px;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
   background: none;
   text-transform: uppercase;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   display: inline-block;
 }
@@ -283,7 +289,7 @@ body {
 }
 
 .active-button {
-  background-color: #FF6B01;
+  background-color: #ff6b01;
   border: none;
 }
 

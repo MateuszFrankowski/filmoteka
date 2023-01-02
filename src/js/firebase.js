@@ -51,7 +51,7 @@ const db = getFirestore(app);
 //
 const whenSignedIn = document.getElementById('whenSignedIn');
 const whenSignedOut = document.getElementById('whenSignedOut');
-const myLibrary = document.querySelector('a.home-header__subsite--library');
+const myLibrary = document.getElementById('libraryBtn');
 
 const signInBtn = document.getElementById('signInBtn');
 const signOutBtn = document.getElementById('signOutBtn');
@@ -89,6 +89,11 @@ auth.onAuthStateChanged(user => {
     userDetails.innerHTML = '';
     myLibrary.hidden = true;
     userSigned = false;
+
+    if (window.location.href.search('index.html') === -1) {
+      console.log(window.location.href);
+      window.location.href = 'index.html';
+    }
   }
 });
 
