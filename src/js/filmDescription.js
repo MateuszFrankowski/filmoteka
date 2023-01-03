@@ -1,4 +1,4 @@
-import { fetchTheMovieDBMovie } from './api'
+import { fetchTheMovieDBMovie } from './api';
 
 
  const modal = document.querySelector("[data-modal]");
@@ -8,10 +8,12 @@ import { fetchTheMovieDBMovie } from './api'
   modal.classList.toggle('is-hidden')
  }
 
-const modalMovieInfo = async (movieId) => {
-   const movie = await fetchTheMovieDBMovie(76600);
+export const modalMovieInfo = async (movieId) => {
+    showModal();
+   const movie = await fetchTheMovieDBMovie(movieId);
 
 const markup = `
+<div class="modal">
 <button class="modal__close-btn" data-modal-close>
 <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m8 8 14 14M8 22 22 8" stroke="#000" stroke-width="2"/></svg>
 </button>
@@ -43,10 +45,12 @@ const markup = `
 <div class="modal__add-btns">
 <button class="modal__watched-btn">add to watched</button>
 <button class="modal__queue-btn">add to queue</button>
+</div>
 </div>`;
     modal.innerHTML = markup;
-}
-
-const closeModalBtn= document.querySelector("[data-modal-close]");
+    const closeModalBtn= document.querySelector("[data-modal-close]");
 
 closeModalBtn.addEventListener("click", showModal);
+
+}
+

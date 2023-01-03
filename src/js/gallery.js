@@ -1,6 +1,7 @@
 
 import { fetchTheMovieDBList } from './api';
 import { loaderSpinner } from './loaderSpinner';
+import { modalMovieInfo } from './filmDescription';
 
 // LOADER SPINNER TO ADD
 // loaderSpinner.classList.add('loader');
@@ -97,6 +98,7 @@ export const clickGallery = () => {
       }
       const movieId = goToLiElement(e.target).dataset.film_id
       console.log(movieId);
+      modalMovieInfo(movieId);
       // function to open modal with movie id
     })
   

@@ -3,6 +3,7 @@ import { fetchTheMovieDBList } from './api';
 import { dataMovies } from './global';
 import { loaderSpinner } from './loaderSpinner';
 import { createMovies } from './gallery';
+import { clickGallery } from './gallery';
 // import {
 //   fetchUserDataFromFirestore,
 //   addUserDataToFirestore,
@@ -30,6 +31,7 @@ const startPage = async () => {
   loaderSpinner.classList.remove('loader');
   // function to creating gallery
   createMovies(movies);
+  clickGallery();
   //
 
   loadPage();
