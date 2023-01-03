@@ -5,6 +5,8 @@
         #0000008F,
         #0000008F
         );
+        display: block;
+        background-size: cover;
     @media (min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
         background-image: url(../images/hdrBackgroundHome-640.webp),
         linear-gradient(
