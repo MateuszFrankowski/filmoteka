@@ -1,4 +1,5 @@
-import { fetchTheMovieDBMovie } from './api'
+import { fetchTheMovieDBMovie } from './api';
+import { clickGallery } from './gallery';
 
 
  const modal = document.querySelector("[data-modal]");
@@ -9,6 +10,7 @@ import { fetchTheMovieDBMovie } from './api'
  }
 
 const modalMovieInfo = async (movieId) => {
+    showModal();
    const movie = await fetchTheMovieDBMovie(76600);
 
 const markup = `
@@ -45,6 +47,7 @@ const markup = `
 <button class="modal__queue-btn">add to queue</button>
 </div>`;
     modal.innerHTML = markup;
+    
 }
 
 const closeModalBtn= document.querySelector("[data-modal-close]");
