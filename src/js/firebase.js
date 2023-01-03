@@ -112,35 +112,37 @@ auth.onAuthStateChanged(async user => {
     //testy
     let data = await fetchUserDataFromFirestore(userUid);
     console.log('moje filmy', data);
-    await addUserDataToFirestore(userUid, 'Avatar 2', 12055, false);
+    await updateUserFilmData(userUid, 16, false);
+    await updateUserFilmData(userUid, 12, false);
+    await updateUserFilmData(userUid, 14, false);
     let data2 = await fetchUserDataFromFirestore(userUid);
-    console.log('moje filmy po dodaniu filmu Avatar 2', data2);
-    let data3 = await fetchUserFilmData(userUid, 12055);
-    console.log('sprawdzenie  danych filmu Avatar 2', data3);
-    await updateUserFilmData(userUid, 12055, true);
-    let data4 = await fetchUserFilmData(userUid, 12055);
-    console.log('zmiana danych filmu Avatar 2 -> obejrzano film', data4);
-    await deleteUserFilmData(userUid, 12055);
-    let data5 = await fetchUserFilmData(userUid, 12055);
-    console.log('usunięcie filmu Avatar 2', data5);
-    let data6 = await fetchUserDataFromFirestore(userUid);
-    console.log('moje filmy po usunięciu filmu Avatar 2', data6);
+    console.log('moje filmy po dodaniu trzech filmów', data2);
+    await updateUserFilmData(userUid, 12, true);
+    let data3 = await fetchUserDataFromFirestore(userUid);
+    console.log('dodanie filmu 12 do obejrzenych', data3);
+    await updateUserFilmData(userUid, 12, false);
+    let data4 = await fetchUserDataFromFirestore(userUid);
+    console.log('usunięcie filmu 12 z obejrzenych', data4);
+    await deleteUserFilmData(userUid, 12);
+    let data5 = await fetchUserDataFromFirestore(userUid);
+    console.log('usunięcie filmu 12', data5);
+    await deleteUserData(userUid);
     //
-    const q = query(
-      collection(db, 'films'),
-      where('uid', '==', userUid),
-      orderBy('createdAt')
-    );
-    unsubscribe = onSnapshot(q, querySnapshot => {
-      const films = [];
-      querySnapshot.forEach(doc => {
-        films.push(doc.data().filmID);
-      });
-      console.log(
-        'Current films for user, real-time update: ',
-        films.join(', ')
-      );
-    });
+    // const q = query(
+    //   collection(db, 'films'),
+    //   where('uid', '==', userUid),
+    //   orderBy('createdAt')
+    // );
+    // unsubscribe = onSnapshot(q, querySnapshot => {
+    //   const films = [];
+    //   querySnapshot.forEach(doc => {
+    //     films.push(doc.data().filmID);
+    //   });
+    //   console.log(
+    //     'Current films for user, real-time update: ',
+    //     films.join(', ')
+    //   );
+    // });
   } else {
     // Unsubscribe when the user signs out
     unsubscribe && unsubscribe();
@@ -149,161 +151,108 @@ auth.onAuthStateChanged(async user => {
 
 export const fetchUserDataFromFirestore = async userId => {
   //reading all stored user's movies user
-  const q = query(
-    collection(db, 'films'),
-    where('uid', '==', userId),
-    orderBy('createdAt')
-  );
-  const querySnapshot = await getDocs(q);
-  let userFilms = [];
-  querySnapshot.forEach(doc => {
-    // doc.data() is never undefined for query doc snapshots
-    userFilms.push({
-      filmID: doc.data().filmID,
-      watched: doc.data().watched,
-    });
-  });
-  return userFilms;
-};
-export const fetchPaginatedDataFromFirestore = async (
-  userId,
-  pageNr,
-  pageAmount
-) => {
-  //in test state
-  const q = query(
-    collection(db, 'films'),
-    where('uid', '==', userId),
-    orderBy('createdAt'),
-    startAfter(pageAmount * (pageNr - 1)),
-    limit(pageAmount)
-  );
+  const q = doc(db, 'films', userId.toString());
+  const docSnap = await getDoc(q);
+  if (docSnap.exists()) {
+    let userFilms = {
+      amountOfFilms: docSnap.data().amountOfFilms,
+      amountOfWatchedFilms: docSnap.data().amountOfWatchedFilms,
+      filmsCollection: docSnap.data().filmsCollection,
+      filmsWatched: docSnap.data().filmsWatched,
+    };
 
-  const querySnapshot = await getDocs(q);
-  let userFilms = [];
-  querySnapshot.forEach(doc => {
-    // doc.data() is never undefined for query doc snapshots
-    userFilms.push({
-      filmID: doc.data().filmID,
-      watched: doc.data().watched,
-    });
-  });
-  return userFilms;
-};
-export const addUserDataToFirestore = async (
-  userId,
-  name,
-  movieId,
-  watch = false
-) => {
-  // adding new film to user film base movie
-  // checking if the film is already in DB
-  const q = query(
-    collection(db, 'films'),
-    where('uid', '==', userId),
-    where('filmID', '==', movieId)
-  );
-  const querySnapshot = await getDocs(q);
-
-  let userFilm = [];
-  querySnapshot.forEach(doc => {
-    userFilm.push({
-      filmID: doc.data().filmID,
-      watched: doc.data().watched,
-      documentID: doc.id,
-    });
-  });
-  console.log('sprawdzam czy dokument istnieje', userFilm, userFilm.length);
-  if (userFilm.length != 0) {
-    console.log('coo');
-    throw new Error('Data for the film already exist in DB!');
+    return userFilms;
+  } else {
+    // doc.data() will be undefined in this case
+    return console.log('No such document!');
   }
-
-  try {
-    const docRef = await addDoc(collection(db, 'films'), {
-      createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
-      uid: userId,
-      filmName: name,
-      filmID: movieId,
-      watched: watch,
-    });
-    console.log('Document written with ID: ', docRef.id);
-  } catch (e) {
-    console.error('Error adding document: ', e);
-  }
-};
-export const fetchUserFilmData = async (userId, movieId) => {
-  // read user data for specific film
-
-  const q = query(
-    collection(db, 'films'),
-    where('uid', '==', userId),
-    where('filmID', '==', movieId)
-  );
-  const querySnapshot = await getDocs(q);
-  let userFilm = [];
-  querySnapshot.forEach(doc => {
-    // doc.data() is never undefined for query doc snapshots
-    userFilm.push({
-      filmID: doc.data().filmID,
-      watched: doc.data().watched,
-    });
-  });
-  if (userFilm.length == 0) return false;
-  return { ...userFilm };
 };
 export const updateUserFilmData = async (
   userId,
   movieId,
   watchStaus = false
 ) => {
-  // change user's data for specyfic movie
-  const q = query(
-    collection(db, 'films'),
-    where('uid', '==', userId),
-    where('filmID', '==', movieId)
-  );
-  const querySnapshot = await getDocs(q);
-  let userFilm = [];
-  querySnapshot.forEach(doc => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id);
-    userFilm.push({
-      filmID: doc.data().filmID,
-      watched: doc.data().watched,
-      documentID: doc.id,
+  const docRef = doc(db, 'films', userId.toString());
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
+      await fetchUserDataFromFirestore(userId);
+    console.log(
+      amountOfFilms,
+      amountOfWatchedFilms,
+      filmsCollection,
+      filmsWatched
+    );
+    if (filmsCollection.indexOf(movieId) == -1) {
+      filmsCollection.push(movieId);
+      amountOfFilms++;
+    }
+    if (filmsWatched.indexOf(movieId) == -1 && watchStaus == true) {
+      filmsWatched.push(movieId);
+      amountOfWatchedFilms++;
+    }
+    if (filmsWatched.indexOf(movieId) != -1 && watchStaus == false) {
+      filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
+      amountOfWatchedFilms--;
+    }
+    const updateWatchStatus = await updateDoc(docRef, {
+      amountOfFilms: amountOfFilms,
+      amountOfWatchedFilms: amountOfWatchedFilms,
+      filmsCollection: filmsCollection,
+      filmsWatched: filmsWatched,
     });
-  });
-  if (userFilm.length == 0) return false;
-  console.log(userFilm[0]);
-  const docRef = doc(db, 'films', { ...userFilm[0] }.documentID);
-  const updateWatchStatus = await updateDoc(docRef, {
-    watched: watchStaus,
-  });
+  } else {
+    try {
+      const docRef = await setDoc(doc(db, 'films', userId.toString()), {
+        createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
+        uid: userId,
+        filmsCollection: [movieId],
+        filmsWatched: watchStaus == true ? [movieId] : [],
+        amountOfFilms: 1,
+        amountOfWatchedFilms: watchStaus == true ? 1 : 0,
+      });
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
+  }
 };
 export const deleteUserFilmData = async (userId, movieId) => {
   // delete film from user collection
 
-  const q = query(
-    collection(db, 'films'),
-    where('uid', '==', userId),
-    where('filmID', '==', movieId)
+  let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
+    await fetchUserDataFromFirestore(userId);
+  const docRef = doc(db, 'films', userId.toString());
+  const docSnap = await getDoc(docRef);
+  console.log(
+    amountOfFilms,
+    amountOfWatchedFilms,
+    filmsCollection,
+    filmsWatched
   );
-  const querySnapshot = await getDocs(q);
-  let userFilm = [];
-  querySnapshot.forEach(doc => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id);
-    userFilm.push({
-      filmID: doc.data().filmID,
-      watched: doc.data().watched,
-      documentID: doc.id,
-    });
+  if (filmsCollection.indexOf(movieId) != -1) {
+    filmsCollection.splice(filmsCollection.indexOf(movieId), 1);
+    amountOfFilms--;
+  }
+  if (filmsWatched.indexOf(movieId) != -1) {
+    filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
+    amountOfWatchedFilms--;
+  }
+  const updateDocument = await updateDoc(doc(db, 'films', userId.toString()), {
+    amountOfFilms: amountOfFilms,
+    amountOfWatchedFilms: amountOfWatchedFilms,
+    filmsCollection: filmsCollection,
+    filmsWatched: filmsWatched,
   });
-  if (userFilm.length == 0) return false;
-  console.log(userFilm[0]);
-  const docRef = doc(db, 'films', { ...userFilm[0] }.documentID);
-  const deleteMovie = await deleteDoc(docRef);
-  console.log('Document deleted with ID:', { ...userFilm[0] }.documentID);
-  return true;
+};
+
+export const deleteUserData = async userId => {
+  // delete all user data
+
+  const updateDocument = await updateDoc(doc(db, 'films', userId.toString()), {
+    amountOfFilms: 0,
+    amountOfWatchedFilms: 0,
+    filmsCollection: [],
+    filmsWatched: [],
+  });
 };
