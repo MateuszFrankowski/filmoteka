@@ -98,7 +98,7 @@ export const clickGallery = () => {
       }
       const movieId = goToLiElement(e.target).dataset.film_id
       console.log(movieId);
-      modalMovieInfo();
+      modalMovieInfo(movieId);
       // function to open modal with movie id
     })
   
