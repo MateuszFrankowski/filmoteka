@@ -38,7 +38,6 @@ export const updateUserQueueData = async (
   movieId,
   addToQueue = true //false ->remove from Queue
 ) => {
-  console.log('dupa', userId, movieId, addToQueue);
   const docRef = doc(db, 'films', userId.toString());
   const docSnap = await getDoc(docRef);
 
