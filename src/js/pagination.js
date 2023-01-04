@@ -1,7 +1,7 @@
 import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api'
 import { dataMovies } from './global';
 import { createMovies } from './gallery';
-import {addLoaderSpinner } from './loaderSpinner';
+import {LoaderSpinner } from './loaderSpinner';
 
 // <========> HOW USE PAGINATION <========>
 //
