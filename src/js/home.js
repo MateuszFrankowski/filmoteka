@@ -29,6 +29,7 @@ const startPage = async () => {
   }
   // function to creating gallery
   createMovies(movies);
+  clickGallery();
   //
 
   loadPage();

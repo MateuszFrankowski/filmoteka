@@ -1,12 +1,14 @@
+
 import { fetchTheMovieDBList } from './api';
-import { dataMovies } from './home';
 import { loaderSpinner } from './loaderSpinner';
+import { modalMovieInfo } from './filmDescription';
 
 // LOADER SPINNER TO ADD
 // loaderSpinner.classList.add('loader');
 
 // LOADER SPINNER TO REMOVE
 // loaderSpinner.classList.remove('loader');
+
 
 // dataMovies = {
 //        page: 1, // nr of actual page
@@ -28,7 +30,7 @@ export const createMovies = async (movies) => {
     console.log(galleryContainer[0]);
     console.log(movies);
     const markup = movies.data.map (data => 
-      `<li>
+      `<li  data-film_id="${data.id}">
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
                   <img class="img" src="https://www.themoviedb.org/t/p/w500${data.poster_path}" />
@@ -36,7 +38,9 @@ export const createMovies = async (movies) => {
                   <figcaption>
                   <h3 class="title">${data.title}</h3>
                   <div class="details-wrapper">
-                      <p class="details" data-film_id="${data.id}">
+                  <p>${data.genres.join(", ")}</p>
+                  <p>${data.release_year}</p>
+                  <div class="rating rating--visible">${roundTo1Comma(data.vote_average)}</div>
                   </div>
                   </figcaption>
               </figure>
@@ -45,7 +49,12 @@ export const createMovies = async (movies) => {
   
   galleryContainer[0].innerHTML = markup;
 };
-//
+//-------------- Function rounding rating to 1 place after comma--------------//
+// export function roundingMethodToFirstPlace(value) {
+//     let roundingValue = Number(Math.round(value + 'e+1') + 'e-1');
+//   return roundingValue
+//   };
+//-----------------------------------------------
 // const moviesArray = movies.data.map(movie => {
 //   return movie.title;
 // });
@@ -81,3 +90,22 @@ const roundTo1Comma = num => {
   }
   return roundNum;
 };
+
+export const clickGallery = () => {
+    document.querySelector(".gallery").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) {
+        return
+      }
+      const movieId = goToLiElement(e.target).dataset.film_id
+      console.log(movieId);
+      modalMovieInfo(movieId);
+      // function to open modal with movie id
+    })
+  
+    const goToLiElement = (targetELement) => {
+    if (targetELement.tagName !== "LI") {
+      return goToLiElement(targetELement.parentElement)
+    }
+    return targetELement
+  }
+}

@@ -13,15 +13,21 @@
           class="home-header__subsite home-header__subsite--active"
           >Home</a
         >
-        <a href="library.html" class="home-header__subsite">My library</a>
+        <a
+          href="library.html"
+          id="libraryBtn"
+          class="home-header__subsite home-header__subsite--library"
+          hidden="true"
+          >My library</a
+        >
       </div>
     </nav>
-    <section id="whenSignedOut">
+    <section class="home-header__no-user" id="whenSignedOut">
       <button id="signInBtn" class="btn btn-primary">
         Sign in with Google
       </button>
     </section>
-    <section id="whenSignedIn" hidden="true">
+    <section class="home-header__user-signed" id="whenSignedIn" hidden="true">
       <div id="userDetails"></div>
       <button id="signOutBtn" class="btn btn-primary">Sign Out</button>
     </section>

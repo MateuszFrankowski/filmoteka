@@ -2,6 +2,7 @@
  * Główny plik dla stylów.
  * Wszystkie partials podłączamy tutaj.
  */
+ @use './utils/forward' as *;
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Titan+One&display=swap');
 
 body {
@@ -15,6 +16,9 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 20px;
+  @include media-mapp(tablet) {
+    padding-inline: 71px;
+  }
 }
 
 @import './utils/vars';
@@ -28,4 +32,6 @@ body {
 @import './components/pageSelector';
 @import './components/footer';
 @import './components/modalFooter';
+@import './components/card';
+@import './components/grid';
 @import './components/loaderSpinner';
