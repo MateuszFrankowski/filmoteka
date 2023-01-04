@@ -13,10 +13,14 @@ function showModal() {
       'click',
       updateUserWatchedData(window.userUid, movie.movieId, true)
     );
-    addToWatchBtn.removeEventListener(
-      'click',
-      updateUserQueueData(window.userUid, movie.movieId, true)
-    );
+    addToWatchBtn.removeEventListener('click', () => {
+      // if (btn.innerText === 'ADD TO WATCHED') {
+      //   updateUserQueueData(window.userUid, movie.movieId, false);
+      // } else {
+      //   btn.innerText = 'REMOVE FROM WATCHED';
+      updateUserQueueData(window.userUid, movie.movieId, true);
+      // }
+    });
   }
 }
 
@@ -64,11 +68,14 @@ export const modalMovieInfo = async movieId => {
   modal.innerHTML = markup;
   const addToWatchBtn = document.querySelector('.modal__watched-btn');
   const addToQueueBtn = document.querySelector('.modal__queue-btn');
-  addToQueueBtn.addEventListener(
-    'click',
-
-    updateUserWatchedData(window.userUid, movie.id, true)
-  );
+  addToQueueBtn.addEventListener('click', () => {
+    // if (btn.innerText === 'ADD TO WATCHED') {
+    updateUserQueueData(window.userUid, movie.movieId, false);
+    // } else {
+    //   btn.innerText = 'REMOVE FROM WATCHED';
+    //   updateUserQueueData(window.userUid, movie.movieId, true);
+    // }
+  });
   addToWatchBtn.addEventListener(
     'click',
 
