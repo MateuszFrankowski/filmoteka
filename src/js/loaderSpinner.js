@@ -1,7 +1,7 @@
 export const loaderSpinner = () => {
   const gallery = document.querySelector('.gallery');
-  const loaderSpinner = document.createElement('div');
-  loaderSpinner.classList.add('loader');
+  const loaderSpinnerElement = document.createElement('div');
+  loaderSpinnerElement.classList.add('loader');
   gallery.innerHTML = loaderSpinner;
   // gallery.before(loaderSpinner);
 };
