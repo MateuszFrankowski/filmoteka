@@ -34,7 +34,7 @@ export const createMovies = async (movies) => {
                   </div>
                   </figcaption>
               </figure>
-              </li>
+        </li>
           `);
   
   galleryContainer[0].innerHTML = markup;
