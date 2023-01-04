@@ -1,7 +1,7 @@
 import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api'
 import { dataMovies } from './global';
 import { createMovies } from './gallery';
-import {loaderSpinner } from './loaderSpinner';
+import {addLoaderSpinner } from './loaderSpinner';
 
 // <========> HOW USE PAGINATION <========>
 //
@@ -130,7 +130,7 @@ const buttonListener = (e) => {
     return
   }
 
-  loaderSpinner.classList.add('loader');
+  addLoaderSpinner.classList.add('loader');
   if (!isNaN(newPage)) {
     dataMovies.page = Number(newPage)
   } else if (newPage==="after") {
@@ -164,7 +164,7 @@ const changePage = async () => {
   } 
   if (page === dataMovies.page) {
     pagination();
-    loaderSpinner.classList.remove('loader');
+    addLoaderSpinner.classList.remove('loader');
     createMovies(movies)
     document.querySelector('.gallery').scrollIntoView(true);
     console.log(`${fetchType}:`, movies)
