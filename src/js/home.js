@@ -1,7 +1,7 @@
 import { pagination, loadPage } from './pagination';
 import { fetchTheMovieDBList } from './api';
 import { dataMovies } from './global';
-import { loaderSpinner } from './loaderSpinner';
+import { addLoaderSpinner } from './loaderSpinner';
 import { createMovies } from './gallery';
 import { clickGallery } from './gallery';
 // import {
@@ -13,12 +13,11 @@ import { clickGallery } from './gallery';
 //   userSigned,
 // } from './firebase';
 
-
 const startPage = async () => {
   dataMovies.fetchType = 'home';
   dataMovies.page = 1;
   dataMovies.query = null;
-  loaderSpinner.classList.add('loader');
+  addLoaderSpinner();
   // yours listeners no using start movies variable in function
 
   //
@@ -28,7 +27,6 @@ const startPage = async () => {
   if (movies.total_pages > 0) {
     pagination();
   }
-  loaderSpinner.classList.remove('loader');
   // function to creating gallery
   createMovies(movies);
   clickGallery();
