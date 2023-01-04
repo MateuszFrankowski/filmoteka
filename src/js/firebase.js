@@ -1,4 +1,5 @@
 // // Import the functions you need from the SDKs you need
+import { doc } from 'firebase/firestore';
 import { onSnapshot, getFirestore } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 
@@ -26,7 +27,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const db = getFirestore(app);
+export const db = getFirestore(app);
 //
 const whenSignedIn = document.getElementById('whenSignedIn');
 const whenSignedOut = document.getElementById('whenSignedOut');
@@ -111,21 +112,10 @@ auth.onAuthStateChanged(async user => {
     // console.log('usunięcie filmu 12', data5);
     // await deleteUserData(window.userUid);
     //
-    // const q = query(
-    //   collection(db, 'films'),
-    //   where('uid', '==', window.userUid),
-    //   orderBy('createdAt')
-    // );
-    // unsubscribe = onSnapshot(q, querySnapshot => {
-    //   const films = [];
-    //   querySnapshot.forEach(doc => {
-    //     films.push(doc.data().filmID);
-    //   });
-    //   console.log(
-    //     'Current films for user, real-time update: ',
-    //     films.join(', ')
-    //   );
-    // });
+
+    unsubscribe = onSnapshot(doc(db, 'films', user.uid.toString()), doc => {
+      console.log('Current data: ', doc.data());
+    });
   } else {
     // Unsubscribe when the user signs out
     unsubscribe && unsubscribe();

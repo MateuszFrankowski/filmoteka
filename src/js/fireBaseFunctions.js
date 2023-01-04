@@ -9,6 +9,7 @@ import {
   Timestamp,
   updateDoc,
 } from 'firebase/firestore';
+import { db } from './firebase';
 const moviesPerPageInLibrary = {
   phone: 4,
   tablet: 8,
@@ -37,6 +38,7 @@ export const updateUserQueueData = async (
   movieId,
   addToQueue = true //false ->remove from Queue
 ) => {
+  console.log('dupa', userId, movieId, addToQueue);
   const docRef = doc(db, 'films', userId.toString());
   const docSnap = await getDoc(docRef);
 
@@ -64,8 +66,10 @@ export const updateUserQueueData = async (
       filmsCollection: filmsCollection,
       filmsWatched: filmsWatched,
     });
+    console.log('document updated');
   } else {
     try {
+      console.log('document updated');
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,
@@ -103,7 +107,7 @@ export const updateUserWatchedData = async (
       filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
       amountOfWatchedFilms--;
     }
-
+    console.log('document updated');
     const updateWatchStatus = await updateDoc(docRef, {
       uid: userId,
       amountOfFilms: amountOfFilms,
@@ -113,6 +117,7 @@ export const updateUserWatchedData = async (
     });
   } else {
     try {
+      console.log('document updated');
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,

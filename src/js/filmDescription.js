@@ -1,23 +1,23 @@
 import { fetchTheMovieDBMovie } from './api';
-// import {
-//   updateUserWatchedData,
-//   updateUserQueueData,
-// } from './fireBaseFunctions';
+import {
+  updateUserWatchedData,
+  updateUserQueueData,
+} from './fireBaseFunctions';
 
 const modal = document.querySelector('[data-modal]');
 
 function showModal() {
   modal.classList.toggle('is-hidden');
-  //   if (modal.classList.contains('is-hidden')) {
-  //     addToQueueBtn.removeEventListener(
-  //       'click',
-  //       updateUserWatchedData(window.userUid, movie.movieId, true)
-  //     );
-  //     addToWatchBtn.removeEventListener(
-  //       'click',
-  //       updateUserQueueData(window.userUid, movie.movieId, true)
-  //     );
-  //   }
+  if (modal.classList.contains('is-hidden')) {
+    addToQueueBtn.removeEventListener(
+      'click',
+      updateUserWatchedData(window.userUid, movie.movieId, true)
+    );
+    addToWatchBtn.removeEventListener(
+      'click',
+      updateUserQueueData(window.userUid, movie.movieId, true)
+    );
+  }
 }
 
 export const modalMovieInfo = async movieId => {
@@ -62,16 +62,18 @@ export const modalMovieInfo = async movieId => {
 </div>
 </div>`;
   modal.innerHTML = markup;
-  //   const addToWatchBtn = document.querySelector('.modal__watched-btn');
-  //   const addToQueueBtn = document.querySelector('.modal__queue-btn');
-  //  addToQueueBtn.addEventListener(
-  //    'click',
-  //    updateUserWatchedData(window.userUid, movie.movieId, true)
-  //  );
-  //  addToWatchBtn.addEventListener(
-  //    'click',
-  //    updateUserQueueData(window.userUid, movie.movieId, true)
-  //  );
+  const addToWatchBtn = document.querySelector('.modal__watched-btn');
+  const addToQueueBtn = document.querySelector('.modal__queue-btn');
+  addToQueueBtn.addEventListener(
+    'click',
+
+    updateUserWatchedData(window.userUid, movie.id, true)
+  );
+  addToWatchBtn.addEventListener(
+    'click',
+
+    updateUserQueueData(window.userUid, movie.id, true)
+  );
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
 };
