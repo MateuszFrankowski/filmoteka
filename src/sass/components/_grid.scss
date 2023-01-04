@@ -1,9 +1,11 @@
-*::before,
-*::after {
-  box-sizing: inherit;
-  margin: 0px;
-  padding: 0px;
-}
+@use '../utils/forward' as *;
+
+// *::before,
+// *::after {
+//   box-sizing: inherit;
+//   margin: 0px;
+//   padding: 0px;
+// }
 
 // Mobile 320-768//
 
