@@ -1,4 +1,4 @@
-export const addLoaderSpinner = () => {
+export const loaderSpinner = () => {
   const gallery = document.querySelector('.gallery');
   const loaderSpinner = document.createElement('div');
   loaderSpinner.classList.add('loader');
