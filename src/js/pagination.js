@@ -1,7 +1,7 @@
-import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api'
+import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api';
 import { dataMovies } from './global';
 import { createMovies } from './gallery';
-import { loaderSpinner } from './loaderSpinner';
+import { addloaderSpinner } from './loaderSpinner';
 
 // <========> HOW USE PAGINATION <========>
 //
@@ -31,24 +31,22 @@ export const pagination = () => {
 const markupPages = () => {
   const { page, totalPages } = dataMovies;
   let markup = [];
-  
+
   if (page < 5) {
     for (let i = 1; i < 10; i++) {
-      markup.push(i)
+      markup.push(i);
     }
   } else if (page > totalPages - 4) {
     for (let i = totalPages - 8; i < totalPages + 1; i++) {
-      markup.push(i)
+      markup.push(i);
     }
   } else {
     for (let i = -4; i < 5; i++) {
       markup.push(page + i);
     }
   }
-  const markupFilter = markup.filter(
-    page => page > 0 && page <= totalPages
-  );
-  
+  const markupFilter = markup.filter(page => page > 0 && page <= totalPages);
+
   markupFilter[0] = 1;
   if (totalPages > 1) {
     markupFilter[markupFilter.length - 1] = totalPages;
@@ -63,7 +61,7 @@ const markupPages = () => {
   return markupFilter;
 };
 
-const createMarkupList = (markup) => {
+const createMarkupList = markup => {
   const { page, totalPages } = dataMovies;
   let markupList = [];
   if (page > 1) {
@@ -79,13 +77,13 @@ const createMarkupList = (markup) => {
     let classLi = '';
     let classPage = '';
     if (page < 3) {
-      if (pageNr > 5) { 
+      if (pageNr > 5) {
         classLi = ' pages--none';
-      };
+      }
     } else if (page > totalPages - 2) {
-      if (pageNr < totalPages - 4) { 
+      if (pageNr < totalPages - 4) {
         classLi = ' pages--none';
-      };
+      }
     } else if (pageNr < page - 2 || pageNr > page + 2) {
       classLi = ' pages--none';
     }
@@ -119,59 +117,58 @@ const createMarkupList = (markup) => {
 
 ///////////////////////////////////////
 
-const buttonListener = (e) => {
-  if (e.target.type !== "button") {
-    return
+const buttonListener = e => {
+  if (e.target.type !== 'button') {
+    return;
   }
   let { page } = dataMovies;
-  const btn = e.target
-  const newPage = btn.dataset.page
+  const btn = e.target;
+  const newPage = btn.dataset.page;
   if (Number(newPage) === page) {
-    return
+    return;
   }
 
-  loaderSpinner.classList.add('loader');
+  addloaderSpinner();
   if (!isNaN(newPage)) {
-    dataMovies.page = Number(newPage)
-  } else if (newPage==="after") {
-    dataMovies.page = page + 1
-  } else if (newPage === "before") {
-    dataMovies.page = page - 1
+    dataMovies.page = Number(newPage);
+  } else if (newPage === 'after') {
+    dataMovies.page = page + 1;
+  } else if (newPage === 'before') {
+    dataMovies.page = page - 1;
   }
 
   changePage();
-}
+};
 
 const changePage = async () => {
-  let {page, fetchType,query} = dataMovies
-  let movies={}
+  let { page, fetchType, query } = dataMovies;
+  let movies = {};
   switch (fetchType) {
-    case "home":
-        movies = await fetchTheMovieDBList(page, query);
+    case 'home':
+      movies = await fetchTheMovieDBList(page, query);
       break;
-    case "watched":
-        movies = await fetchTheMovieDBList(page, query);
-        // change to // movies = await for fireBase API watched ======================================================================
+    case 'watched':
+      movies = await fetchTheMovieDBList(page, query);
+      // change to // movies = await for fireBase API watched ======================================================================
       break;
-    case "queue":
-        // add // movies = await for fireBase API queue ==============================================================================
+    case 'queue':
+      // add // movies = await for fireBase API queue ==============================================================================
       break;
     default:
       break;
   }
   if (movies.total_pages === 0) {
-    return
-  } 
+    return;
+  }
   if (page === dataMovies.page) {
     pagination();
-    loaderSpinner.classList.remove('loader');
-    createMovies(movies)
+    createMovies(movies);
     document.querySelector('.gallery').scrollIntoView(true);
-    console.log(`${fetchType}:`, movies)
+    console.log(`${fetchType}:`, movies);
   }
-}
+};
 
 export const loadPage = () => {
-  const pages = document.querySelector(".pages__list")
-  pages.addEventListener("click", e => buttonListener(e));
-}
+  const pages = document.querySelector('.pages__list');
+  pages.addEventListener('click', e => buttonListener(e));
+};
