@@ -1,7 +1,7 @@
 import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api';
 import { dataMovies } from './global';
 import { createMovies } from './gallery';
-import { addloaderSpinner } from './loaderSpinner';
+import {addLoaderSpinner } from './loaderSpinner';
 
 // <========> HOW USE PAGINATION <========>
 //
@@ -128,6 +128,7 @@ const buttonListener = e => {
     return;
   }
 
+
   addloaderSpinner();
   if (!isNaN(newPage)) {
     dataMovies.page = Number(newPage);
@@ -169,6 +170,6 @@ const changePage = async () => {
 };
 
 export const loadPage = () => {
-  const pages = document.querySelector('.pages__list');
-  pages.addEventListener('click', e => buttonListener(e));
-};
+  const pages = document.querySelector(".pages__list")
+  pages.addEventListener("click", e => buttonListener(e));
+}
