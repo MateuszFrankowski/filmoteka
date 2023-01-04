@@ -65,10 +65,8 @@ export const updateUserQueueData = async (
       filmsCollection: filmsCollection,
       filmsWatched: filmsWatched,
     });
-    console.log('document updated');
   } else {
     try {
-      console.log('document updated');
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,
@@ -106,7 +104,7 @@ export const updateUserWatchedData = async (
       filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
       amountOfWatchedFilms--;
     }
-    console.log('document updated');
+
     const updateWatchStatus = await updateDoc(docRef, {
       uid: userId,
       amountOfFilms: amountOfFilms,
@@ -116,7 +114,6 @@ export const updateUserWatchedData = async (
     });
   } else {
     try {
-      console.log('document updated');
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,
