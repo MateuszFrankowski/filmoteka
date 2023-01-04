@@ -29,7 +29,11 @@ import {
   signOut,
   GoogleAuthProvider,
 } from 'firebase/auth';
-
+const moviesPerPageInLibrary = {
+  phone: 4,
+  tablet: 8,
+  laptop: 9,
+};
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -46,7 +50,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-// const auth = firebase.auth();
+
 const db = getFirestore(app);
 //
 const whenSignedIn = document.getElementById('whenSignedIn');
@@ -112,21 +116,26 @@ auth.onAuthStateChanged(async user => {
     //testy
     let data = await fetchUserDataFromFirestore(userUid);
     console.log('moje filmy', data);
-    await updateUserFilmData(userUid, 16, false);
-    await updateUserFilmData(userUid, 12, false);
-    await updateUserFilmData(userUid, 14, false);
+    await updateUserQueueData(userUid, 16, true);
+    await updateUserQueueData(userUid, 12, true);
+    await updateUserQueueData(userUid, 14, true);
     let data2 = await fetchUserDataFromFirestore(userUid);
-    console.log('moje filmy po dodaniu trzech filmów', data2);
-    await updateUserFilmData(userUid, 12, true);
+    console.log('moje filmy po dodaniu trzech filmów do kolejki', data2);
+    await updateUserWatchedData(userUid, 12, true);
     let data3 = await fetchUserDataFromFirestore(userUid);
     console.log('dodanie filmu 12 do obejrzenych', data3);
-    await updateUserFilmData(userUid, 12, false);
-    let data4 = await fetchUserDataFromFirestore(userUid);
-    console.log('usunięcie filmu 12 z obejrzenych', data4);
-    await deleteUserFilmData(userUid, 12);
-    let data5 = await fetchUserDataFromFirestore(userUid);
-    console.log('usunięcie filmu 12', data5);
-    await deleteUserData(userUid);
+    const test1 = await fetchQueueFilmsPerPage(userUid, 1, filmsPerPage);
+    const test2 = await fetchWatchedFilmsPerPage(userUid, 1, filmsPerPage);
+    console.log(test1);
+    console.log(test2);
+
+    // await updateUserWatchedData(userUid, 12, false);
+    // let data4 = await fetchUserDataFromFirestore(userUid);
+    // console.log('usunięcie filmu 12 z obejrzenych', data4);
+    // await updateUserQueueData(userUid, 12, false);
+    // let data5 = await fetchUserDataFromFirestore(userUid);
+    // console.log('usunięcie filmu 12', data5);
+    // await deleteUserData(userUid);
     //
     // const q = query(
     //   collection(db, 'films'),
@@ -167,10 +176,10 @@ export const fetchUserDataFromFirestore = async userId => {
     return console.log('No such document!');
   }
 };
-export const updateUserFilmData = async (
+export const updateUserQueueData = async (
   userId,
   movieId,
-  watchStaus = false
+  addToQueue = true //false ->remove from Queue
 ) => {
   const docRef = doc(db, 'films', userId.toString());
   const docSnap = await getDoc(docRef);
@@ -178,25 +187,22 @@ export const updateUserFilmData = async (
   if (docSnap.exists()) {
     let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
       await fetchUserDataFromFirestore(userId);
-    console.log(
-      amountOfFilms,
-      amountOfWatchedFilms,
-      filmsCollection,
-      filmsWatched
-    );
-    if (filmsCollection.indexOf(movieId) == -1) {
+
+    if (filmsCollection.indexOf(movieId) == -1 && addToQueue == true) {
       filmsCollection.push(movieId);
       amountOfFilms++;
+      if (filmsWatched.indexOf(movieId) != -1) {
+        filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
+        amountOfWatchedFilms--;
+      }
     }
-    if (filmsWatched.indexOf(movieId) == -1 && watchStaus == true) {
-      filmsWatched.push(movieId);
-      amountOfWatchedFilms++;
+    if (filmsCollection.indexOf(movieId) != -1 && addToQueue == false) {
+      filmsCollection.splice(filmsCollection.indexOf(movieId), 1);
+      amountOfFilms--;
     }
-    if (filmsWatched.indexOf(movieId) != -1 && watchStaus == false) {
-      filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
-      amountOfWatchedFilms--;
-    }
+
     const updateWatchStatus = await updateDoc(docRef, {
+      uid: userId,
       amountOfFilms: amountOfFilms,
       amountOfWatchedFilms: amountOfWatchedFilms,
       filmsCollection: filmsCollection,
@@ -207,43 +213,62 @@ export const updateUserFilmData = async (
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,
-        filmsCollection: [movieId],
-        filmsWatched: watchStaus == true ? [movieId] : [],
-        amountOfFilms: 1,
-        amountOfWatchedFilms: watchStaus == true ? 1 : 0,
+        filmsCollection: addToQueue == true ? [movieId] : [],
+        filmsWatched: [],
+        amountOfFilms: addToQueue == true ? 1 : 0,
+        amountOfWatchedFilms: 0,
       });
     } catch (e) {
       console.error('Error adding document: ', e);
     }
   }
 };
-export const deleteUserFilmData = async (userId, movieId) => {
-  // delete film from user collection
-
-  let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
-    await fetchUserDataFromFirestore(userId);
+export const updateUserWatchedData = async (
+  userId,
+  movieId,
+  addToWatch = true //false ->remove from Queue
+) => {
   const docRef = doc(db, 'films', userId.toString());
   const docSnap = await getDoc(docRef);
-  console.log(
-    amountOfFilms,
-    amountOfWatchedFilms,
-    filmsCollection,
-    filmsWatched
-  );
-  if (filmsCollection.indexOf(movieId) != -1) {
-    filmsCollection.splice(filmsCollection.indexOf(movieId), 1);
-    amountOfFilms--;
+
+  if (docSnap.exists()) {
+    let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
+      await fetchUserDataFromFirestore(userId);
+
+    if (filmsWatched.indexOf(movieId) == -1 && addToWatch == true) {
+      filmsWatched.push(movieId);
+      amountOfWatchedFilms++;
+      if (filmsCollection.indexOf(movieId) != -1) {
+        filmsCollection.splice(filmsCollection.indexOf(movieId), 1);
+        amountOfFilms--;
+      }
+    }
+    if (filmsWatched.indexOf(movieId) != -1 && addToWatch == false) {
+      filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
+      amountOfWatchedFilms--;
+    }
+
+    const updateWatchStatus = await updateDoc(docRef, {
+      uid: userId,
+      amountOfFilms: amountOfFilms,
+      amountOfWatchedFilms: amountOfWatchedFilms,
+      filmsCollection: filmsCollection,
+      filmsWatched: filmsWatched,
+    });
+  } else {
+    try {
+      const docRef = await setDoc(doc(db, 'films', userId.toString()), {
+        createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
+        uid: userId,
+        filmsCollection: [],
+        filmsWatched: watchStaus == true ? [movieId] : [],
+        amountOfFilms: 0,
+        amountOfWatchedFilms: watchStaus == true ? 1 : 0,
+      });
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
   }
-  if (filmsWatched.indexOf(movieId) != -1) {
-    filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
-    amountOfWatchedFilms--;
-  }
-  const updateDocument = await updateDoc(doc(db, 'films', userId.toString()), {
-    amountOfFilms: amountOfFilms,
-    amountOfWatchedFilms: amountOfWatchedFilms,
-    filmsCollection: filmsCollection,
-    filmsWatched: filmsWatched,
-  });
 };
 
 export const deleteUserData = async userId => {
@@ -256,3 +281,48 @@ export const deleteUserData = async userId => {
     filmsWatched: [],
   });
 };
+const checkMediaQueries = () => {
+  if (window.matchMedia('(min-width: 1024px)')) {
+    return moviesPerPageInLibrary.laptop;
+  }
+  if (window.matchMedia('(min-width: 768px)')) {
+    // If media query matches
+    return moviesPerPageInLibrary.laptop;
+  }
+  return moviesPerPageInLibrary.phone;
+};
+const filmsPerPage = checkMediaQueries();
+const fetchQueueFilmsPerPage = async (userId, pageNr, filmsPerPage) => {
+  let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
+    await fetchUserDataFromFirestore(userId);
+  console.log(
+    amountOfFilms,
+    amountOfWatchedFilms,
+    filmsCollection,
+    filmsWatched
+  );
+  const numberofPages = Math.ceil(amountOfFilms / filmsPerPage);
+  const startIndex = filmsPerPage * (pageNr - 1);
+  const endIndex =
+    startIndex + filmsPerPage > amountOfFilms + 1
+      ? amountOfFilms + 1
+      : startIndex + filmsPerPage;
+  const filmsOnPage = filmsCollection.slice(startIndex, endIndex);
+  console.log(startIndex, endIndex);
+  return { filmsOnPage, numberofPages, amountOfFilms };
+};
+const fetchWatchedFilmsPerPage = async (userId, pageNr, filmsPerPage) => {
+  let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
+    await fetchUserDataFromFirestore(userId);
+  const numberofPages = Math.ceil(amountOfWatchedFilms / filmsPerPage);
+  const startIndex = filmsPerPage * (pageNr - 1);
+  const endIndex =
+    startIndex + filmsPerPage > amountOfWatchedFilms + 1
+      ? amountOfWatchedFilms + 1
+      : startIndex + filmsPerPage;
+  const filmsOnPage = filmsWatched.slice(startIndex, endIndex);
+  console.log(startIndex, endIndex);
+  return { filmsOnPage, numberofPages, amountOfWatchedFilms };
+};
+
+//fetchTheMovieDBMovieIdList(idMovies, page, total_pages, total_results);
