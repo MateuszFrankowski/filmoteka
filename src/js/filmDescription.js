@@ -14,10 +14,11 @@ const watchedHandler = event => {
   if (event.target.innerText === 'ADD TO WATCHED') {
     updateUserWatchedData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM WATCHED';
+    addToQueueBtn.innerText = 'ADD TO QUEUE';
   } else {
     updateUserWatchedData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO WATCHED';
-    addToQueueBtn.innerText = 'REMOVE FROM QUEUE';
+    addToQueueBtn.innerText = 'ADD TO QUEUE';
   }
 };
 const queueHandler = event => {
@@ -30,6 +31,7 @@ const queueHandler = event => {
   } else {
     updateUserQueueData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO QUEUE';
+    addToWatchBtn.innerText = 'ADD TO WATCHED';
   }
 };
 
