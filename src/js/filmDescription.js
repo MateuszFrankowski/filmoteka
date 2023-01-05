@@ -1,18 +1,34 @@
 import { fetchTheMovieDBMovie } from './api';
+import {
+  updateUserWatchedData,
+  updateUserQueueData,
+} from './fireBaseFunctions';
 
+const modal = document.querySelector('[data-modal]');
 
- const modal = document.querySelector("[data-modal]");
- 
+function showModal() {
+  modal.classList.toggle('is-hidden');
+  if (modal.classList.contains('is-hidden')) {
+    addToQueueBtn.removeEventListener(
+      'click',
+      updateUserWatchedData(window.userUid, movie.movieId, true)
+    );
+    addToWatchBtn.removeEventListener('click', () => {
+      // if (btn.innerText === 'ADD TO WATCHED') {
+      //   updateUserQueueData(window.userUid, movie.movieId, false);
+      // } else {
+      //   btn.innerText = 'REMOVE FROM WATCHED';
+      updateUserQueueData(window.userUid, movie.movieId, true);
+      // }
+    });
+  }
+}
 
- function showModal() {
-  modal.classList.toggle('is-hidden')
- }
+export const modalMovieInfo = async movieId => {
+  showModal();
+  const movie = await fetchTheMovieDBMovie(movieId);
 
-export const modalMovieInfo = async (movieId) => {
-    showModal();
-   const movie = await fetchTheMovieDBMovie(movieId);
-
-const markup = `
+  const markup = `
 <div class="modal">
 <button class="modal__close-btn" data-modal-close>
 <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m8 8 14 14M8 22 22 8" stroke="#000" stroke-width="2"/></svg>
@@ -49,8 +65,22 @@ const markup = `
 </div>
 </div>
 </div>`;
-    modal.innerHTML = markup;
-    const closeModalBtn= document.querySelector("[data-modal-close]");
-closeModalBtn.addEventListener("click", showModal);
-}
+  modal.innerHTML = markup;
+  const addToWatchBtn = document.querySelector('.modal__watched-btn');
+  const addToQueueBtn = document.querySelector('.modal__queue-btn');
+  addToQueueBtn.addEventListener('click', () => {
+    // if (btn.innerText === 'ADD TO WATCHED') {
+    updateUserQueueData(window.userUid, movie.movieId, false);
+    // } else {
+    //   btn.innerText = 'REMOVE FROM WATCHED';
+    //   updateUserQueueData(window.userUid, movie.movieId, true);
+    // }
+  });
+  addToWatchBtn.addEventListener(
+    'click',
 
+    updateUserQueueData(window.userUid, movie.id, true)
+  );
+  const closeModalBtn = document.querySelector('[data-modal-close]');
+  closeModalBtn.addEventListener('click', showModal);
+};
