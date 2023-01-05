@@ -14,11 +14,10 @@ const watchedHandler = event => {
   if (event.target.innerText === 'ADD TO WATCHED') {
     updateUserWatchedData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM WATCHED';
-    addToWatchBtn.innerText = addToQueueBtn.innerText = 'ADD TO QUEUE';
-    ('REMOVE FROM QUEUE');
   } else {
     updateUserWatchedData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO WATCHED';
+    addToQueueBtn.innerText = 'REMOVE FROM QUEUE';
   }
 };
 const queueHandler = event => {
