@@ -46,11 +46,10 @@ export const createMovies = async movies => {
                   </div>
                   </figcaption>
               </figure>
-              </li>
-          `
-  );
-
-  galleryContainer[0].innerHTML = markup;
+        </li>
+          `);
+  
+  galleryContainer[0].innerHTML = markup.join('');
 };
 //-------------- Function rounding rating to 1 place after comma--------------//
 // export function roundingMethodToFirstPlace(value) {

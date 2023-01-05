@@ -11,6 +11,7 @@ const renderGallery = async () => {
     dataMovies.fetchType = 'home';
     dataMovies.query = movieInput.value;
     const result = await fetchTheMovieDBList(dataMovies.page, movieInput.value);
+    dataMovies.totalPages = result.total_pages;
     const markupArr = result.data.map(element => {
         return `<li data-film_id="${element.id}">
             <figure class="card">
@@ -20,7 +21,7 @@ const renderGallery = async () => {
                 <figcaption>
                     <h3 class="title">${element.title}</h3>
                     <div class="details-wrapper">
-                        <p>${element.genres}</p>
+                        <p>${element.genres.join(', ')}</p>
                         <p>${element.release_year}</p>
                         <div class="rating rating--visible">${element.vote_average}</div>
                     </div>
