@@ -1,34 +1,41 @@
-import { pagination, loadPage } from "./pagination";
-import { fetchTheMovieDBList } from './api'
-
-export const dataMovies = {
-    page: 1,
-    totalPages: 1,
-    query: "",
-};
+import { pagination, loadPage } from './pagination';
+import { fetchTheMovieDBList } from './api';
+import { dataMovies } from './global';
+import { addLoaderSpinner } from './loaderSpinner';
+import { createMovies } from './gallery';
+import { clickGallery } from './gallery';
+// import {
+//   fetchUserDataFromFirestore,
+//   addUserDataToFirestore,
+//   fetchUserFilmData,
+//   updateUserFilmData,
+//   deleteUserFilmData,
+//   userSigned,
+// } from './firebase';
 
 const startPage = async () => {
-    // yours listeners no using start movies variable in function
+  dataMovies.fetchType = 'home';
+  dataMovies.page = 1;
+  dataMovies.query = null;
+  addLoaderSpinner();
+  // yours listeners no using start movies variable in function
 
-    // 
-    const movies = await fetchTheMovieDBList(1);
-    dataMovies.page = movies.page;
-    dataMovies.totalPages = movies.total_pages;
-    pagination({
-        pageNr: dataMovies.page,
-        lastPage: dataMovies.totalPages,
-    });
-    // function to creating gallery
-    createMovies(movies);
-    //
-    loadPage({
-        fetchType: "home",
-        query: dataMovies.query,
-    });
-    // yours listeners using start movies variable in function
+  //
+  const movies = await fetchTheMovieDBList(dataMovies.page, dataMovies.query);
+  dataMovies.page = movies.page;
+  dataMovies.totalPages = movies.total_pages;
+  if (movies.total_pages > 0) {
+    pagination();
+  }
+  // function to creating gallery
+  createMovies(movies);
+  clickGallery();
+  //
 
-    //
+  loadPage();
+  // yours listeners using start movies variable in function
+
+  //
 };
-import { createMovies } from './gallery'
-startPage();
 
+startPage();
