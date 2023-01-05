@@ -32,8 +32,14 @@
     right: 10px;
   }
   &__icon-left {
-    top: 50%;
-    left: 10px;
+    // top: 50%;
+    // left: 10px;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    left: 0;
+    cursor: help;
   }
   &__icon-right {
     top: 50%;

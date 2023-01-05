@@ -6,6 +6,7 @@ import {
   fetchWatchedFilmsPerPage,
   fetchUserDataFromFirestore,
 } from './fireBaseFunctions';
+import { off } from 'process';
 
 // <========> HOW USE PAGINATION <========>
 //
@@ -128,6 +129,7 @@ const buttonListener = e => {
   let { page } = dataMovies;
   const btn = e.target;
   const newPage = btn.dataset.page;
+  console.log(btn);
   if (Number(newPage) === page) {
     return;
   }
@@ -147,6 +149,12 @@ const buttonListener = e => {
 const changePage = async () => {
   let { page, fetchType, query } = dataMovies;
   let movies = {};
+
+  const url = new URL(document.URL);
+  url.hash = `page${dataMovies.page}`;
+  let newUrl = url.href;
+  document.location.href = newUrl;
+
   switch (fetchType) {
     case 'home':
       movies = await fetchTheMovieDBList(page, query);
