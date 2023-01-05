@@ -32,7 +32,7 @@ const markup = `
     </li>
     <li class="modal__items">
         <p class="modal__info">Original Title</p>
-        <p class="modal__data">${movie.original_title}</p>
+        <p class="modal__data">${upperCase(movie.original_title)}</p>
    </li>
     <li class="modal__items">
         <p class="modal__info">Genre</p>
