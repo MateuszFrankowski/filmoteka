@@ -2,6 +2,10 @@ import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api';
 import { dataMovies } from './global';
 import { createMovies } from './gallery';
 import { addLoaderSpinner } from './loaderSpinner';
+import {
+  fetchWatchedFilmsPerPage,
+  fetchUserDataFromFirestore,
+} from './fireBaseFunctions';
 
 // <========> HOW USE PAGINATION <========>
 //
@@ -148,11 +152,13 @@ const changePage = async () => {
       movies = await fetchTheMovieDBList(page, query);
       break;
     case 'watched':
-      movies = await fetchTheMovieDBList(page, query);
+      //movies = await fetchTheMovieDBList(page, query)
+      movies = fetchQueueFilmsPerPage(window.userUid, page);
       // change to // movies = await for fireBase API watched ======================================================================
       break;
     case 'queue':
       // add // movies = await for fireBase API queue ==============================================================================
+      movies = await fetchWatchedFilmsPerPage(window.userUid, page);
       break;
     default:
       break;
