@@ -2,8 +2,8 @@ import { fetchTheMovieDBMovie } from './api';
 import {
   updateUserWatchedData,
   updateUserQueueData,
-
   deleteUserData,
+  fetchUserDataFromFirestore,
 } from './fireBaseFunctions';
 let addToWatchBtn;
 let addToQueueBtn;
@@ -14,8 +14,8 @@ const watchedHandler = event => {
   if (event.target.innerText === 'ADD TO WATCHED') {
     updateUserWatchedData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM WATCHED';
+    addToQueueBtn.innerText = 'ADD TO QUEUE';
   } else {
-    event.target.innerText = 'REMOVE FROM WATCHED';
     updateUserWatchedData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO WATCHED';
   }
@@ -24,14 +24,27 @@ const queueHandler = event => {
   console.log('hello', event.target.classList.contains('modal__queue-btn'));
   if (event.target.classList.contains('modal__queue-btn') !== true) return;
   if (event.target.innerText === 'ADD TO QUEUE') {
-    console.log('film description uid oraz movie id', window.userUid, movie.id);
     updateUserQueueData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM QUEUE';
+    addToWatchBtn.innerText = 'ADD TO WATCHED';
   } else {
-    event.target.innerText = 'REMOVE FROM QUEUE';
     updateUserQueueData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO QUEUE';
   }
+};
+
+const checkIfFilmInBase = (films, id) => {
+  console.log('filmy', films, id, films.filmsCollection.indexOf(id));
+  console.log(films.filmsCollection[0], id.toString(), typeof id);
+  const inQueue =
+    films.filmsCollection.indexOf(parseInt(id)) != -1
+      ? 'ADD TO WATCHED'
+      : 'REMOVE FROM WATCHED';
+  const inWatched =
+    films.filmsWatched.indexOf(parseInt(id)) != -1
+      ? 'ADD TO QUEUE'
+      : 'REMOVE FROM QUEUE';
+  return { filmWatched: inQueue, filmInQueue: inWatched };
 };
 function showModal() {
   modal.classList.toggle('is-hidden');
@@ -54,7 +67,11 @@ function showModal() {
 export const modalMovieInfo = async movieId => {
   showModal();
   movie = await fetchTheMovieDBMovie(movieId);
-
+  const firebaseFilms = await fetchUserDataFromFirestore(window.userUid);
+  const { filmWatched, filmInQueue } = checkIfFilmInBase(
+    firebaseFilms,
+    movieId
+  );
 
   const markup = `
 <div class="modal">
@@ -88,12 +105,11 @@ export const modalMovieInfo = async movieId => {
     <p class="modal__more">${movie.overview}</p>
     </div>
 <div class="modal__add-btns">
-<button class="modal__watched-btn">add to watched</button>
-<button class="modal__queue-btn">add to queue</button>
+<button class="modal__watched-btn">${filmWatched}</button>
+<button class="modal__queue-btn">${filmInQueue}</button>
 </div>
 </div>
 </div>`;
-
 
   modal.innerHTML = markup;
   addToWatchBtn = document.querySelector('.modal__watched-btn');
@@ -107,5 +123,4 @@ export const modalMovieInfo = async movieId => {
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
   //deleteUserData(window.userUid);
-
 };
