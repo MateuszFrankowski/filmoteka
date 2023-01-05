@@ -2,6 +2,7 @@ import { fetchTheMovieDBMovie } from './api';
 import {
   updateUserWatchedData,
   updateUserQueueData,
+
   deleteUserData,
 } from './fireBaseFunctions';
 let addToWatchBtn;
@@ -54,6 +55,7 @@ export const modalMovieInfo = async movieId => {
   showModal();
   movie = await fetchTheMovieDBMovie(movieId);
 
+
   const markup = `
 <div class="modal">
 <button class="modal__close-btn" data-modal-close>
@@ -92,6 +94,7 @@ export const modalMovieInfo = async movieId => {
 </div>
 </div>`;
 
+
   modal.innerHTML = markup;
   addToWatchBtn = document.querySelector('.modal__watched-btn');
   addToQueueBtn = document.querySelector('.modal__queue-btn');
@@ -104,4 +107,5 @@ export const modalMovieInfo = async movieId => {
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
   //deleteUserData(window.userUid);
+
 };

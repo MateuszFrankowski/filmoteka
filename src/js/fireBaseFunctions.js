@@ -9,7 +9,9 @@ import {
   Timestamp,
   updateDoc,
 } from 'firebase/firestore';
+
 import { db } from './global';
+
 const moviesPerPageInLibrary = {
   phone: 4,
   tablet: 8,
@@ -57,14 +59,7 @@ export const updateUserQueueData = async (
       filmsCollection.splice(filmsCollection.indexOf(movieId), 1);
       amountOfFilms--;
     }
-    console.log(
-      'hello,',
-      userId,
-      amountOfFilms,
-      amountOfWatchedFilms,
-      filmsCollection,
-      filmsWatched
-    );
+
 
     const updateWatchStatus = await updateDoc(docRef, {
       uid: userId,
@@ -75,7 +70,7 @@ export const updateUserQueueData = async (
     });
   } else {
     try {
-      console.log('hello,', addToQueue, movieId);
+
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,
@@ -113,13 +108,7 @@ export const updateUserWatchedData = async (
       filmsWatched.splice(filmsWatched.indexOf(movieId), 1);
       amountOfWatchedFilms--;
     }
-    console.log(
-      userId,
-      amountOfFilms,
-      amountOfWatchedFilms,
-      filmsCollection,
-      filmsWatched
-    );
+
     const updateWatchStatus = await updateDoc(docRef, {
       uid: userId,
       amountOfFilms: amountOfFilms,
@@ -129,7 +118,7 @@ export const updateUserWatchedData = async (
     });
   } else {
     try {
-      console.log('hello,', addToQueue, movieId);
+
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,
@@ -147,7 +136,9 @@ export const updateUserWatchedData = async (
 export const deleteUserData = async userId => {
   // delete all user data
 
+
   const updateDocument = await deleteDoc(doc(db, 'films', userId.toString()));
+
 };
 const checkMediaQueries = () => {
   if (window.matchMedia('(min-width: 1024px)')) {
@@ -160,7 +151,9 @@ const checkMediaQueries = () => {
   return moviesPerPageInLibrary.phone;
 };
 
+
 export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
+
   let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
     await fetchUserDataFromFirestore(userId);
   console.log(
@@ -169,7 +162,9 @@ export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
     filmsCollection,
     filmsWatched
   );
+
   const filmsPerPage = checkMediaQueries();
+
   const numberofPages = Math.ceil(amountOfFilms / filmsPerPage);
   const startIndex = filmsPerPage * (pageNr - 1);
   const endIndex =
@@ -178,12 +173,14 @@ export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
       : startIndex + filmsPerPage;
   const filmsOnPage = filmsCollection.slice(startIndex, endIndex);
   console.log(startIndex, endIndex);
+
   return { filmsOnPage, total_pages: numberofPages, amountOfFilms };
 };
 export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
   let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
     await fetchUserDataFromFirestore(userId);
   const filmsPerPage = checkMediaQueries();
+
   const numberofPages = Math.ceil(amountOfWatchedFilms / filmsPerPage);
   const startIndex = filmsPerPage * (pageNr - 1);
   const endIndex =
@@ -192,6 +189,8 @@ export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
       : startIndex + filmsPerPage;
   const filmsOnPage = filmsWatched.slice(startIndex, endIndex);
   console.log(startIndex, endIndex);
+
   return { filmsOnPage, total_pages: numberofPages, amountOfWatchedFilms };
 };
-///
+
+
