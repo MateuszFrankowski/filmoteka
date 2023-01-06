@@ -10,7 +10,7 @@ import {
   fetchWatchedFilmsPerPage,
   fetchQueueFilmsPerPage,
 } from './fireBaseFunctions';
-import { off } from 'process';
+// import { off } from 'process';
 
 // <========> HOW USE PAGINATION <========>
 //
@@ -154,14 +154,12 @@ const changePage = async () => {
   let { page, fetchType, query } = dataMovies;
   let movies = {};
 
-
   const url = new URL(document.URL);
   url.hash = `page${dataMovies.page}`;
   let newUrl = url.href;
   document.location.href = newUrl;
 
-
-  //potrzebne to? let id = {};
+  let id = {};
 
   switch (fetchType) {
     case 'home':
