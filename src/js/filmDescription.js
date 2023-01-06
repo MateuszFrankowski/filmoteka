@@ -89,7 +89,9 @@ export const modalMovieInfo = async movieId => {
     <ul class="modal__list">
     <li class="modal__items">
         <p class="modal__info">Vote / Votes</p>
-        <p class="modal__data"><span class="modal__vote">${movie.vote_average}</span><span class="modal__info">/</span>${movie.vote_count}</p>
+        <p class="modal__data"><span class="modal__vote">${
+          movie.vote_average
+        }</span><span class="modal__info">/</span>${movie.vote_count}</p>
     </li>
     <li class="modal__items">
         <p class="modal__info">Popularity</p>  
@@ -166,8 +168,9 @@ export const modalMovieInfo = async movieId => {
 </div>`;
 
     modal.innerHTML = markup;
-};
+  }
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") modal.classList.add('is-hidden');
-});
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') modal.classList.add('is-hidden');
+  });
+};
