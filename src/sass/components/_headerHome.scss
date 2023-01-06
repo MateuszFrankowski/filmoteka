@@ -93,6 +93,13 @@
                 right: 0px;
             }
         }
+        &--library {
+            margin-right: 40px;
+        }
+    }
+    &__icons-box {
+        display: inline;
+        position: relative;
     }
     &__input-box {
         position: relative;
@@ -134,4 +141,18 @@
             right: calc(33.3% + 5px);
         }
     }
+}
+
+.icon {
+    width: 1em;
+    height: 1em;
+    stroke-width: 0;
+    fill: #FFFFFF;
+    cursor: pointer;
+    overflow: visible;
+    position: absolute;
+}
+
+.hidden {
+    display: none;
 }
