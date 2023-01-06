@@ -60,7 +60,6 @@ export const updateUserQueueData = async (
       amountOfFilms--;
     }
 
-
     const updateWatchStatus = await updateDoc(docRef, {
       uid: userId,
       amountOfFilms: amountOfFilms,
@@ -70,7 +69,6 @@ export const updateUserQueueData = async (
     });
   } else {
     try {
-
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,
@@ -118,7 +116,6 @@ export const updateUserWatchedData = async (
     });
   } else {
     try {
-
       const docRef = await setDoc(doc(db, 'films', userId.toString()), {
         createdAt: Timestamp.fromDate(new Date('December 10, 1815')),
         uid: userId,
@@ -136,9 +133,7 @@ export const updateUserWatchedData = async (
 export const deleteUserData = async userId => {
   // delete all user data
 
-
   const updateDocument = await deleteDoc(doc(db, 'films', userId.toString()));
-
 };
 const checkMediaQueries = () => {
   if (window.matchMedia('(min-width: 1024px)')) {
@@ -151,9 +146,7 @@ const checkMediaQueries = () => {
   return moviesPerPageInLibrary.phone;
 };
 
-
 export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
-
   let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
     await fetchUserDataFromFirestore(userId);
   console.log(
@@ -192,5 +185,3 @@ export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
 
   return { filmsOnPage, total_pages: numberofPages, amountOfWatchedFilms };
 };
-
-

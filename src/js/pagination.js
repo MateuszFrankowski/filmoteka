@@ -1,10 +1,14 @@
-import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api';
+import {
+  fetchTheMovieDBList,
+  fetchTheMovieDBMovie,
+  fetchTheMovieDBMovieIdList,
+} from './api';
 import { dataMovies } from './global';
 import { createMovies } from './gallery';
 import { addLoaderSpinner } from './loaderSpinner';
 import {
   fetchWatchedFilmsPerPage,
-  fetchUserDataFromFirestore,
+  fetchQueueFilmsPerPage,
 } from './fireBaseFunctions';
 
 // <========> HOW USE PAGINATION <========>
@@ -147,18 +151,32 @@ const buttonListener = e => {
 const changePage = async () => {
   let { page, fetchType, query } = dataMovies;
   let movies = {};
+  let id = {};
   switch (fetchType) {
     case 'home':
       movies = await fetchTheMovieDBList(page, query);
+
       break;
     case 'watched':
       //movies = await fetchTheMovieDBList(page, query)
-      movies = fetchQueueFilmsPerPage(window.userUid, page);
+      id = fetchQueueFilmsPerPage(window.userUid, page);
+      movies = await fetchTheMovieDBMovieIdList(
+        id.filmsOnPage,
+        page,
+        id.total_pages,
+        id.amountOfWatchedFilms
+      );
       // change to // movies = await for fireBase API watched ======================================================================
       break;
     case 'queue':
       // add // movies = await for fireBase API queue ==============================================================================
-      movies = await fetchWatchedFilmsPerPage(window.userUid, page);
+      id = await fetchWatchedFilmsPerPage(window.userUid, page);
+      movies = await fetchTheMovieDBMovieIdList(
+        id.filmsOnPage,
+        page,
+        id.total_pages,
+        id.amountOfWatchedFilms
+      );
       break;
     default:
       break;
