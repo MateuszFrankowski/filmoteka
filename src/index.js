@@ -3,4 +3,3 @@ import './sass/main.scss';
 import { footerModalFunction } from './js/footerModal';
 
 footerModalFunction();
-
