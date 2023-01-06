@@ -110,12 +110,12 @@ padding-bottom: 10px;
     background: get(bg-decorative);
     border-radius: 5px;
     margin: 0;
-    left: 128px;
+    
   }
   &__add-btns {
     display: flex;
     flex-direction: row;
-    gap: 14.85px;
+    gap: 15px;
     padding-top: 21px;
   }
   &__watched-btn,
@@ -133,9 +133,9 @@ padding-bottom: 10px;
     background: none;
     border: 1px solid get(bg-alternative);
     border-radius: 5px;
+    cursor: pointer;
 
     &:hover, &:focus {
-      cursor: pointer;
       background: get(bg-decorative);
       border: 1px solid get(bg-decorative);
       color: get(text-alternative);
@@ -171,6 +171,11 @@ padding-bottom: 40px;
     &__more{
         width: 264px;
     }
+    &__watched-btn,
+  &__queue-btn{
+    width: 125.03px;
+height: 44px;
+  }
    }
 }
 
@@ -178,12 +183,13 @@ padding-bottom: 40px;
 .modal{
     width: 882px;
     padding-left: 30px;
-    padding-right: 30px;
+    
     &__poster{
         width: 396px;
-height: 477.8px;
+
 padding-top: 50px;
 padding-bottom: 40.2px;
+height:100%;
     }
     &__data{
         left:608px;
@@ -191,6 +197,17 @@ padding-bottom: 40.2px;
     }
     &__title {
         font-size: 30px;}
+        &__description{
+            padding-top:50px;
+        }
+        &__more{
+            width: 396px;
+        }
+        &__watched-btn,
+  &__queue-btn{
+    width: 136px;
+height: 44px;
+  }
 }
 }
 

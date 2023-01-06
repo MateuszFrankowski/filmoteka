@@ -97,7 +97,7 @@ export const modalMovieInfo = async movieId => {
     </li>
     <li class="modal__items">
         <p class="modal__info">Original Title</p>
-        <p class="modal__data">${movie.original_title}</p>
+        <p class="modal__data">${upperCase(movie.original_title)}</p>
    </li>
     <li class="modal__items">
         <p class="modal__info">Genre</p>
@@ -166,9 +166,8 @@ export const modalMovieInfo = async movieId => {
 </div>`;
 
     modal.innerHTML = markup;
-
-    const closeModalBtn = document.querySelector('[data-modal-close]');
-    closeModalBtn.addEventListener('click', showModal);
-  }
-  //deleteUserData(window.userUid);
 };
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") modal.classList.add('is-hidden');
+});

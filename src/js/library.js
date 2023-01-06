@@ -3,6 +3,7 @@ import { fetchTheMovieDBList } from './api'
 import { dataMovies } from "./global";
 import { addLoaderSpinner } from './loaderSpinner';
 import { createMovies } from './gallery'
+import { clickGallery } from "./gallery";
 
 const startPage = async () => {
     dataMovies.fetchType = "watched";
@@ -21,6 +22,7 @@ const startPage = async () => {
   addLoaderSpinner();
     // function to creating gallery
     createMovies(movies)
+    clickGallery();
     //
     loadPage();
     // yours listeners using start movies variable in function
