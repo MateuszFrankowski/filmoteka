@@ -47,8 +47,9 @@ export const createMovies = async movies => {
                   </figcaption>
               </figure>
         </li>
-          `);
-  
+          `
+  );
+
   galleryContainer[0].innerHTML = markup.join('');
 };
 //-------------- Function rounding rating to 1 place after comma--------------//

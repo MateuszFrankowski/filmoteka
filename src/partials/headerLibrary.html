@@ -11,11 +11,19 @@
         <a href="index.html" class="library-header__subsite">Home</a>
         <a
           href="library.html"
-          class="library-header__subsite library-header__subsite--active"
+          class="library-header__subsite library-header__subsite--active library-header__subsite--library"
           id="libraryBtn"
           hidden="true"
           >My library</a
         >
+        <div class="library-header__icons-box">
+          <svg class="icon icon-login">
+            <use href="./images/icons.svg#icon-enter"></use>
+          </svg>
+          <svg class="icon icon-logout hidden">
+            <use href="./images/icons.svg#icon-exit"></use>
+          </svg>
+        </div>
       </div>
     </nav>
     <section class="library-header__no-user" id="whenSignedOut">
