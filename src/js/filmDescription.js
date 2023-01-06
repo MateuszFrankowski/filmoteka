@@ -108,4 +108,10 @@ export const modalMovieInfo = async movieId => {
   closeModalBtn.addEventListener('click', showModal);
   //deleteUserData(window.userUid);
 
+
+
 };
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") modal.classList.add('is-hidden');
+});

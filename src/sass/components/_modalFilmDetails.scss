@@ -115,7 +115,7 @@ padding-bottom: 10px;
   &__add-btns {
     display: flex;
     flex-direction: row;
-    gap: 14.85px;
+    gap: 15px;
     padding-top: 21px;
   }
   &__watched-btn,
@@ -133,9 +133,9 @@ padding-bottom: 10px;
     background: none;
     border: 1px solid get(bg-alternative);
     border-radius: 5px;
+    cursor: pointer;
 
     &:hover, &:focus {
-      cursor: pointer;
       background: get(bg-decorative);
       border: 1px solid get(bg-decorative);
       color: get(text-alternative);
@@ -171,6 +171,11 @@ padding-bottom: 40px;
     &__more{
         width: 264px;
     }
+    &__watched-btn,
+  &__queue-btn{
+    width: 125.03px;
+height: 44px;
+  }
    }
 }
 
@@ -202,11 +207,6 @@ height:100%;
   &__queue-btn{
     width: 136px;
 height: 44px;
-  }
-  &__add-btns {
-    
-    gap: 15px;
-    
   }
 }
 }
