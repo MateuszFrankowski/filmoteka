@@ -15,14 +15,16 @@ import { clickGallery } from './gallery';
 
 const startPage = async () => {
   dataMovies.fetchType = 'home';
-  dataMovies.page = Number(location.hash.substr(5));
+  // dataMovies.page = Number(location.hash.substr(5));
+  dataMovies.page = 1;
   dataMovies.query = null;
   addLoaderSpinner();
   // yours listeners no using start movies variable in function
 
   //
   const movies = await fetchTheMovieDBList(dataMovies.page, dataMovies.query);
-  dataMovies.page = Number(location.hash.substr(5));
+  // dataMovies.page = Number(location.hash.substr(5));
+  dataMovies.page = 1;
   console.log(movies.page);
   dataMovies.totalPages = movies.total_pages;
   if (movies.total_pages > 0) {
@@ -36,9 +38,9 @@ const startPage = async () => {
   loadPage();
   // yours listeners using start movies variable in function
   //
-  if (performance.navigation.type == 2) {
-    location.reload(true);
-  }
+  // if (performance.navigation.type == 2) {
+  //   location.reload(true);
+  // }
 };
 
 startPage();
@@ -54,7 +56,7 @@ startPage();
 //     window.location.reload();
 //   }
 // });
-window.addEventListener('locationchange', function () {
-  // console.log('location changed!');
-  window.location.reload();
-});
+// window.addEventListener('locationchange', function () {
+//   // console.log('location changed!');
+//   window.location.reload();
+// });
