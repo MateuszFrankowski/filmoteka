@@ -154,10 +154,10 @@ const changePage = async () => {
   let { page, fetchType, query } = dataMovies;
   let movies = {};
 
-  const url = new URL(document.URL);
-  url.hash = `page${dataMovies.page}`;
-  let newUrl = url.href;
-  document.location.href = newUrl;
+  // const url = new URL(document.URL);
+  // url.hash = `page${dataMovies.page}`;
+  // let newUrl = url.href;
+  // document.location.href = newUrl;
 
   let id = {};
 
