@@ -1,9 +1,3 @@
-export const dataMovies = {
-  page: 1,
-  totalPages: 1,
-  query: '',
-  fetchType: '',
-};
 import { getFirestore } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
@@ -25,3 +19,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+export const dataMovies = {
+  page: 1,
+  totalPages: 1,
+  query: '',
+  fetchType: '',
+};
