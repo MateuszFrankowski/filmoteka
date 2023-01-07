@@ -2,7 +2,7 @@ import {
   fetchTheMovieDBList,
   fetchTheMovieDBMovie,
   fetchTheMovieDBMovieIdList,
-} from './api';
+} from './apiFetch';
 import { dataMovies } from './global';
 import { createMovies } from './gallery';
 import { addLoaderSpinner } from './loaderSpinner';

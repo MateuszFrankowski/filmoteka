@@ -1,5 +1,5 @@
 import { pagination, loadPage } from './pagination';
-import { fetchTheMovieDBList } from './api';
+import { fetchTheMovieDBList } from './apiFetch';
 import { dataMovies } from './global';
 import { addLoaderSpinner } from './loaderSpinner';
 import { createMovies } from './gallery';
