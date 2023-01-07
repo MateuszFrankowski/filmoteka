@@ -1,4 +1,4 @@
-import { fetchTheMovieDBList } from './api';
+import { fetchTheMovieDBList } from './apiFetch';
 import { addLoaderSpinner } from './loaderSpinner';
 import { modalMovieInfo } from './filmDescription';
 

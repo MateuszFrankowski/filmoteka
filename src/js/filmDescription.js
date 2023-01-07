@@ -1,4 +1,4 @@
-import { fetchTheMovieDBMovie } from './api';
+import { fetchTheMovieDBMovie } from './apiFetch';
 import {
   updateUserWatchedData,
   updateUserQueueData,
