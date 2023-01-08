@@ -68,7 +68,7 @@ export const modalMovieInfo = async movieId => {
       firebaseFilms,
       movieId
     ); // jeżeli nie ma filmu zwróć add to watched i add to queue
-    console.log('elo', filmWatched, filmInQueue);
+
     isSigned = true;
     btnInnerText = {
       filmWatched,
