@@ -30,11 +30,13 @@ import {
 // // dataMovies.fetchType -> to choose: "home", "watched", "queue"
 // // dataMovies.query -> searching text movie from index.js input (in library.html not usable)
 
-export const pagination = () => {
+export const pagination = async () => {
   const paginationList = document.querySelector('#pages');
   const markup = markupPages();
   const markupList = createMarkupList(markup);
   paginationList.innerHTML = markupList;
+  // const test = await fetchWatchedFilmsPerPage(window.userUid, 1);
+  // console.log(test);
 };
 
 const markupPages = () => {
@@ -179,6 +181,7 @@ const changePage = async () => {
       break;
     case 'queue':
       // add // movies = await for fireBase API queue ==============================================================================
+
       id = await fetchWatchedFilmsPerPage(window.userUid, page);
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
