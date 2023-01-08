@@ -1,8 +1,6 @@
-import { pagination, loadPage } from './pagination';
-import { fetchTheMovieDBList } from './apiFetch';
 import { dataMovies } from './global';
-import { addLoaderSpinner } from './loaderSpinner';
-import { createMovies } from './gallery';
+import { loadPage } from './loadPage';
+import { changePage } from './pagination';
 import { clickGallery } from './gallery';
 // import {
 //   fetchUserDataFromFirestore,
@@ -18,26 +16,10 @@ const startPage = async () => {
   // dataMovies.page = Number(location.hash.substr(5));
   dataMovies.page = 1;
   dataMovies.query = null;
-  addLoaderSpinner();
-  // yours listeners no using start movies variable in function
-
-  //
-  const movies = await fetchTheMovieDBList(dataMovies.page, dataMovies.query);
-  // dataMovies.page = Number(location.hash.substr(5));
-  dataMovies.page = 1;
-  console.log(movies.page);
-  dataMovies.totalPages = movies.total_pages;
-  if (movies.total_pages > 0) {
-    pagination();
-  }
-  // function to creating gallery
-  createMovies(movies);
-  clickGallery();
-  //
 
   loadPage();
-  // yours listeners using start movies variable in function
-  //
+  clickGallery();
+  changePage();
   // if (performance.navigation.type == 2) {
   //   location.reload(true);
   // }
