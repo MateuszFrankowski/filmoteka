@@ -86,7 +86,7 @@ export const createMovies = async movies => {
 // `;
 //   libraryGrid.insertAdjacentHTML('beforeend', markup);
 
-const roundTo1Comma = num => {
+export const roundTo1Comma = num => {
   let roundNum = Math.round(num * 10) / 10;
   if (roundNum === Math.round(roundNum)) {
     roundNum = roundNum + '.0';
