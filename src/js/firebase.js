@@ -26,7 +26,6 @@ window.userUid = '';
 signInBtn.onclick = () => signInWithPopup(auth, provider);
 signInIcon.onclick = () => signInWithPopup(auth, provider);
 
-
 signOutBtn.onclick = () =>
   signOut(auth)
     .then(() => {
@@ -35,7 +34,7 @@ signOutBtn.onclick = () =>
     .catch(error => {
       // An error happened.
     });
-signOutIcon.onclick = () => 
+signOutIcon.onclick = () =>
   signOut(auth)
     .then(() => {
       window.userSigned = false;
@@ -49,19 +48,19 @@ auth.onAuthStateChanged(user => {
     // signed in
     signInIcon.classList.add('hidden');
     signOutIcon.classList.remove('hidden');
-    whenSignedIn.hidden = false;
-    whenSignedOut.hidden = true;
+    whenSignedIn.classList.remove('hidden');
+    whenSignedOut.classList.add('hidden');
     userDetails.innerHTML = `<h3>Hello ${user.displayName}!</h3>`;
-    myLibrary.hidden = false;
+    myLibrary.classList.remove('hidden');
     window.userUid = true;
   } else {
     // not signed in
     signInIcon.classList.remove('hidden');
     signOutIcon.classList.add('hidden');
-    whenSignedIn.hidden = true;
-    whenSignedOut.hidden = false;
+    whenSignedIn.classList.add('hidden');
+    whenSignedOut.classList.remove('hidden');
     userDetails.innerHTML = '';
-    myLibrary.hidden = true;
+    myLibrary.classList.add('hidden');
     window.userUid = false;
 
     if (window.location.href.search('index.html') === -1) {
@@ -70,7 +69,6 @@ auth.onAuthStateChanged(user => {
     }
   }
 });
-
 ///// Firestore /////
 
 let unsubscribe;
@@ -81,30 +79,6 @@ auth.onAuthStateChanged(async user => {
 
     window.userSigned = true;
     window.userUid = user.uid;
-    //testy
-    // let data = await fetchUserDataFromFirestore(window.userUid);
-    // console.log('moje filmy', data);
-    // await updateUserQueueData(window.userUid, 16, true);
-    // await updateUserQueueData(window.userUid, 12, true);
-    // await updateUserQueueData(window.userUid, 14, true);
-    // let data2 = await fetchUserDataFromFirestore(window.userUid);
-    // console.log('moje filmy po dodaniu trzech filmów do kolejki', data2);
-    // await updateUserWatchedData(window.userUid, 12, true);
-    // let data3 = await fetchUserDataFromFirestore(window.userUid);
-    // console.log('dodanie filmu 12 do obejrzenych', data3);
-    // const test1 = await fetchQueueFilmsPerPage(window.userUid, 1, filmsPerPage);
-    // const test2 = await fetchWatchedFilmsPerPage(window.userUid, 1, filmsPerPage);
-    // console.log(test1);
-    // console.log(test2);
-    //testy
-    // await updateUserWatchedData(window.userUid, 12, false);
-    // let data4 = await fetchUserDataFromFirestore(window.userUid);
-    // console.log('usunięcie filmu 12 z obejrzenych', data4);
-    // await updateUserQueueData(window.userUid, 12, false);
-    // let data5 = await fetchUserDataFromFirestore(window.userUid);
-    // console.log('usunięcie filmu 12', data5);
-    // await deleteUserData(window.userUid);
-    //
 
     unsubscribe = onSnapshot(doc(db, 'films', user.uid.toString()), doc => {
       console.log('Current data: ', doc.data());

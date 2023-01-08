@@ -11,7 +11,7 @@ let addToQueueBtn;
 let movie;
 const modal = document.querySelector('[data-modal]');
 const watchedHandler = event => {
-  if (event.target.classList.contains('active') !== true) return;
+  if (event.target.classList.contains('modal__watched-btn') !== true) return;
   if (event.target.innerText === 'ADD TO WATCHED') {
     updateUserWatchedData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM WATCHED';
@@ -48,14 +48,14 @@ const checkIfFilmInBase = (films, id) => {
 };
 function showModal() {
   modal.classList.toggle('is-hidden');
-  if (modal.classList.contains('is-hidden')) {
-    addToQueueBtn.removeEventListener('click', event => {
-      'click', queueHandler(event);
-    });
-    addToWatchBtn.removeEventListenera('click', event => {
-      watchedHandler(event);
-    });
-  }
+  // if (modal.classList.contains('is-hidden')) {
+  //   addToQueueBtn.removeEventListener('click', event => {
+  //     'click', queueHandler(event);
+  //   });
+  //   addToWatchBtn.removeEventListenera('click', event => {
+  //     watchedHandler(event);
+  //   });
+  // }
 }
 export const modalMovieInfo = async movieId => {
   showModal();
@@ -138,11 +138,7 @@ export const modalMovieInfo = async movieId => {
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
     addToQueueBtn = document.querySelector('.modal__queue-btn');
-    addToWatchBtn.addEventListener('click', event => {
-      watchedHandler(event);
-    });
-    addToQueueBtn.addEventListener('click', event => {
-      queueHandler(event);
-    });
+    addToWatchBtn.addEventListener('click', watchedHandler);
+    addToQueueBtn.addEventListener('click', queueHandler);
   }
 };
