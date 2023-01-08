@@ -173,6 +173,7 @@ export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
   return { filmsOnPage, total_pages: numberofPages, amountOfFilms };
 };
 export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
+  console.log('check ids', userId, pageNr);
   let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
     await fetchUserDataFromFirestore(userId);
   const filmsPerPage = checkMediaQueries();
