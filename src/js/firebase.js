@@ -1,9 +1,8 @@
 // // Import the functions you need from the SDKs you need
-import { doc } from 'firebase/firestore';
 
 import { onSnapshot } from 'firebase/firestore';
 import { signInWithPopup, signOut, GoogleAuthProvider } from 'firebase/auth';
-import { db, auth } from './global';
+import { db, auth, doc } from './global';
 
 //
 const whenSignedIn = document.getElementById('whenSignedIn');
