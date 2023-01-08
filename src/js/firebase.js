@@ -6,16 +6,11 @@ import { db, auth, doc } from './global';
 
 //
 const loginHandling = () => {
-  const whenSignedIn = document.getElementById('whenSignedIn');
-  const whenSignedOut = document.getElementById('whenSignedOut');
   const myLibrary = document.getElementById('libraryBtn');
 
-  const signInBtn = document.getElementById('signInBtn');
-  const signOutBtn = document.getElementById('signOutBtn');
   const signInIcon = document.querySelector('svg.icon-login');
   const signOutIcon = document.querySelector('svg.icon-logout');
-
-  const userDetails = document.getElementById('userDetails');
+  const userDetails = document.querySelector('p.home-header__greeting, p.library-header__greeting')
 
   const provider = new GoogleAuthProvider();
   window.userSigned = false;
@@ -23,17 +18,8 @@ const loginHandling = () => {
 
   /// Sign in event handlers
 
-  signInBtn.onclick = () => signInWithPopup(auth, provider);
   signInIcon.onclick = () => signInWithPopup(auth, provider);
 
-  signOutBtn.onclick = () =>
-    signOut(auth)
-      .then(() => {
-        window.userSigned = false;
-      })
-      .catch(error => {
-        // An error happened.
-      });
   signOutIcon.onclick = () =>
     signOut(auth)
       .then(() => {
@@ -48,17 +34,13 @@ const loginHandling = () => {
       // signed in
       signInIcon.classList.add('hidden');
       signOutIcon.classList.remove('hidden');
-      whenSignedIn.classList.remove('hidden');
-      whenSignedOut.classList.add('hidden');
-      userDetails.innerHTML = `<h3>Hello ${user.displayName}!</h3>`;
+      userDetails.innerHTML = `Hello ${user.displayName}!`;
       myLibrary.classList.remove('hidden');
       window.userUid = true;
     } else {
       // not signed in
       signInIcon.classList.remove('hidden');
       signOutIcon.classList.add('hidden');
-      whenSignedIn.classList.add('hidden');
-      whenSignedOut.classList.remove('hidden');
       userDetails.innerHTML = '';
       myLibrary.classList.add('hidden');
       window.userUid = false;

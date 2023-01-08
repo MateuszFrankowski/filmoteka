@@ -101,6 +101,14 @@
         display: inline;
         position: relative;
     }
+    &__greeting {
+        color: #fff;
+        position: absolute;
+        right: -25px;
+        white-space: nowrap;
+        top: 27px;
+        font-size: 18px;
+    }
     &__input-box {
         position: relative;
         text-align: center;
