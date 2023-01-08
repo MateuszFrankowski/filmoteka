@@ -1,16 +1,13 @@
 import {
   updateDoc,
-  doc,
   getDoc,
   getDocs,
   setDoc,
   deleteDoc,
-  updateDoc,
   Timestamp,
-  updateDoc,
 } from 'firebase/firestore';
 
-import { db } from './global';
+import { db, doc } from './global';
 
 const moviesPerPageInLibrary = {
   phone: 4,
