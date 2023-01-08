@@ -28,8 +28,14 @@ export const fetchUserDataFromFirestore = async userId => {
 
     return userFilms;
   } else {
-    // doc.data() will be undefined in this case
-    return console.log('No such document!');
+    await updateUserQueueData(userId, 1, false);
+    let userFilms = {
+      amountOfFilms: 0,
+      amountOfWatchedFilms: 0,
+      filmsCollection: [],
+      filmsWatched: [],
+    };
+    return userFilms;
   }
 };
 export const updateUserQueueData = async (
@@ -167,6 +173,7 @@ export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
   return { filmsOnPage, total_pages: numberofPages, amountOfFilms };
 };
 export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
+  console.log('check ids', userId, pageNr);
   let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
     await fetchUserDataFromFirestore(userId);
   const filmsPerPage = checkMediaQueries();
