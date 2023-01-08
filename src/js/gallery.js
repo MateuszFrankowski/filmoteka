@@ -24,8 +24,8 @@ import { modalMovieInfo } from './filmDescription';
 //gallery
 export const createMovies = async movies => {
   const galleryContainer = document.getElementsByClassName('gallery');
-  console.log(galleryContainer[0]);
-  console.log(movies);
+  // console.log(galleryContainer[0]);
+  // console.log(movies);
   const markup = movies.data.map(
     data =>
       `<li  data-film_id="${data.id}">

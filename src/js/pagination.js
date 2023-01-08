@@ -1,34 +1,6 @@
-import {
-  fetchTheMovieDBList,
-  fetchTheMovieDBMovie,
-  fetchTheMovieDBMovieIdList,
-} from './apiFetch';
 import { dataMovies } from './global';
-import { createMovies } from './gallery';
-import { addLoaderSpinner } from './loaderSpinner';
-import {
-  fetchWatchedFilmsPerPage,
-  fetchQueueFilmsPerPage,
-} from './fireBaseFunctions';
+import { loadPage } from './loadPage';
 // import { off } from 'process';
-
-// <========> HOW USE PAGINATION <========>
-//
-// <===> Use pagination in start <===>
-// import { dataMovies } from './global';
-// dataMovies.page = number; // if you want change it
-// dataMovies.totalPages = number; // if you want change it
-// pagination();
-// // only create a page buttons
-//
-// <===> Listener for buttons <===>
-// import { dataMovies } from './global';
-// dataMovies.fetchType = string; // if you want change it
-// dataMovies.query = string; // if you want change it
-// loadPage()
-// // eventListener to load movies when click a button
-// // dataMovies.fetchType -> to choose: "home", "watched", "queue"
-// // dataMovies.query -> searching text movie from index.js input (in library.html not usable)
 
 export const pagination = () => {
   const paginationList = document.querySelector('#pages');
@@ -126,19 +98,22 @@ const createMarkupList = markup => {
 
 ///////////////////////////////////////
 
-const buttonListener = e => {
+export const changePage = () => {
+  const pages = document.querySelector('.pages__list');
+  pages.addEventListener('click', e => pageButtonListener(e));
+};
+
+const pageButtonListener = e => {
   if (e.target.type !== 'button') {
     return;
   }
   let { page } = dataMovies;
   const btn = e.target;
   const newPage = btn.dataset.page;
-  console.log(btn);
   if (Number(newPage) === page) {
     return;
   }
 
-  addLoaderSpinner();
   if (!isNaN(newPage)) {
     dataMovies.page = Number(newPage);
   } else if (newPage === 'after') {
@@ -147,61 +122,5 @@ const buttonListener = e => {
     dataMovies.page = page - 1;
   }
 
-  changePage();
-};
-
-const changePage = async () => {
-  let { page, fetchType, query } = dataMovies;
-  let movies = {};
-
-  // const url = new URL(document.URL);
-  // url.hash = `page${dataMovies.page}`;
-  // let newUrl = url.href;
-  // document.location.href = newUrl;
-
-  let id = {};
-
-  switch (fetchType) {
-    case 'home':
-      movies = await fetchTheMovieDBList(page, query);
-
-      break;
-    case 'watched':
-      //movies = await fetchTheMovieDBList(page, query)
-      id = fetchQueueFilmsPerPage(window.userUid, page);
-      movies = await fetchTheMovieDBMovieIdList(
-        id.filmsOnPage,
-        page,
-        id.total_pages,
-        id.amountOfWatchedFilms
-      );
-      // change to // movies = await for fireBase API watched ======================================================================
-      break;
-    case 'queue':
-      // add // movies = await for fireBase API queue ==============================================================================
-      id = await fetchWatchedFilmsPerPage(window.userUid, page);
-      movies = await fetchTheMovieDBMovieIdList(
-        id.filmsOnPage,
-        page,
-        id.total_pages,
-        id.amountOfWatchedFilms
-      );
-      break;
-    default:
-      break;
-  }
-  if (movies.total_pages === 0) {
-    return;
-  }
-  if (page === dataMovies.page) {
-    pagination();
-    createMovies(movies);
-    document.querySelector('.gallery').scrollIntoView(true);
-    console.log(`${fetchType}:`, movies);
-  }
-};
-
-export const loadPage = () => {
-  const pages = document.querySelector('.pages__list');
-  pages.addEventListener('click', e => buttonListener(e));
+  loadPage();
 };

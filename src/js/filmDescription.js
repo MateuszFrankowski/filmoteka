@@ -67,7 +67,7 @@ export const modalMovieInfo = async movieId => {
     const { filmWatched, filmInQueue } = checkIfFilmInBase(
       firebaseFilms,
       movieId
-    ); // jeżeli nie ma filmu zwróć add to watched i add to queue
+    ); // do Mateusza -> jeżeli nie ma filmu zwróć "add to watched" i "add to queue" w filmWatched i filmInQueue
 
     isSigned = true;
     btnInnerText = {
