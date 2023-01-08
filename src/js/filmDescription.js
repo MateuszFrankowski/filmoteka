@@ -5,12 +5,13 @@ import {
   deleteUserData,
   fetchUserDataFromFirestore,
 } from './fireBaseFunctions';
+import { roundTo1Comma } from './gallery';
 let addToWatchBtn;
 let addToQueueBtn;
 let movie;
 const modal = document.querySelector('[data-modal]');
 const watchedHandler = event => {
-  if (event.target.classList.contains('modal__watched-btn') !== true) return;
+  if (event.target.classList.contains('active') !== true) return;
   if (event.target.innerText === 'ADD TO WATCHED') {
     updateUserWatchedData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM WATCHED';
@@ -34,57 +35,45 @@ const queueHandler = event => {
     addToWatchBtn.innerText = 'ADD TO WATCHED';
   }
 };
-
 const checkIfFilmInBase = (films, id) => {
-  console.log('filmy', films, id, films.filmsCollection.indexOf(id));
-  console.log(films.filmsCollection[0], id.toString(), typeof id);
-  const inQueue =
-    films.filmsCollection.indexOf(parseInt(id)) != -1
+  const inWatched =
+    films.filmsWatched.indexOf(parseInt(id)) == -1
       ? 'ADD TO WATCHED'
       : 'REMOVE FROM WATCHED';
-  const inWatched =
-    films.filmsWatched.indexOf(parseInt(id)) != -1
+  const inQueue =
+    films.filmsCollection.indexOf(parseInt(id)) == -1
       ? 'ADD TO QUEUE'
       : 'REMOVE FROM QUEUE';
-  return { filmWatched: inQueue, filmInQueue: inWatched };
+  return { filmWatched: inWatched, filmInQueue: inQueue };
 };
 function showModal() {
   modal.classList.toggle('is-hidden');
-  //   if (modal.classList.contains('is-hidden')) {
-  //     addToQueueBtn.removeEventListener(
-  //       'click',
-  //       updateUserWatchedData(window.userUid, movie.movieId, true)
-  //     );
-  //     addToWatchBtn.removeEventListener('click', () => {
-  //       // if (btn.innerText === 'ADD TO WATCHED') {
-  //       //   updateUserQueueData(window.userUid, movie.movieId, false);
-  //       // } else {
-  //       //   btn.innerText = 'REMOVE FROM WATCHED';
-  //       updateUserQueueData(window.userUid, movie.movieId, true);
-  //       // }
-  //     });
-  //   }
+  if (modal.classList.contains('is-hidden')) {
+    addToQueueBtn.removeEventListener('click', event => {
+      'click', queueHandler(event);
+    });
+    addToWatchBtn.removeEventListenera('click', event => {
+      watchedHandler(event);
+    });
+  }
 }
-
 export const modalMovieInfo = async movieId => {
   showModal();
   movie = await fetchTheMovieDBMovie(movieId);
-
   const firebaseFilms = await fetchUserDataFromFirestore(window.userUid);
-
   let isSigned = false;
   let btnInnerText = {};
-
   if (window.userSigned) {
     const { filmWatched, filmInQueue } = checkIfFilmInBase(
       firebaseFilms,
       movieId
     ); // jeżeli nie ma filmu zwróć add to watched i add to queue
+    console.log('elo', filmWatched, filmInQueue);
     isSigned = true;
     btnInnerText = {
       filmWatched,
       filmInQueue,
-      class: '',
+      class: 'active-btn',
       isDisabled: '',
     };
   } else {
@@ -95,7 +84,6 @@ export const modalMovieInfo = async movieId => {
       isDisabled: 'disabled',
     };
   }
-
   const markup = `
 <div class="modal">
 <button class="modal__close-btn" data-modal-close>
@@ -104,19 +92,23 @@ export const modalMovieInfo = async movieId => {
 <img class="modal__poster" src="${movie.poster_path}"
     alt="poster image of ${movie.title}" />
     <div class="modal__description">
-    <h2 class="modal__title">${movie.title}</h2> 
+    <h2 class="modal__title">${movie.title}</h2>
     <ul class="modal__list">
     <li class="modal__items">
         <p class="modal__info">Vote / Votes</p>
-        <p class="modal__data"><span class="modal__vote">${movie.vote_average}</span><span class="modal__info">/</span>${movie.vote_count}</p>
+        <p class="modal__data"><span class="modal__vote">${roundTo1Comma(
+          movie.vote_average
+        )}</span><span class="modal__info"> / </span>${movie.vote_count}</p>
     </li>
     <li class="modal__items">
-        <p class="modal__info">Popularity</p>  
-        <p class="modal__data">${movie.popularity}</p>
+        <p class="modal__info">Popularity</p>
+        <p class="modal__data">${roundTo1Comma(movie.popularity)}</p>
     </li>
     <li class="modal__items">
         <p class="modal__info">Original Title</p>
-        <p class="modal__data">${movie.original_title}</p>
+        <p class="modal__data modal__data-original-title">${
+          movie.original_title
+        }</p>
    </li>
     <li class="modal__items">
         <p class="modal__info">Genre</p>
@@ -128,20 +120,21 @@ export const modalMovieInfo = async movieId => {
     <p class="modal__more">${movie.overview}</p>
     </div>
 <div class="modal__add-btns">
-<button class="modal__watched-btn ${btnInnerText.class}" ${btnInnerText.isDisabled}>${btnInnerText.filmWatched}</button>
-<button class="modal__queue-btn ${btnInnerText.class}" ${btnInnerText.isDisabled}>${btnInnerText.filmInQueue}</button>
+<button class="modal__watched-btn ${btnInnerText.class}" ${
+    btnInnerText.isDisabled
+  }>${btnInnerText.filmWatched}</button>
+<button class="modal__queue-btn ${btnInnerText.class}" ${
+    btnInnerText.isDisabled
+  }>${btnInnerText.filmInQueue}</button>
 </div>
 </div>
 </div>`;
-
   modal.innerHTML = markup;
-
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') modal.classList.add('is-hidden');
   });
-
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
     addToQueueBtn = document.querySelector('.modal__queue-btn');
