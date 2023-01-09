@@ -18,6 +18,7 @@ $colors: (
   'btn-focus-secondary': #d5cdcd,
 
   //Shadows
+  'btn-hover-shadow': rgb(0, 0, 0, 0.5),
 );
 
 @function get($var) {
