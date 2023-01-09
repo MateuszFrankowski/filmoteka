@@ -118,7 +118,7 @@ export const modalMovieInfo = async movieId => {
    </li>
     <li class="modal__items">
         <p class="modal__info">Genre</p>
-        <p class="modal__data">${movie.genres}</p>
+        <p class="modal__data">${movie.genres.join(', ')}</p>
     </li>
 </ul>
 <div>
