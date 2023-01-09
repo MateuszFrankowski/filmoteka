@@ -7,10 +7,35 @@ import {
 } from './fireBaseFunctions';
 import { roundTo1Comma } from './gallery';
 import { addLoaderFilmSpinner } from './loaderSpinnerFilmDetail';
+import { loadPage } from './loadPage';
 let addToWatchBtn;
 let addToQueueBtn;
 let movie;
+let oldQueueFilmStatus;
+let oldWatchFilmStatus;
+let newQueueFilmStatus;
+let newWatchFilmStatus;
 const modal = document.querySelector('[data-modal]');
+const checkUpdateStatus = () => {
+  console.log(
+    'oldQueueFilmStatus,',
+    oldQueueFilmStatus,
+    'newQueueFilmStatus ,',
+    newQueueFilmStatus,
+    'oldWatchFilmStatus,',
+    oldWatchFilmStatus,
+    '   newWatchFilmStatus,',
+    newWatchFilmStatus
+  );
+
+  if (
+    oldQueueFilmStatus != newQueueFilmStatus ||
+    oldWatchFilmStatus != newWatchFilmStatus
+  ) {
+    console.log('przeładowanie');
+    loadPage();
+  }
+};
 const watchedHandler = event => {
   if (event.target.classList.contains('modal__watched-btn') !== true) return;
   if (event.target.classList.contains('active-btn') != true) {
@@ -19,11 +44,14 @@ const watchedHandler = event => {
     updateUserWatchedData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM WATCHED';
     addToQueueBtn.innerText = 'ADD TO QUEUE';
+    newWatchFilmStatus = true;
+    newQueueFilmStatus = false;
   } else {
     event.target.classList.remove('active-btn');
     updateUserWatchedData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO WATCHED';
     addToQueueBtn.innerText = 'ADD TO QUEUE';
+    newWatchFilmStatus = false;
   }
 };
 const queueHandler = event => {
@@ -35,11 +63,14 @@ const queueHandler = event => {
     updateUserQueueData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM QUEUE';
     addToWatchBtn.innerText = 'ADD TO WATCHED';
+    newQueueFilmStatus = true;
+    newWatchFilmStatus = false;
   } else {
     event.target.classList.remove('active-btn');
     updateUserQueueData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO QUEUE';
     addToWatchBtn.innerText = 'ADD TO WATCHED';
+    newQueueFilmStatus = false;
   }
 };
 const checkIfFilmInBase = (films, id) => {
@@ -49,16 +80,24 @@ const checkIfFilmInBase = (films, id) => {
   let classWatched = '';
   if (films.filmsWatched.indexOf(parseInt(id)) == -1) {
     inWatched = 'ADD TO WATCHED';
+    oldWatchFilmStatus = false;
+    newWatchFilmStatus = false;
   } else {
     inWatched = 'REMOVE FROM WATCHED';
     classWatched = 'active-btn';
+    oldWatchFilmStatus = true;
+    newWatchFilmStatus = true;
   }
 
   if (films.filmsCollection.indexOf(parseInt(id)) == -1) {
     inQueue = 'ADD TO QUEUE';
+    oldQueueFilmStatus = false;
+    newQueueFilmStatus = false;
   } else {
     inQueue = 'REMOVE FROM QUEUE';
     classQueue = 'active-btn';
+    oldQueueFilmStatus = true;
+    newQueueFilmStatus = true;
   }
   return {
     filmWatched: inWatched,
@@ -72,6 +111,8 @@ function showModal() {
   if (modal.classList.contains('is-hidden')) {
     addToQueueBtn.removeEventListener('click', queueHandler, true);
     addToWatchBtn.removeEventListener('click', watchedHandler, true);
+    console.log('checks status wywołanie');
+    checkUpdateStatus();
   }
 }
 export const modalMovieInfo = async movieId => {
@@ -152,11 +193,18 @@ export const modalMovieInfo = async movieId => {
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') modal.classList.add('is-hidden');
+    if (event.key === 'Escape') {
+      modal.classList.add('is-hidden');
+      console.log('checks status wywołanie');
+      checkUpdateStatus();
+    }
   });
   modal.addEventListener('click', event => {
-    if (!document.querySelector('div.modal').contains(event.target))
+    if (!document.querySelector('div.modal').contains(event.target)) {
       modal.classList.add('is-hidden');
+      console.log('checks status wywołanie');
+      checkUpdateStatus();
+    }
   });
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
