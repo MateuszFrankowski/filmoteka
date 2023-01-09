@@ -68,14 +68,10 @@ const checkIfFilmInBase = (films, id) => {
 };
 function showModal() {
   modal.classList.toggle('is-hidden');
-  // if (modal.classList.contains('is-hidden')) {
-  //   addToQueueBtn.removeEventListener('click', event => {
-  //     'click', queueHandler(event);
-  //   });
-  //   addToWatchBtn.removeEventListenera('click', event => {
-  //     watchedHandler(event);
-  //   });
-  // }
+  if (modal.classList.contains('is-hidden')) {
+    addToQueueBtn.removeEventListener('click', queueHandler, true);
+    addToWatchBtn.removeEventListener('click', watchedHandler, true);
+  }
 }
 export const modalMovieInfo = async movieId => {
   showModal();
@@ -86,7 +82,6 @@ export const modalMovieInfo = async movieId => {
   if (window.userSigned) {
     const { filmWatched, filmInQueue, watchedClass, queueClass } =
       checkIfFilmInBase(firebaseFilms, movieId);
-    console.log('elo', 'watched', watchedClass, 'queue', queueClass);
     isSigned = true;
     btnInnerText = {
       filmWatched,
@@ -151,7 +146,6 @@ export const modalMovieInfo = async movieId => {
 </div>
 </div>
 </div>`;
-  console.log(markup);
   modal.innerHTML = markup;
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
@@ -165,13 +159,7 @@ export const modalMovieInfo = async movieId => {
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
     addToQueueBtn = document.querySelector('.modal__queue-btn');
-    addToWatchBtn.addEventListener('click', watchedHandler);
-    addToQueueBtn.addEventListener('click', queueHandler);
+    addToWatchBtn.addEventListener('click', watchedHandler, true);
+    addToQueueBtn.addEventListener('click', queueHandler, true);
   }
-  // if (addToWatchBtn.innerText === 'REMOVE FROM WATCHED') {
-  //   addToWatchBtn.classList.add('active-btn');
-  // }
-  // if (addToQueueBtn.innerText === 'REMOVE FROM QUEUE') {
-  //   addToQueueBtn.classList.add('active-btn');
-  // }
 };
