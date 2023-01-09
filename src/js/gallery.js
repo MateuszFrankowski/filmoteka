@@ -50,6 +50,7 @@ export const createMovies = async movies => {
           `
   );
 
+  galleryContainer[0].classList.add('grid');
   galleryContainer[0].innerHTML = markup.join('');
 };
 //-------------- Function rounding rating to 1 place after comma--------------//
