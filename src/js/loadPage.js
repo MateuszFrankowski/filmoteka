@@ -35,10 +35,6 @@ export const loadPage = async (changePage = false) => {
 
       break;
     case 'watched':
-      //movies = await fetchTheMovieDBList(page, query)
-      console.log(
-        `3) check user id \r\n uid: ${window.userUid} \r\n page: ${page}`
-      );
       id = await fetchWatchedFilmsPerPage(window.userUid, page);
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
@@ -46,10 +42,8 @@ export const loadPage = async (changePage = false) => {
         id.total_pages,
         id.amountOfWatchedFilms
       );
-      // change to // movies = await for fireBase API watched ======================================================================
       break;
     case 'queue':
-      // add // movies = await for fireBase API queue ==============================================================================
       id = await fetchQueueFilmsPerPage(window.userUid, page);
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
@@ -73,6 +67,5 @@ export const loadPage = async (changePage = false) => {
     if (changePage) {
       document.querySelector('.gallery').scrollIntoView(true);
     }
-    console.log(`${fetchType}:`, movies);
   }
 };

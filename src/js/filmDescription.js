@@ -55,7 +55,7 @@ const watchedHandler = event => {
   }
 };
 const queueHandler = event => {
-  console.log('hello', event.target.classList.contains('modal__queue-btn'));
+  // console.log('hello', event.target.classList.contains('modal__queue-btn'));
   if (event.target.classList.contains('modal__queue-btn') !== true) return;
   if (event.target.classList.contains('active-btn') != true) {
     addToWatchBtn.classList.remove('active-btn');
