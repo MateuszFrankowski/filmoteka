@@ -12,7 +12,7 @@ let movie;
 const modal = document.querySelector('[data-modal]');
 const watchedHandler = event => {
   if (event.target.classList.contains('modal__watched-btn') !== true) return;
-  if (event.target.innerText === 'ADD TO WATCHED') {
+  if (event.target.classList.contains('active-btn') != true) {
     event.target.classList.add('active-btn');
     addToQueueBtn.classList.remove('active-btn');
     updateUserWatchedData(window.userUid, movie.id, true);
@@ -28,7 +28,7 @@ const watchedHandler = event => {
 const queueHandler = event => {
   console.log('hello', event.target.classList.contains('modal__queue-btn'));
   if (event.target.classList.contains('modal__queue-btn') !== true) return;
-  if (event.target.innerText === 'ADD TO QUEUE') {
+  if (event.target.classList.contains('active-btn') != true) {
     addToWatchBtn.classList.remove('active-btn');
     event.target.classList.add('active-btn');
     updateUserQueueData(window.userUid, movie.id, true);
