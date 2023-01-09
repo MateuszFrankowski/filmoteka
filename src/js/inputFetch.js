@@ -1,12 +1,14 @@
 import { dataMovies } from './global';
 import { pagination } from './pagination.js';
 import { fetchTheMovieDBList } from './apiFetch';
+import { addLoaderSpinner } from './loaderSpinner';
 
 const debounce = require('lodash.debounce');
 const moviesGallery = document.querySelector('ul.gallery');
 const movieInput = document.querySelector('input.home-header__searchbar');
 
 const renderGallery = async () => {
+  addLoaderSpinner();
   dataMovies.page = 1;
   dataMovies.fetchType = 'home';
   dataMovies.query = movieInput.value;
@@ -32,6 +34,7 @@ const renderGallery = async () => {
         </li>`;
   });
   pagination();
+  moviesGallery.classList.add('grid');
   moviesGallery.innerHTML = markupArr.join('');
 };
 
