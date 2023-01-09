@@ -3,7 +3,7 @@ import { loadPage } from './loadPage';
 import { changePage } from './pagination';
 import { clickGallery } from './gallery';
 import { loginHandling } from './firebase';
-import { changeDataMoviesFromUrl, changeUrlWithBrowser, checkStartUrl } from './urlSearchParams';
+import { changeUrlWithBrowser, checkStartUrl } from './urlSearchParams';
 // import {
 //   fetchUserDataFromFirestore,
 //   addUserDataToFirestore,
@@ -26,7 +26,6 @@ const startPage = async () => {
   // if (performance.navigation.type == 2) {
   //   location.reload(true);
   // }
-  
 };
 
 startPage();
