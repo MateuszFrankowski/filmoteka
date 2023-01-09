@@ -2,11 +2,15 @@ import { dataMovies } from './global';
 import { loadPage } from './loadPage';
 // import { off } from 'process';
 
+
 export const pagination = () => {
+
   const paginationList = document.querySelector('#pages');
   const markup = markupPages();
   const markupList = createMarkupList(markup);
   paginationList.innerHTML = markupList;
+  // const test = await fetchWatchedFilmsPerPage(window.userUid, 1);
+  // console.log(test);
 };
 
 const markupPages = () => {
