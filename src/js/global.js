@@ -1,4 +1,4 @@
-import { getFirestore, doc } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
@@ -16,10 +16,9 @@ const firebaseConfig = {
 // Initialize Firebase
 // firebase.initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-export { doc };
 
 export const dataMovies = {
   page: 1,

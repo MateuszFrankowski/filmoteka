@@ -6,8 +6,8 @@ import {
   deleteDoc,
   Timestamp,
 } from 'firebase/firestore';
-
-import { db, doc } from './global';
+import { doc } from 'firebase/firestore';
+import { db } from './global';
 
 const moviesPerPageInLibrary = {
   phone: 4,

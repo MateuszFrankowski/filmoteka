@@ -22,7 +22,7 @@ import {
 // loadPage();
 //
 
-export const loadPage = async () => {
+export const loadPage = async (changePage = false) => {
   addLoaderSpinner();
   let { page, fetchType, query } = dataMovies;
   let movies = {};
@@ -36,7 +36,10 @@ export const loadPage = async () => {
       break;
     case 'watched':
       //movies = await fetchTheMovieDBList(page, query)
-      id = fetchQueueFilmsPerPage(window.userUid, page);
+      console.log(
+        `3) check user id \r\n uid: ${window.userUid} \r\n page: ${page}`
+      );
+      id = await fetchQueueFilmsPerPage(window.userUid, page);
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
         page,
@@ -67,7 +70,9 @@ export const loadPage = async () => {
   if (page === dataMovies.page) {
     pagination();
     createMovies(movies);
-    document.querySelector('.gallery').scrollIntoView(true);
+    if (changePage) {
+      document.querySelector('.gallery').scrollIntoView(true);
+    }
     console.log(`${fetchType}:`, movies);
   }
 };
