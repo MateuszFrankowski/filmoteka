@@ -12,17 +12,18 @@
 .grid,
 .library__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: auto;
   grid-gap: 10px;
   list-style-type: none;
   position: relative;
+  grid-column-gap: 30px;
 }
 
 // Tablet 768-1200//
 @media screen and (min-width: 768px) {
   .grid,
   .library__grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto auto;
   }
 }
 
@@ -30,6 +31,6 @@
 @media screen and (min-width: 1200px) {
   .grid,
   .library__grid {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: auto auto auto;
   }
 }
