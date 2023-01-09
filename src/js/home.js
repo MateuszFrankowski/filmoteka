@@ -17,7 +17,7 @@ const startPage = async () => {
   dataMovies.page = 1;
   dataMovies.query = null;
 
-  loadPage();
+  await loadPage();
   clickGallery();
   changePage();
   // if (performance.navigation.type == 2) {
