@@ -135,9 +135,9 @@
     color: get(text-primary);
     background: none;
     border: 1px solid get(bg-alternative);
-    &:hover,
-    &:focus {
-      opacity: 0.8;
+   &:hover {
+      box-shadow: 6px 6px 16px get(btn-hover-shadow);
+      transition: box-shadow 0.25s linear;
     }
   }
 }
@@ -188,6 +188,7 @@
       height: 100%;
       padding-top: 50px;
       padding-bottom: 40.2px;
+      border-radius: 5px;
     }
     &__data {
       left: 608px;
@@ -219,11 +220,8 @@
   background: get(bg-decorative);
   border: 1px solid get(bg-decorative);
   color: get(text-alternative);
-  &:hover,
-  &:focus {
-    opacity: 0.8;
-  }
 }
 .no-active-btn {
   opacity: 0.65;
+  cursor:auto;
 }

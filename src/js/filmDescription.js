@@ -13,10 +13,13 @@ const modal = document.querySelector('[data-modal]');
 const watchedHandler = event => {
   if (event.target.classList.contains('modal__watched-btn') !== true) return;
   if (event.target.innerText === 'ADD TO WATCHED') {
+    event.target.classList.add('active-btn');
+    addToQueueBtn.classList.remove('active-btn');
     updateUserWatchedData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM WATCHED';
     addToQueueBtn.innerText = 'ADD TO QUEUE';
   } else {
+    event.target.classList.remove('active-btn');
     updateUserWatchedData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO WATCHED';
     addToQueueBtn.innerText = 'ADD TO QUEUE';
@@ -26,10 +29,13 @@ const queueHandler = event => {
   console.log('hello', event.target.classList.contains('modal__queue-btn'));
   if (event.target.classList.contains('modal__queue-btn') !== true) return;
   if (event.target.innerText === 'ADD TO QUEUE') {
+    addToWatchBtn.classList.remove('active-btn');
+    event.target.classList.add('active-btn');
     updateUserQueueData(window.userUid, movie.id, true);
     event.target.innerText = 'REMOVE FROM QUEUE';
     addToWatchBtn.innerText = 'ADD TO WATCHED';
   } else {
+    event.target.classList.remove('active-btn');
     updateUserQueueData(window.userUid, movie.id, false);
     event.target.innerText = 'ADD TO QUEUE';
     addToWatchBtn.innerText = 'ADD TO WATCHED';
@@ -73,7 +79,7 @@ export const modalMovieInfo = async movieId => {
     btnInnerText = {
       filmWatched,
       filmInQueue,
-      class: 'active-btn',
+      class: '',
       isDisabled: '',
     };
   } else {
@@ -141,4 +147,11 @@ export const modalMovieInfo = async movieId => {
     addToWatchBtn.addEventListener('click', watchedHandler);
     addToQueueBtn.addEventListener('click', queueHandler);
   }
-};
+  if(addToWatchBtn.innerText === 'REMOVE FROM WATCHED') {
+    addToWatchBtn.classList.add('active-btn');
+  }
+  if(addToQueueBtn.innerText === 'REMOVE FROM QUEUE') {
+    addToQueueBtn.classList.add('active-btn');
+  }
+}
+
