@@ -141,6 +141,9 @@ export const modalMovieInfo = async movieId => {
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') modal.classList.add('is-hidden');
   });
+  modal.addEventListener('click', (event) => {
+    if (!document.querySelector('div.modal').contains(event.target)) modal.classList.add('is-hidden');
+  });
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
     addToQueueBtn = document.querySelector('.modal__queue-btn');

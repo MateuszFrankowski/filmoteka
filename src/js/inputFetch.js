@@ -2,6 +2,7 @@ import { dataMovies } from './global';
 import { pagination } from './pagination.js';
 import { fetchTheMovieDBList } from './apiFetch';
 import { addLoaderSpinner } from './loaderSpinner';
+import { roundTo1Comma } from './gallery';
 
 const debounce = require('lodash.debounce');
 const moviesGallery = document.querySelector('ul.gallery');
@@ -26,7 +27,7 @@ const renderGallery = async () => {
                         <p>${element.genres.join(', ')}</p>
                         <p>${element.release_year}</p>
                         <div class="rating rating--visible">${
-                          element.vote_average
+                          roundTo1Comma(element.vote_average)
                         }</div>
                     </div>
                 </figcaption>
