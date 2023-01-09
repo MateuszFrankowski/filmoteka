@@ -6,13 +6,14 @@ import {
   fetchUserDataFromFirestore,
 } from './fireBaseFunctions';
 import { roundTo1Comma } from './gallery';
+import { addLoaderFilmSpinner } from './loaderSpinnerFilmDetail';
 let addToWatchBtn;
 let addToQueueBtn;
 let movie;
 const modal = document.querySelector('[data-modal]');
 const watchedHandler = event => {
   if (event.target.classList.contains('modal__watched-btn') !== true) return;
-  if (event.target.innerText === 'ADD TO WATCHED') {
+  if (event.target.classList.contains('active-btn') != true) {
     event.target.classList.add('active-btn');
     addToQueueBtn.classList.remove('active-btn');
     updateUserWatchedData(window.userUid, movie.id, true);
@@ -28,7 +29,7 @@ const watchedHandler = event => {
 const queueHandler = event => {
   console.log('hello', event.target.classList.contains('modal__queue-btn'));
   if (event.target.classList.contains('modal__queue-btn') !== true) return;
-  if (event.target.innerText === 'ADD TO QUEUE') {
+  if (event.target.classList.contains('active-btn') != true) {
     addToWatchBtn.classList.remove('active-btn');
     event.target.classList.add('active-btn');
     updateUserQueueData(window.userUid, movie.id, true);
@@ -42,44 +43,54 @@ const queueHandler = event => {
   }
 };
 const checkIfFilmInBase = (films, id) => {
-  const inWatched =
-    films.filmsWatched.indexOf(parseInt(id)) == -1
-      ? 'ADD TO WATCHED'
-      : 'REMOVE FROM WATCHED';
-  const inQueue =
-    films.filmsCollection.indexOf(parseInt(id)) == -1
-      ? 'ADD TO QUEUE'
-      : 'REMOVE FROM QUEUE';
-  return { filmWatched: inWatched, filmInQueue: inQueue };
+  let inWatched;
+  let inQueue;
+  let classQueue = '';
+  let classWatched = '';
+  if (films.filmsWatched.indexOf(parseInt(id)) == -1) {
+    inWatched = 'ADD TO WATCHED';
+  } else {
+    inWatched = 'REMOVE FROM WATCHED';
+    classWatched = 'active-btn';
+  }
+
+  if (films.filmsCollection.indexOf(parseInt(id)) == -1) {
+    inQueue = 'ADD TO QUEUE';
+  } else {
+    inQueue = 'REMOVE FROM QUEUE';
+    classQueue = 'active-btn';
+  }
+  return {
+    filmWatched: inWatched,
+    filmInQueue: inQueue,
+    watchedClass: classWatched,
+    queueClass: classQueue,
+  };
 };
 function showModal() {
   modal.classList.toggle('is-hidden');
-  // if (modal.classList.contains('is-hidden')) {
-  //   addToQueueBtn.removeEventListener('click', event => {
-  //     'click', queueHandler(event);
-  //   });
-  //   addToWatchBtn.removeEventListenera('click', event => {
-  //     watchedHandler(event);
-  //   });
-  // }
+  if (modal.classList.contains('is-hidden')) {
+    addToQueueBtn.removeEventListener('click', queueHandler, true);
+    addToWatchBtn.removeEventListener('click', watchedHandler, true);
+  }
 }
 export const modalMovieInfo = async movieId => {
   showModal();
+  addLoaderFilmSpinner();
   movie = await fetchTheMovieDBMovie(movieId);
   const firebaseFilms = await fetchUserDataFromFirestore(window.userUid);
   let isSigned = false;
   let btnInnerText = {};
   if (window.userSigned) {
-    const { filmWatched, filmInQueue } = checkIfFilmInBase(
-      firebaseFilms,
-      movieId
-    ); // do Mateusza -> jeżeli nie ma filmu zwróć "add to watched" i "add to queue" w filmWatched i filmInQueue
-
+    const { filmWatched, filmInQueue, watchedClass, queueClass } =
+      checkIfFilmInBase(firebaseFilms, movieId);
     isSigned = true;
     btnInnerText = {
       filmWatched,
       filmInQueue,
       class: '',
+      classQueue: queueClass,
+      classWatched: watchedClass,
       isDisabled: '',
     };
   } else {
@@ -88,6 +99,8 @@ export const modalMovieInfo = async movieId => {
       filmInQueue: 'Add to queue',
       class: 'no-active-btn',
       isDisabled: 'disabled',
+      classQueue: '',
+      classWatched: '',
     };
   }
   const markup = `
@@ -118,7 +131,7 @@ export const modalMovieInfo = async movieId => {
    </li>
     <li class="modal__items">
         <p class="modal__info">Genre</p>
-        <p class="modal__data">${movie.genres}</p>
+        <p class="modal__data">${movie.genres.join(', ')}</p>
     </li>
 </ul>
 <div>
@@ -126,12 +139,12 @@ export const modalMovieInfo = async movieId => {
     <p class="modal__more">${movie.overview}</p>
     </div>
 <div class="modal__add-btns">
-<button class="modal__watched-btn ${btnInnerText.class}" ${
-    btnInnerText.isDisabled
-  }>${btnInnerText.filmWatched}</button>
-<button class="modal__queue-btn ${btnInnerText.class}" ${
-    btnInnerText.isDisabled
-  }>${btnInnerText.filmInQueue}</button>
+<button class="modal__watched-btn ${btnInnerText.class}${
+    btnInnerText.classWatched
+  }" ${btnInnerText.isDisabled}>${btnInnerText.filmWatched}</button>
+<button class="modal__queue-btn ${btnInnerText.class}${
+    btnInnerText.classQueue
+  }" ${btnInnerText.isDisabled}>${btnInnerText.filmInQueue}</button>
 </div>
 </div>
 </div>`;
@@ -141,17 +154,14 @@ export const modalMovieInfo = async movieId => {
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') modal.classList.add('is-hidden');
   });
+  modal.addEventListener('click', event => {
+    if (!document.querySelector('div.modal').contains(event.target))
+      modal.classList.add('is-hidden');
+  });
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
     addToQueueBtn = document.querySelector('.modal__queue-btn');
-    addToWatchBtn.addEventListener('click', watchedHandler);
-    addToQueueBtn.addEventListener('click', queueHandler);
+    addToWatchBtn.addEventListener('click', watchedHandler, true);
+    addToQueueBtn.addEventListener('click', queueHandler, true);
   }
-  if(addToWatchBtn.innerText === 'REMOVE FROM WATCHED') {
-    addToWatchBtn.classList.add('active-btn');
-  }
-  if(addToQueueBtn.innerText === 'REMOVE FROM QUEUE') {
-    addToQueueBtn.classList.add('active-btn');
-  }
-}
-
+};

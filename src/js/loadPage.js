@@ -40,7 +40,7 @@ export const loadPage = async (changePage = false) => {
       console.log(
         `3) check user id \r\n uid: ${window.userUid} \r\n page: ${page}`
       );
-      id = await fetchQueueFilmsPerPage(window.userUid, page);
+      id = await fetchWatchedFilmsPerPage(window.userUid, page);
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
         page,
@@ -51,7 +51,7 @@ export const loadPage = async (changePage = false) => {
       break;
     case 'queue':
       // add // movies = await for fireBase API queue ==============================================================================
-      id = await fetchWatchedFilmsPerPage(window.userUid, page);
+      id = await fetchQueueFilmsPerPage(window.userUid, page);
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
         page,
