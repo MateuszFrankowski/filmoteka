@@ -54,9 +54,9 @@ const createMarkupList = markup => {
       `<li><button class="pages__btn pages__rim" type="button" data-page="before">&#x3c;</button></li>`
     );
   } else if (totalPages > 1) {
-    markupList.push(`<li><p class="pages__btn pages__rim pages__rim--disabled">
-          &#x3c;
-        </p></li>`);
+    markupList.push(
+      `<li><p class="pages__btn pages__rim pages__rim--disabled">&#x3c;</p></li>`
+    );
   }
   markup.forEach(pageNr => {
     let classLi = '';
@@ -88,9 +88,7 @@ const createMarkupList = markup => {
   });
   if (page < totalPages) {
     markupList.push(
-      `<li><button class="pages__btn pages__rim" type="button" data-page="after">
-          &#x3e;
-        </button></li>`
+      `<li><button class="pages__btn pages__rim" type="button" data-page="after">&#x3e;</button></li>`
     );
   } else if (totalPages > 1) {
     markupList.push(`<li><p class="pages__btn pages__rim pages__rim--disabled">
@@ -126,7 +124,5 @@ const pageButtonListener = e => {
     dataMovies.page = page - 1;
   }
 
-
-  loadPage();
-
+  loadPage(true);
 };

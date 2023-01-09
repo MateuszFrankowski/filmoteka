@@ -2,6 +2,7 @@ import { dataMovies } from './global';
 import { loadPage } from './loadPage';
 import { changePage } from './pagination';
 import { clickGallery } from './gallery';
+import { loginHandling } from './firebase';
 // import {
 //   fetchUserDataFromFirestore,
 //   addUserDataToFirestore,
@@ -12,6 +13,7 @@ import { clickGallery } from './gallery';
 // } from './firebase';
 
 const startPage = async () => {
+  await loginHandling();
   dataMovies.fetchType = 'home';
   // dataMovies.page = Number(location.hash.substr(5));
   dataMovies.page = 1;

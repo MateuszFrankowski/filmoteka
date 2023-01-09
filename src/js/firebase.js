@@ -2,10 +2,12 @@
 
 import { onSnapshot } from 'firebase/firestore';
 import { signInWithPopup, signOut, GoogleAuthProvider } from 'firebase/auth';
-import { db, auth, doc } from './global';
+import { db, auth } from './global';
+import { doc } from 'firebase/firestore';
+import { loadPage } from './loadPage';
 
 //
-const loginHandling = () => {
+export const loginHandling = async () => {
   const myLibrary = document.getElementById('libraryBtn');
 
   const signInIcon = document.querySelector('svg.icon-login');
@@ -17,7 +19,6 @@ const loginHandling = () => {
   window.userUid = '';
 
   /// Sign in event handlers
-
   signInIcon.onclick = () => signInWithPopup(auth, provider);
 
   signOutIcon.onclick = () =>
@@ -29,7 +30,10 @@ const loginHandling = () => {
         // An error happened.
       });
 
+  console.log('2a) before function to add uid');
+
   auth.onAuthStateChanged(user => {
+    console.log('2b) add uid');
     if (user) {
       // signed in
       signInIcon.classList.add('hidden');
@@ -51,11 +55,12 @@ const loginHandling = () => {
       }
     }
   });
+  console.log('2c) after function to add uid');
   ///// Firestore /////
 
   let unsubscribe;
 
-  auth.onAuthStateChanged(async user => {
+  auth.onAuthStateChanged(user => {
     if (user) {
       // Database Reference
 
@@ -70,5 +75,21 @@ const loginHandling = () => {
       unsubscribe && unsubscribe();
     }
   });
+
+  await getUserStatus()
+    .then(result => console.log(result))
+    .catch(error => console.log(error));
 };
-loginHandling();
+// loginHandling();
+
+const getUserStatus = async store => {
+  return new Promise(function (resolve, reject) {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        resolve(user.uid);
+      } else {
+        reject(Error('It broke'));
+      }
+    });
+  });
+};
