@@ -1,6 +1,7 @@
 import { dataMovies } from './global';
 import { pagination } from './pagination.js';
 import { fetchTheMovieDBList } from './apiFetch';
+import { add_params } from './pagination';
 
 const debounce = require('lodash.debounce');
 const moviesGallery = document.querySelector('ul.gallery');
@@ -10,6 +11,7 @@ const renderGallery = async () => {
   dataMovies.page = 1;
   dataMovies.fetchType = 'home';
   dataMovies.query = movieInput.value;
+  add_params('movie', movieInput.value);
   const result = await fetchTheMovieDBList(dataMovies.page, movieInput.value);
   dataMovies.totalPages = result.total_pages;
   const markupArr = result.data.map(element => {

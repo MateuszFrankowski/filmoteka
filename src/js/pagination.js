@@ -125,8 +125,17 @@ const createMarkupList = markup => {
 };
 
 ///////////////////////////////////////
-
+export function add_params(key, value) {
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.set(key, value);
+  const newRelativePathQuery =
+    window.location.pathname + '?' + searchParams.toString();
+  history.pushState(null, '', newRelativePathQuery);
+}
+////////////////////////////////////////
 const buttonListener = e => {
+  add_params('page', dataMovies.page);
+
   if (e.target.type !== 'button') {
     return;
   }

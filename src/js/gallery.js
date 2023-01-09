@@ -24,6 +24,7 @@ import { modalMovieInfo } from './filmDescription';
 //gallery
 export const createMovies = async movies => {
   const galleryContainer = document.getElementsByClassName('gallery');
+  galleryContainer[0].classList.add('grid');
   console.log(galleryContainer[0]);
   console.log(movies);
   const markup = movies.data.map(

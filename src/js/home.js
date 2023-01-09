@@ -16,7 +16,8 @@ import { clickGallery } from './gallery';
 const startPage = async () => {
   dataMovies.fetchType = 'home';
   // dataMovies.page = Number(location.hash.substr(5));
-  dataMovies.page = 1;
+  // dataMovies.page = 1;
+  dataMovies.page = Number(window.location.search.substr(6));
   dataMovies.query = null;
   addLoaderSpinner();
   // yours listeners no using start movies variable in function
