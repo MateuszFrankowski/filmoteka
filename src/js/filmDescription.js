@@ -42,15 +42,29 @@ const queueHandler = event => {
   }
 };
 const checkIfFilmInBase = (films, id) => {
-  const inWatched =
-    films.filmsWatched.indexOf(parseInt(id)) == -1
-      ? 'ADD TO WATCHED'
-      : 'REMOVE FROM WATCHED';
-  const inQueue =
-    films.filmsCollection.indexOf(parseInt(id)) == -1
-      ? 'ADD TO QUEUE'
-      : 'REMOVE FROM QUEUE';
-  return { filmWatched: inWatched, filmInQueue: inQueue };
+  let inWatched;
+  let inQueue;
+  let classQueue = '';
+  let classWatched = '';
+  if (films.filmsWatched.indexOf(parseInt(id)) == -1) {
+    inWatched = 'ADD TO WATCHED';
+  } else {
+    inWatched = 'REMOVE FROM WATCHED';
+    classWatched = 'active-btn';
+  }
+
+  if (films.filmsCollection.indexOf(parseInt(id)) == -1) {
+    inQueue = 'ADD TO QUEUE';
+  } else {
+    inQueue = 'REMOVE FROM QUEUE';
+    classQueue = 'active-btn';
+  }
+  return {
+    filmWatched: inWatched,
+    filmInQueue: inQueue,
+    watchedClass: classWatched,
+    queueClass: classQueue,
+  };
 };
 function showModal() {
   modal.classList.toggle('is-hidden');
@@ -70,16 +84,16 @@ export const modalMovieInfo = async movieId => {
   let isSigned = false;
   let btnInnerText = {};
   if (window.userSigned) {
-    const { filmWatched, filmInQueue } = checkIfFilmInBase(
-      firebaseFilms,
-      movieId
-    ); // do Mateusza -> jeżeli nie ma filmu zwróć "add to watched" i "add to queue" w filmWatched i filmInQueue
-
+    const { filmWatched, filmInQueue, watchedClass, queueClass } =
+      checkIfFilmInBase(firebaseFilms, movieId);
+    console.log('elo', 'watched', watchedClass, 'queue', queueClass);
     isSigned = true;
     btnInnerText = {
       filmWatched,
       filmInQueue,
       class: '',
+      classQueue: queueClass,
+      classWatched: watchedClass,
       isDisabled: '',
     };
   } else {
@@ -88,6 +102,8 @@ export const modalMovieInfo = async movieId => {
       filmInQueue: 'Add to queue',
       class: 'no-active-btn',
       isDisabled: 'disabled',
+      classQueue: '',
+      classWatched: '',
     };
   }
   const markup = `
@@ -126,23 +142,25 @@ export const modalMovieInfo = async movieId => {
     <p class="modal__more">${movie.overview}</p>
     </div>
 <div class="modal__add-btns">
-<button class="modal__watched-btn ${btnInnerText.class}" ${
-    btnInnerText.isDisabled
-  }>${btnInnerText.filmWatched}</button>
-<button class="modal__queue-btn ${btnInnerText.class}" ${
-    btnInnerText.isDisabled
-  }>${btnInnerText.filmInQueue}</button>
+<button class="modal__watched-btn ${btnInnerText.class}${
+    btnInnerText.classWatched
+  }" ${btnInnerText.isDisabled}>${btnInnerText.filmWatched}</button>
+<button class="modal__queue-btn ${btnInnerText.class}${
+    btnInnerText.classQueue
+  }" ${btnInnerText.isDisabled}>${btnInnerText.filmInQueue}</button>
 </div>
 </div>
 </div>`;
+  console.log(markup);
   modal.innerHTML = markup;
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') modal.classList.add('is-hidden');
   });
-  modal.addEventListener('click', (event) => {
-    if (!document.querySelector('div.modal').contains(event.target)) modal.classList.add('is-hidden');
+  modal.addEventListener('click', event => {
+    if (!document.querySelector('div.modal').contains(event.target))
+      modal.classList.add('is-hidden');
   });
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
@@ -150,11 +168,10 @@ export const modalMovieInfo = async movieId => {
     addToWatchBtn.addEventListener('click', watchedHandler);
     addToQueueBtn.addEventListener('click', queueHandler);
   }
-  if(addToWatchBtn.innerText === 'REMOVE FROM WATCHED') {
-    addToWatchBtn.classList.add('active-btn');
-  }
-  if(addToQueueBtn.innerText === 'REMOVE FROM QUEUE') {
-    addToQueueBtn.classList.add('active-btn');
-  }
-}
-
+  // if (addToWatchBtn.innerText === 'REMOVE FROM WATCHED') {
+  //   addToWatchBtn.classList.add('active-btn');
+  // }
+  // if (addToQueueBtn.innerText === 'REMOVE FROM QUEUE') {
+  //   addToQueueBtn.classList.add('active-btn');
+  // }
+};
