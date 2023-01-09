@@ -9,7 +9,7 @@ import {
 import { doc } from 'firebase/firestore';
 import { db } from './global';
 
-const moviesPerPageInLibrary = {
+export const moviesPerPageInLibrary = {
   phone: 4,
   tablet: 8,
   laptop: 9,
@@ -140,12 +140,12 @@ export const deleteUserData = async userId => {
   const updateDocument = await deleteDoc(doc(db, 'films', userId.toString()));
 };
 const checkMediaQueries = () => {
-  if (window.matchMedia('(min-width: 1024px)')) {
+  if (window.matchMedia('(min-width: 1200px)').matches) {
     return moviesPerPageInLibrary.laptop;
   }
-  if (window.matchMedia('(min-width: 768px)')) {
+  if (window.matchMedia('(min-width: 768px)').matches) {
     // If media query matches
-    return moviesPerPageInLibrary.laptop;
+    return moviesPerPageInLibrary.tablet;
   }
   return moviesPerPageInLibrary.phone;
 };
@@ -153,12 +153,12 @@ const checkMediaQueries = () => {
 export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
   let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
     await fetchUserDataFromFirestore(userId);
-  console.log(
-    amountOfFilms,
-    amountOfWatchedFilms,
-    filmsCollection,
-    filmsWatched
-  );
+  // console.log(
+  //   amountOfFilms,
+  //   amountOfWatchedFilms,
+  //   filmsCollection,
+  //   filmsWatched
+  // );
 
   const filmsPerPage = checkMediaQueries();
 
@@ -169,12 +169,13 @@ export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
       ? amountOfFilms + 1
       : startIndex + filmsPerPage;
   const filmsOnPage = filmsCollection.slice(startIndex, endIndex);
-  console.log(startIndex, endIndex);
+  // console.log(startIndex, endIndex);
 
   return { filmsOnPage, total_pages: numberofPages, amountOfFilms };
 };
+
 export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
-  console.log('check ids', userId, pageNr);
+  // console.log('check ids', userId, pageNr);
   let { amountOfFilms, amountOfWatchedFilms, filmsCollection, filmsWatched } =
     await fetchUserDataFromFirestore(userId);
   const filmsPerPage = checkMediaQueries();
@@ -186,7 +187,7 @@ export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
       ? amountOfWatchedFilms + 1
       : startIndex + filmsPerPage;
   const filmsOnPage = filmsWatched.slice(startIndex, endIndex);
-  console.log(startIndex, endIndex);
+  // console.log(startIndex, endIndex);
 
   return { filmsOnPage, total_pages: numberofPages, amountOfWatchedFilms };
 };

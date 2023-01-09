@@ -1,10 +1,9 @@
+import { moviesPerPageInLibrary } from './fireBaseFunctions';
 import { dataMovies } from './global';
 import { loadPage } from './loadPage';
 // import { off } from 'process';
 
-
 export const pagination = () => {
-
   const paginationList = document.querySelector('#pages');
   const markup = markupPages();
   const markupList = createMarkupList(markup);
@@ -125,4 +124,40 @@ const pageButtonListener = e => {
   }
 
   loadPage(true);
+};
+
+export const mediaListener = () => {
+  window
+    .matchMedia('(min-width: 768px)')
+    .addEventListener('change', async e => {
+      const { page } = dataMovies;
+      const { phone, tablet } = moviesPerPageInLibrary;
+      if (e.matches) {
+        dataMovies.moviesPerPage = tablet;
+        dataMovies.page = calculatePageWithMedia(page, phone, tablet);
+      } else {
+        dataMovies.moviesPerPage = phone;
+        dataMovies.page = calculatePageWithMedia(page, tablet, phone);
+      }
+      await loadPage();
+    });
+  window
+    .matchMedia('(min-width: 1200px)')
+    .addEventListener('change', async e => {
+      const { page } = dataMovies;
+      const { tablet, laptop } = moviesPerPageInLibrary;
+      if (e.matches) {
+        dataMovies.moviesPerPage = laptop;
+        dataMovies.page = calculatePageWithMedia(page, tablet, laptop);
+      } else {
+        dataMovies.moviesPerPage = tablet;
+        dataMovies.page = calculatePageWithMedia(page, laptop, tablet);
+      }
+      await loadPage();
+    });
+};
+// oldPage, oldPerPage, newPerPage;
+const calculatePageWithMedia = (oldPage, oldPerPage, newPerPage) => {
+  const firstMovieNr = (oldPage - 1) * oldPerPage + 1;
+  return Math.ceil(firstMovieNr / newPerPage);
 };

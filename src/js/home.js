@@ -15,6 +15,7 @@ import { loginHandling } from './firebase';
 const startPage = async () => {
   await loginHandling();
   dataMovies.fetchType = 'home';
+  dataMovies.moviesPerPage = 20;
   // dataMovies.page = Number(location.hash.substr(5));
   dataMovies.page = 1;
   dataMovies.query = null;
