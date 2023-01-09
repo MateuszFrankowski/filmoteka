@@ -2,20 +2,20 @@
   "name": "filmoteka",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://goitacademy.github.io/filmoteka",
+  "homepage": "https://mateuszfrankowski.github.io/filmoteka",
   "scripts": {
     "start": "parcel src/*.html",
     "build": "parcel build src/*.html --public-url /filmoteka/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goitacademy/filmoteka.git"
+    "url": "git+https://github.com/mateuszfrankowski/filmoteka.git"
   },
   "keywords": [],
   "author": "Web-o-matic",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/goitacademy/filmoteka/issues"
+    "url": "https://github.com/mateuszfrankowski/filmoteka/issues"
   },
   "dependencies": {
     "axios": "^1.2.1",
