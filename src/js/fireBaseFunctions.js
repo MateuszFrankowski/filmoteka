@@ -14,6 +14,7 @@ const moviesPerPageInLibrary = {
   tablet: 8,
   laptop: 9,
 };
+
 export const fetchUserDataFromFirestore = async userId => {
   //reading all stored user's movies user
   const q = doc(db, 'films', userId.toString());
