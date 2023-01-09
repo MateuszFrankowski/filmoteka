@@ -6,6 +6,7 @@ import {
   fetchUserDataFromFirestore,
 } from './fireBaseFunctions';
 import { roundTo1Comma } from './gallery';
+import { addLoaderFilmSpinner } from './loaderSpinnerFilmDetail';
 let addToWatchBtn;
 let addToQueueBtn;
 let movie;
@@ -75,6 +76,7 @@ function showModal() {
 }
 export const modalMovieInfo = async movieId => {
   showModal();
+  addLoaderFilmSpinner();
   movie = await fetchTheMovieDBMovie(movieId);
   const firebaseFilms = await fetchUserDataFromFirestore(window.userUid);
   let isSigned = false;
