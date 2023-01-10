@@ -31,9 +31,11 @@ export const createMovies = async movies => {
       `<li  data-film_id="${data.id}">
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
+
                   <img class="img" src="https://www.themoviedb.org/t/p/w500${
                     data.poster_path
                   }" />
+
                   </div>
                   <figcaption>
                   <h3 class="title">${data.title}</h3>

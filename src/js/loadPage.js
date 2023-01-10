@@ -7,6 +7,7 @@ import {
   fetchWatchedFilmsPerPage,
   fetchQueueFilmsPerPage,
 } from './fireBaseFunctions';
+import { newURLSearchParams } from './urlSearchParams';
 
 // <========> Load new gallery with changes <========>
 //
@@ -62,6 +63,7 @@ export const loadPage = async (changePage = false) => {
   }
   dataMovies.totalPages = movies.total_pages;
   if (page === dataMovies.page) {
+    newURLSearchParams();
     pagination();
     createMovies(movies);
     if (changePage) {

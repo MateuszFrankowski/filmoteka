@@ -10,12 +10,17 @@ body {
   scroll-behavior: smooth;
 }
 
+ul, li, figure {
+  margin: 0;
+  padding: 0;
+}
+
 .container {
   width: 100%;
   min-width: 320px;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 20px;
+  // padding-right: calc(100vw - 100%);
   @include media-mapp(tablet) {
     padding-inline: 71px;
   }
@@ -35,3 +40,4 @@ body {
 @import './components/card';
 @import './components/grid';
 @import './components/loaderSpinner';
+@import './components/section';

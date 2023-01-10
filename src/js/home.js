@@ -3,6 +3,7 @@ import { loadPage } from './loadPage';
 import { changePage } from './pagination';
 import { clickGallery } from './gallery';
 import { loginHandling } from './firebase';
+import { changeUrlWithBrowser, checkStartUrl } from './urlSearchParams';
 // import {
 //   fetchUserDataFromFirestore,
 //   addUserDataToFirestore,
@@ -13,12 +14,14 @@ import { loginHandling } from './firebase';
 // } from './firebase';
 
 const startPage = async () => {
-  await loginHandling();
   dataMovies.fetchType = 'home';
   dataMovies.moviesPerPage = 20;
+  
+  checkStartUrl();
+  changeUrlWithBrowser();
+  await loginHandling();
+
   // dataMovies.page = Number(location.hash.substr(5));
-  dataMovies.page = 1;
-  dataMovies.query = null;
 
   await loadPage();
   clickGallery();
