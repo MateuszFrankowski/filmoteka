@@ -45,6 +45,7 @@
   }
   
   .details-wrapper {
+    color: color-get('text-shadow');
     display: flex;
     align-items: center;
     justify-content: space-between;
