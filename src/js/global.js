@@ -26,4 +26,5 @@ export const dataMovies = {
   moviesPerPage: 20,
   query: '',
   fetchType: '',
+  moviesPerPage: 6,
 };

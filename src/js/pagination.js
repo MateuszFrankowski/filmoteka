@@ -71,7 +71,7 @@ const createMarkupList = markup => {
     } else if (pageNr < page - 2 || pageNr > page + 2) {
       classLi = ' pages--none';
     }
-    if (pageNr === page) {
+    if (Number(pageNr) === Number(page)) {
       classPage = ' pages__active';
     }
     if (!isNaN(pageNr)) {
@@ -118,9 +118,9 @@ const pageButtonListener = e => {
   if (!isNaN(newPage)) {
     dataMovies.page = Number(newPage);
   } else if (newPage === 'after') {
-    dataMovies.page = page + 1;
+    dataMovies.page = Number(page) + 1;
   } else if (newPage === 'before') {
-    dataMovies.page = page - 1;
+    dataMovies.page = Number(page) - 1;
   }
 
   loadPage(true);
