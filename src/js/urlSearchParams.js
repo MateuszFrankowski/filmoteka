@@ -53,12 +53,12 @@ export const checkStartUrl = async () => {
   if (!!window.location.search.toString()) {
     changeDataMoviesFromUrl();
   } else {
-    if (window.location.pathname === '/index.html') {
+    if (window.location.pathname.includes('/index.html')) {
       dataMovies.fetchType = 'home';
       dataMovies.page = 1;
       dataMovies.query = null;
     }
-    if (window.location.pathname === '/library.html') {
+    if (window.location.pathname.includes('/library.html')) {
       dataMovies.fetchType = 'watched';
       dataMovies.page = 1;
       dataMovies.query = null;
