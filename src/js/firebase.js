@@ -41,14 +41,16 @@ export const loginHandling = async () => {
       signInIcon.classList.add('hidden');
       signOutIcon.classList.remove('hidden');
       userDetails.innerHTML = `Hello ${user.displayName}!`;
-      myLibrary.classList.remove('hidden');
+      myLibrary.classList.remove('no-active-btn');
+      myLibrary.style = 'pointer-events: click';
       window.userUid = true;
     } else {
       // not signed in
       signInIcon.classList.remove('hidden');
       signOutIcon.classList.add('hidden');
       userDetails.innerHTML = '';
-      myLibrary.classList.add('hidden');
+      myLibrary.classList.add('no-active-btn');
+      myLibrary.style = 'pointer-events: none';
       window.userUid = false;
 
       if (window.location.href.search('index.html') === -1) {
