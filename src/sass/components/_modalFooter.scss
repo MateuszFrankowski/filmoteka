@@ -1,6 +1,7 @@
 .modal-footer {
+  margin: 0;
   width: 280px;
-  height: 380px;
+  height: 415px;
   border-radius: 5px;
   position: relative;
   top: 50%;
@@ -11,39 +12,43 @@
   text-align: center;
   font-family: 'Roboto';
   font-size: 14px;
-  &__icon-close,
-  &__icon-left,
-  &__icon-right {
-    position: fixed;
-    width: 22px;
-    height: 22px;
+  &__icon-close {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 30;
+    right: 15;
+    fill: get(text-accent);
+    z-index: 3;
     transform: translateY(-50%);
-    fill: get(text-secondary);
     transition-property: fill;
     transition-duration: 250ms;
     &:hover,
     &:focus {
-      cursor: pointer;
-      fill: get(bg-decorative);
+      fill: get(text-secondary);
     }
   }
-  &__icon-close {
-    top: 20px;
-    right: 10px;
-  }
   &__icon-left {
-    // top: 50%;
-    // left: 10px;
     position: absolute;
-    top: 0;
+    z-index: 2;
     height: 100%;
     width: 50%;
     left: 0;
-    cursor: help;
+    &:hover,
+    &:focus {
+      cursor: url(/src/images/circle-left.svg), auto;
+    }
   }
   &__icon-right {
-    top: 50%;
-    right: 10px;
+    position: absolute;
+    z-index: 2;
+    height: 100%;
+    width: 50%;
+    right: 0;
+    &:hover,
+    &:focus {
+      cursor: url(/src/images/circle-right.svg), auto;
+    }
   }
   &__icon-hidden {
     visibility: hidden;
@@ -58,11 +63,25 @@
     display: unset;
   }
   &__student-image {
+    object-fit: cover;
     width: 200px;
+    height: 310px;
     padding-top: 50px;
+  }
+  &__student-role {
+    margin: 0;
+    z-index: 1;
   }
   &__student-text {
     display: none;
+  }
+  &,
+  h2 {
+    margin: 10px 0px;
+  }
+  &__info {
+    color: get(bg-decorative);
+    font-size: 10px;
   }
 }
 .modal-footer-backdrop {
@@ -87,6 +106,10 @@
     width: 650px;
     height: 450px;
     font-size: 18px;
+    &__icon-close {
+      width: 31px;
+      height: 31px;
+    }
     &__student-data {
       display: flex;
       justify-content: center;
@@ -98,6 +121,9 @@
       width: 300px;
       padding-top: 20px;
       text-align: justify;
+    }
+    &__info {
+      font-size: 15px;
     }
   }
 }

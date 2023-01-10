@@ -51,6 +51,16 @@ export const footerModalFunction = () => {
       students[0].classList.add('modal-footer__student-active');
     }, 500);
   });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      modal.classList.add('is-hidden');
+      setTimeout(() => {
+        students[current].classList.remove('modal-footer__student-active');
+        current = 0;
+        students[0].classList.add('modal-footer__student-active');
+      }, 500);
+    }
+  });
   modalNextButton.addEventListener('click', goNext);
   modalPreviousButton.addEventListener('click', goPrevious);
 };
