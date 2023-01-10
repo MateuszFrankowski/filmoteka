@@ -1,5 +1,12 @@
-import { fetchTheMovieDBList } from './api'
-// import { dataMovies } from "./home";
+import { fetchTheMovieDBList } from './apiFetch';
+import { addLoaderSpinner } from './loaderSpinner';
+import { modalMovieInfo } from './filmDescription';
+
+// LOADER SPINNER TO ADD
+// loaderSpinner.classList.add('loader');
+
+// LOADER SPINNER TO REMOVE
+// loaderSpinner.classList.remove('loader');
 
 // dataMovies = {
 //        page: 1, // nr of actual page
@@ -7,7 +14,7 @@ import { fetchTheMovieDBList } from './api'
 //        query: "", // searching text in home
 //      };
 
-    //  await fetchTheMovieDBList(1, "avatar"); 
+//  await fetchTheMovieDBList(1, "avatar");
 
 // const movies = async () => {
 //     const movies = await fetchTheMovieDBList(2);
@@ -15,28 +22,37 @@ import { fetchTheMovieDBList } from './api'
 //     ... <!-- use result -->
 // }
 //gallery
-export const createMovies = async (movies) => {
-    const galleryContainer = document.getElementsByClassName('gallery');
-    console.log(galleryContainer[0]);
-    console.log(movies);
-    const markup = movies.data.map (data => 
+export const createMovies = async movies => {
+  const galleryContainer = document.getElementsByClassName('gallery');
+  // console.log(galleryContainer[0]);
+  // console.log(movies);
+  const markup = movies.data.map(
+    data =>
       `<li  data-film_id="${data.id}">
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
-                  <img class="img" src="${ data.poster_path }" />
+
+                  <img class="img" src="https://www.themoviedb.org/t/p/w500${
+                    data.poster_path
+                  }" />
+
                   </div>
                   <figcaption>
                   <h3 class="title">${data.title}</h3>
                   <div class="details-wrapper">
-                  <p>${data.genres.join(", ")}</p>
+                  <p>${data.genres.join(', ')}</p>
                   <p>${data.release_year}</p>
-                  <div class="rating rating--visible">${roundTo1Comma(data.vote_average)}</div>
+                  <div class="rating rating--visible">${roundTo1Comma(
+                    data.vote_average
+                  )}</div>
                   </div>
                   </figcaption>
               </figure>
         </li>
-          `);
-  
+          `
+  );
+
+  galleryContainer[0].classList.add('grid');
   galleryContainer[0].innerHTML = markup.join('');
 };
 //-------------- Function rounding rating to 1 place after comma--------------//
@@ -73,28 +89,29 @@ export const createMovies = async (movies) => {
 // `;
 //   libraryGrid.insertAdjacentHTML('beforeend', markup);
 
-const roundTo1Comma = (num) => {
-let roundNum = Math.round(num * 10) / 10
-if (roundNum === Math.round(roundNum)) {
-roundNum = roundNum + ".0"
-}
-return roundNum
-}
+export const roundTo1Comma = num => {
+  let roundNum = Math.round(num * 10) / 10;
+  if (roundNum === Math.round(roundNum)) {
+    roundNum = roundNum + '.0';
+  }
+  return roundNum;
+};
 
 export const clickGallery = () => {
-    document.querySelector(".gallery").addEventListener("click", (e) => {
-      if (e.target === e.currentTarget) {
-        return
-      }
-      const movieId = goToLiElement(e.target).dataset.film_id
-      console.log(movieId);
-      // function to open modal with movie id
-    })
-  
-    const goToLiElement = (targetELement) => {
-    if (targetELement.tagName !== "LI") {
-      return goToLiElement(targetELement.parentElement)
+  document.querySelector('.gallery').addEventListener('click', e => {
+    if (e.target === e.currentTarget) {
+      return;
     }
-    return targetELement
-  }
-  }
+    const movieId = goToLiElement(e.target).dataset.film_id;
+    console.log(movieId);
+    modalMovieInfo(movieId);
+    // function to open modal with movie id
+  });
+
+  const goToLiElement = targetELement => {
+    if (targetELement.tagName !== 'LI') {
+      return goToLiElement(targetELement.parentElement);
+    }
+    return targetELement;
+  };
+};

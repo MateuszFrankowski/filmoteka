@@ -1,6 +1,42 @@
-.footer{
-    background-color: get(bg-secondary);
-    &__icon{
-        width:14px; 
-        height: 12px    }
+.footer {
+  background-color: get(bg-secondary);
+  &__data {
+    max-width: 320px;
+    padding-top: 28px;
+    padding-bottom: 29px;
+    color: get(text-secondary);
+    text-align: center;
+    font-family: 'Roboto';
+    font-size: 14px;
+    line-height: 16.41px;
+    letter-spacing: 1px;
+  }
+  &__text {
+    margin: 0;
+  }
+  &__icon {
+    width: 14px;
+    height: 12px;
+  }
+  &__link {
+    transition-property: color;
+    transition-duration: 250ms;
+    &:hover,
+    &:focus {
+      cursor: pointer;
+      color: get(bg-decorative);
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .footer {
+    &__data {
+      max-width: 768px;
+      padding-top: 30px;
+      padding-bottom: 28px;
+      font-size: 16px;
+      letter-spacing: normal;
+    }
+  }
 }

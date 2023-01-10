@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { dataMovies } from './global';
 
 // <========> IMPORT AXIOS FETCH <========>
 // import { fetchTheMovieDBList, fetchTheMovieDBMovie } from 'path/to/api'
@@ -52,6 +53,32 @@ import axios from 'axios';
 //   ],
 // }
 
+// <========> LIST OF MOVIES BY IDS <========>
+//
+// function fetchTheMovieDBMovieIdList(idMovies, page, total_pages, total_results)
+//
+// idMovies   -> array of ids movies
+// page   -> nr of page
+// total_pages   -> count of total pages
+// total_results   -> information about total movies from watched / queue
+//
+// result: {
+//   page:   -> nr of page,
+//   total_pages:   -> count of total pages,
+//   total_results:   -> count of total movies,
+//   data: [
+//     {
+//       id   -> movie id (add to movie li in html to read with eventListener),
+//       title   -> title of movie,
+//       poster_path   -> src to movie poster image,
+//       genres   -> array of genres,
+//       release_year   -> year of movie release,
+//       vote_average   -> users vote value,
+//     },
+//     ...
+//   ],
+// }
+
 // <========> HOW USE FETCH FUNCTION <========>
 // Don't use result outside the function or return result,
 // because function return only "Promise" info.
@@ -75,6 +102,8 @@ const THEMOVIEDB_KEY = 'c8f343487431a47156d389fa5ccb000e';
 const THEMOVIEDB_URL = 'https://api.themoviedb.org/3';
 
 axios.defaults.baseURL = THEMOVIEDB_URL;
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
 const fetchTheMovieDB = async (urlSearch, parameters) => {
   const response = await axios
@@ -84,6 +113,7 @@ const fetchTheMovieDB = async (urlSearch, parameters) => {
         language: 'en-US',
         ...parameters,
       },
+      cancelToken: source.token,
     })
     .then(function (response) {
       return response;
@@ -102,6 +132,9 @@ const fetchGenresNames = async () => {
 };
 
 export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
+  if (pageNr !== dataMovies.page) {
+    source.cancel();
+  }
   if (isNaN(pageNr)) {
     return alert('fetchTheMovieDBTrending(page) -> page must be number');
   }
@@ -122,12 +155,12 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
   }
   const response = await fetchTheMovieDB(urlSearch, params);
   const page = response.data.page;
-  let total_pages = response.data.total_pages
-  let total_results = response.data.total_results
+  let total_pages = response.data.total_pages;
+  let total_results = response.data.total_results;
   if (total_pages > 500) {
     total_pages = 500;
     total_results = 500 * 20;
-  };
+  }
   const genres = await fetchGenresNames();
   let movies = {
     page,
@@ -136,9 +169,13 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
     data: [],
   };
   response.data.results.forEach(result => {
+    const posterPath = !!result.poster_path
+      ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
+      : 'https://s9575.chomikuj.pl/ChomikImage.aspx?e=cX_9lftnngfjKuI0JO7_v52BP58zOTXrZ50M75hacR0JQpgNIzq_O9QLAhZQoGX5bV0fyd_Yz5B60NqBpnk7w8dfXhq--KXkn1236im-wmc&pv=2';
+    // console.log('posterPath:', posterPath);
     movies.data.push({
       id: result.id,
-      poster_path: `https://image.tmdb.org/t/p/w500${result.poster_path}`,
+      poster_path: posterPath,
       genre_ids: result.genre_ids,
       genres: [],
       release_year: `${new Date(result.release_date).getFullYear()}`,
@@ -170,15 +207,54 @@ export const fetchTheMovieDBMovie = async idMovie => {
     genres,
     overview,
   } = response.data;
+  const posterPath = !!poster_path
+    ? `https://image.tmdb.org/t/p/w500${poster_path}`
+    : './images/no-movie-poster.jpg';
+  console.log('posterPath:', posterPath);
   const movie = {
     id,
     title,
     original_title,
-    poster_path,
+    poster_path: posterPath,
     vote_average,
     vote_count,
     popularity,
     genres,
     overview,
   };
+  let genresName = [];
+  movie.genres.forEach(genre => genresName.push(genre.name));
+  movie.genres = genresName;
+  return movie;
+};
+
+export const fetchTheMovieDBMovieIdList = async (
+  idMovies,
+  page,
+  total_pages,
+  total_results
+) => {
+  const movies = {
+    page,
+    total_pages,
+    total_results,
+    data: [],
+  };
+  const params = {};
+  for (let i = 0; i < idMovies.length; i++) {
+    const urlSearch = `/movie/${idMovies[i]}`;
+    const response = await fetchTheMovieDB(urlSearch, params);
+    const { id, title, poster_path, vote_average, genres, release_date } =
+      response.data;
+    const movie = {
+      id,
+      title,
+      poster_path: `https://image.tmdb.org/t/p/w500${poster_path}`,
+      vote_average,
+      genres: genres.map(genre => genre.name),
+      release_year: `${new Date(release_date).getFullYear()}`,
+    };
+    movies.data.push(movie);
+  }
+  return movies;
 };

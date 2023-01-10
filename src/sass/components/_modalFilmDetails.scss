@@ -1,0 +1,229 @@
+.backdrop {
+  left: 0px;
+  top: 0px;
+  z-index: 2;
+  background: get(bg-modal);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  transition: opacity, visibility;
+  transition-duration: 250ms;
+  transition-timing-function: linear;
+}
+.modal {
+  width: 280px;
+  background: get(bg-primary);
+  margin: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-family: 'Roboto';
+  font-weight: 500;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+  &__close-btn {
+    border: none;
+    background-color: get(bg-primary);
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+  }
+
+  &__poster {
+    width: 240px;
+    height: 100%;
+    border-radius: 5px;
+    padding-top: 48px;
+  }
+  &__description {
+    padding-top: 30.43px;
+    padding-bottom: 41px;
+    
+  }
+  &__title {
+    font-size: 20px;
+    color: get(text-primary);
+    margin: 0;
+    padding-bottom: 20px;
+    text-transform: uppercase;
+  }
+  &__data-original-title {
+    text-transform: uppercase;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 0px;
+    margin: 0;
+  }
+  &__items {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding-bottom: 10px;
+  }
+  &__info {
+    font-size: 12px;
+    line-height: 16px;
+    color: get(text-shadow);
+    margin: 0;
+  }
+
+  &__data {
+    font-size: 12px;
+    line-height: 14px;
+    color: get(text-primary);
+    margin: 0;
+    position: absolute;
+    left: 128px;
+    margin-right: 20px;
+  }
+
+  &__about {
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: get(text-primary);
+  }
+
+  &__more {
+    font-size: 12px;
+    margin: 0;
+    line-height: 20px;
+    color: get(text-primary);
+  }
+
+  &__vote {
+    justify-content: center;
+    align-items: center;
+    color: get(text-alternative);
+    display: inline-flex;
+    width: 36px;
+    height: 16px;
+    background: get(bg-decorative);
+    border-radius: 5px;
+    margin: 0;
+  }
+  &__vote-count {
+    padding-left: 7px;
+  }
+
+  &__add-btns {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    padding-top: 21px;
+  }
+  &__watched-btn,
+  &__queue-btn {
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+    width: 112.58px;
+    height: 44px;
+
+    border-radius: 5px;
+    color: get(text-primary);
+    background: none;
+    border: 1px solid get(bg-alternative);
+   &:hover {
+      box-shadow: 6px 6px 16px get(btn-hover-shadow);
+      transition: box-shadow 0.25s linear;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    width: 618px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    padding-left: 28px;
+    padding-right: 30px;
+    &__description {
+      display: flex;
+      flex-direction: column;
+      padding-top: 42px;
+      padding-bottom: 40px;
+    }
+    &__data {
+      left: 432px;
+      margin-right: 30px;
+    }
+    &__poster {
+      width: 264px;
+      height: 100%;
+      padding-top: 42px;
+      padding-bottom: 40px;
+    }
+    &__more {
+      width: 264px;
+    }
+    &__watched-btn,
+    &__queue-btn {
+      width: 125.03px;
+      height: 44px;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .modal {
+    width: 882px;
+    padding-left: 30px;
+
+    &__poster {
+      width: 396px;
+      height: 100%;
+      padding-top: 50px;
+      padding-bottom: 40.2px;
+      border-radius: 5px;
+    }
+    &__data {
+      left: 608px;
+      margin-right: 30px;
+    }
+    &__title {
+      font-size: 30px;
+    }
+    &__description {
+      padding-top: 50px;
+    }
+    &__more {
+      width: 396px;
+    }
+    &__watched-btn,
+    &__queue-btn {
+      width: 136px;
+      height: 44px;
+    }
+  }
+}
+
+.is-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.active-btn {
+  background: get(bg-decorative);
+  border: 1px solid get(bg-decorative);
+  color: get(text-alternative);
+}
+.no-active-btn {
+  opacity: 0.65;
+  cursor:auto;
+}

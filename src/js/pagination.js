@@ -1,93 +1,95 @@
-import { fetchTheMovieDBList, fetchTheMovieDBMovie } from './api'
-import { dataMovies } from './home';
+import { moviesPerPageInLibrary } from './fireBaseFunctions';
+import { dataMovies } from './global';
+import { loadPage } from './loadPage';
+// import { off } from 'process';
 
-// <========> HOW USE PAGINATION <========>
-//
-// <===> Use pagination in start <===>
-// pagination({
-//   pageNr: number,
-//   lastPage: number,
-// });
-// // only create a page buttons
-// // pageNr -> page which you load from API (dataMovies.page)
-// // lastPage -> number of max pages from API (dataMovies.totalPages)
-//
-// <===> Listener for buttons <===>
-// loadPage({
-//   fetchType: string,
-//   query: string,
-// })
-// // eventListener to load movies when click a button
-// // fetchType -> to choose: "home", "library-watched", "library-queue"
-// // query -> searching text movie from index.js input (in library.html not usable)
-
-export const pagination = ({ pageNr, lastPage }) => {
+export const pagination = () => {
   const paginationList = document.querySelector('#pages');
-  const markup = markupPages(pageNr, lastPage);
-  const markupList = createMarkupList(markup, pageNr, lastPage);
+  const markup = markupPages();
+  const markupList = createMarkupList(markup);
   paginationList.innerHTML = markupList;
+  // const test = await fetchWatchedFilmsPerPage(window.userUid, 1);
+  // console.log(test);
 };
 
-const markupPages = (pageNr, lastPage) => {
+const markupPages = () => {
+  const { page, totalPages } = dataMovies;
   let markup = [];
-  
-  for (let i =  -4; i < 5; i++) {
-    markup.push(pageNr + i);
-  }
 
-  const markupFilter = markup.filter(
-    page => page > 0 && page <= lastPage
-  );
+  if (page < 5) {
+    for (let i = 1; i < 10; i++) {
+      markup.push(i);
+    }
+  } else if (page > totalPages - 4) {
+    for (let i = totalPages - 8; i < totalPages + 1; i++) {
+      markup.push(i);
+    }
+  } else {
+    for (let i = -4; i < 5; i++) {
+      markup.push(page + i);
+    }
+  }
+  const markupFilter = markup.filter(page => page > 0 && page <= totalPages);
+
   markupFilter[0] = 1;
-  markupFilter[markupFilter.length - 1] = lastPage;
-  if (markupFilter[1] !== 2) {
+  if (totalPages > 1) {
+    markupFilter[markupFilter.length - 1] = totalPages;
+  }
+  if (!!markupFilter[1] && markupFilter[1] !== 2) {
     markupFilter[1] = '...';
   }
-  if (markupFilter[markupFilter.length - 2] !== lastPage - 1) {
+  if (markupFilter[markupFilter.length - 2] !== totalPages - 1) {
     markupFilter[markupFilter.length - 2] = '...';
   }
 
   return markupFilter;
 };
 
-const createMarkupList = (markup, pageNr, lastPage) => {
+const createMarkupList = markup => {
+  const { page, totalPages } = dataMovies;
   let markupList = [];
-  if (pageNr > 1) {
+  if (page > 1) {
     markupList.push(
       `<li><button class="pages__btn pages__rim" type="button" data-page="before">&#x3c;</button></li>`
     );
-  } else {
-    markupList.push(`<li><p class="pages__btn pages__rim pages__rim--disabled">
-          &#x3c;
-        </p></li>`);
+  } else if (totalPages > 1) {
+    markupList.push(
+      `<li><p class="pages__btn pages__rim pages__rim--disabled">&#x3c;</p></li>`
+    );
   }
-  markup.forEach(page => {
+  markup.forEach(pageNr => {
     let classLi = '';
     let classPage = '';
-    if (page < pageNr - 2 || page > pageNr + 2) {
+    if (page < 3) {
+      if (pageNr > 5) {
+        classLi = ' pages--none';
+      }
+    } else if (page > totalPages - 2) {
+      if (pageNr < totalPages - 4) {
+        classLi = ' pages--none';
+      }
+    } else if (pageNr < page - 2 || pageNr > page + 2) {
       classLi = ' pages--none';
     }
-    if (page === pageNr) {
+    if (Number(pageNr) === Number(page)) {
       classPage = ' pages__active';
     }
-    if (!isNaN(page)) {
+    if (!isNaN(pageNr)) {
       markupList.push(
-        `<li class="${classLi}"><button class="pages__btn${classPage}" type="button" data-page="${page}">${page}</button></li>`
+        `<li class="${classLi}"><button class="pages__btn${classPage}" type="button" data-page="${pageNr}">${pageNr}</button></li>`
       );
     }
-    if (isNaN(page)) {
+    if (isNaN(pageNr)) {
       markupList.push(
         `<li class="pages--none"><p class="pages__item">...</p></li>`
       );
     }
   });
-  if (pageNr < lastPage) {
+  if (page < totalPages) {
     markupList.push(
-      `<li><button class="pages__btn pages__rim" type="button" data-page="after">
-          &#x3e;
-        </button></li>`
+      `<li><button class="pages__btn pages__rim" type="button" data-page="after">&#x3e;</button></li>`
     );
-  } else {
+  } else if (totalPages > 1) {
     markupList.push(`<li><p class="pages__btn pages__rim pages__rim--disabled">
           &#x3e;
         </p></li>`);
@@ -97,54 +99,65 @@ const createMarkupList = (markup, pageNr, lastPage) => {
 
 ///////////////////////////////////////
 
-const buttonListener = (e, fetchType, query) => {
-  if (e.target.type !== "button") {
-    return
+export const changePage = () => {
+  const pages = document.querySelector('.pages__list');
+  pages.addEventListener('click', e => pageButtonListener(e));
+};
+
+const pageButtonListener = e => {
+  if (e.target.type !== 'button') {
+    return;
   }
-  const { page } = dataMovies;
-  const btn = e.target
-  const newPage = btn.dataset.page
+  let { page } = dataMovies;
+  const btn = e.target;
+  const newPage = btn.dataset.page;
   if (Number(newPage) === page) {
-    return
+    return;
   }
+
   if (!isNaN(newPage)) {
-    dataMovies.page = Number(newPage)
-  } else if (newPage==="after") {
-    dataMovies.page = page + 1
-  } else if (newPage === "before") {
-    dataMovies.page = page - 1
+    dataMovies.page = Number(newPage);
+  } else if (newPage === 'after') {
+    dataMovies.page = Number(page) + 1;
+  } else if (newPage === 'before') {
+    dataMovies.page = Number(page) - 1;
   }
 
-  const movie = changePage(dataMovies.page, fetchType, query)
-}
+  loadPage(true);
+};
 
-const changePage = async (pageNr, fetchType, query) => {
-  let movies={}
-  switch (fetchType) {
-    case "home":
-        movies = await fetchTheMovieDBList(pageNr, query);
-      break;
-    case "libary-watched":
-        // movies = await for fireBase API =========================================================================================
-      break;
-    case "libary-queue":
-        // movies = await for fireBase API =========================================================================================
-      break;
-    default:
-      break;
-  }
-  if (movies.total_pages === 0) {
-    return
-  }
-  pagination({
-    pageNr,
-    lastPage: dataMovies.totalPages
-  });
-  console.log(movies)
-  // Function to insert movies to gallery ==========================================================================================
-}
-
-export const loadPage = ({ fetchType, query }) => {
-  const pages = document.querySelector(".pages__list")
-  pages.addEventListener("click", e => buttonListener(e, fetchType, query));
-}
+export const mediaListener = () => {
+  window
+    .matchMedia('(min-width: 768px)')
+    .addEventListener('change', async e => {
+      const { page } = dataMovies;
+      const { phone, tablet } = moviesPerPageInLibrary;
+      if (e.matches) {
+        dataMovies.moviesPerPage = tablet;
+        dataMovies.page = calculatePageWithMedia(page, phone, tablet);
+      } else {
+        dataMovies.moviesPerPage = phone;
+        dataMovies.page = calculatePageWithMedia(page, tablet, phone);
+      }
+      await loadPage();
+    });
+  window
+    .matchMedia('(min-width: 1200px)')
+    .addEventListener('change', async e => {
+      const { page } = dataMovies;
+      const { tablet, laptop } = moviesPerPageInLibrary;
+      if (e.matches) {
+        dataMovies.moviesPerPage = laptop;
+        dataMovies.page = calculatePageWithMedia(page, tablet, laptop);
+      } else {
+        dataMovies.moviesPerPage = tablet;
+        dataMovies.page = calculatePageWithMedia(page, laptop, tablet);
+      }
+      await loadPage();
+    });
+};
+// oldPage, oldPerPage, newPerPage;
+const calculatePageWithMedia = (oldPage, oldPerPage, newPerPage) => {
+  const firstMovieNr = (oldPage - 1) * oldPerPage + 1;
+  return Math.ceil(firstMovieNr / newPerPage);
+};

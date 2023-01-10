@@ -2,6 +2,7 @@
  * Główny plik dla stylów.
  * Wszystkie partials podłączamy tutaj.
  */
+ @use './utils/forward' as *;
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Titan+One&display=swap');
 
 body {
@@ -9,15 +10,24 @@ body {
   scroll-behavior: smooth;
 }
 
+ul, li, figure {
+  margin: 0;
+  padding: 0;
+}
+
 .container {
   width: 100%;
   min-width: 320px;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 20px;
+  // padding-right: calc(100vw - 100%);
+  @include media-mapp(tablet) {
+    padding-inline: 71px;
+  }
 }
 
 @import './utils/vars';
+@import './utils/colors';
 // Style dla pliku z przykładem HTML fragmentu
 
 @import './components/headerHome';
@@ -29,3 +39,5 @@ body {
 @import './components/modalFooter';
 @import './components/card';
 @import './components/grid';
+@import './components/loaderSpinner';
+@import './components/section';
