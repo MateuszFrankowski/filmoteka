@@ -1,11 +1,11 @@
 @use '../utils/forward' as *;
 
-// *::before,
-// *::after {
-//   box-sizing: inherit;
-//   margin: 0px;
-//   padding: 0px;
-// }
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0px;
+  padding: 0px;
+}
 
 // Mobile 320-768//
 
@@ -16,8 +16,9 @@
   grid-gap: 10px;
   list-style-type: none;
   position: relative;
-  grid-column-gap: 30px;
   justify-content: center;
+  margin: 0px;
+  padding: 0px;
 }
 
 // Tablet 768-1200//
