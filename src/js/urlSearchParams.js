@@ -64,6 +64,7 @@ export const checkStartUrl = async () => {
       dataMovies.query = null;
     }
     newURLSearchParams('replace');
+    changeDataMoviesFromUrl();
   }
 };
 
@@ -75,8 +76,7 @@ export const changeDataMoviesFromUrl = () => {
   const query = searchParams.get('query');
   dataMovies.query = query;
   const fetchType = searchParams.get('type');
-  dataMovies.fetchType = fetchType;
-  console.log('url fetch');
+  !!fetchType ? dataMovies.fetchType = fetchType : null;
   if (dataMovies.fetchType === 'watched' || dataMovies.fetchType === 'queue') {
     startButtons();
   }
