@@ -2,6 +2,8 @@ import { dataMovies } from './global';
 import { pagination } from './pagination.js';
 import { fetchTheMovieDBList } from './apiFetch';
 import { addLoaderSpinner } from './loaderSpinner';
+import { newURLSearchParams } from './urlSearchParams';
+import { loadPage } from './loadPage';
 import { roundTo1Comma } from './gallery';
 
 const debounce = require('lodash.debounce');
