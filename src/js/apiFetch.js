@@ -171,8 +171,8 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
   response.data.results.forEach(result => {
     const posterPath = !!result.poster_path
       ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
-      : 'https://s9575.chomikuj.pl/ChomikImage.aspx?e=cX_9lftnngfjKuI0JO7_v52BP58zOTXrZ50M75hacR0JQpgNIzq_O9QLAhZQoGX5bV0fyd_Yz5B60NqBpnk7w8dfXhq--KXkn1236im-wmc&pv=2';
-    // console.log('posterPath:', posterPath);
+      : 'https://s9575.chomikuj.pl/ChomikImage.aspx?e=k2PFTZgbjbykP4qMDtOLVInuN00lY_3R1YKpq-3TgLC82x6Oick3r4PEZtwRTwfoDcarEHhIWh0wiNdTpWDm_0JbF0GEncHSXDRh3B_rImw&pv=2';
+  
     movies.data.push({
       id: result.id,
       poster_path: posterPath,
