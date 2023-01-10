@@ -169,9 +169,13 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
     data: [],
   };
   response.data.results.forEach(result => {
+    const posterPath = !!result.poster_path
+      ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
+      : 'https://s9575.chomikuj.pl/ChomikImage.aspx?e=cX_9lftnngfjKuI0JO7_v52BP58zOTXrZ50M75hacR0JQpgNIzq_O9QLAhZQoGX5bV0fyd_Yz5B60NqBpnk7w8dfXhq--KXkn1236im-wmc&pv=2';
+    console.log('posterPath:', posterPath);
     movies.data.push({
       id: result.id,
-      poster_path: `https://image.tmdb.org/t/p/w500${result.poster_path}`,
+      poster_path: posterPath,
       genre_ids: result.genre_ids,
       genres: [],
       release_year: `${new Date(result.release_date).getFullYear()}`,
@@ -203,11 +207,15 @@ export const fetchTheMovieDBMovie = async idMovie => {
     genres,
     overview,
   } = response.data;
+  const posterPath = !!poster_path
+    ? `https://image.tmdb.org/t/p/w500${poster_path}`
+    : './images/no-movie-poster.jpg';
+  console.log('posterPath:', posterPath);
   const movie = {
     id,
     title,
     original_title,
-    poster_path: `https://image.tmdb.org/t/p/w500${poster_path}`,
+    poster_path: posterPath,
     vote_average,
     vote_count,
     popularity,

@@ -6,6 +6,7 @@ import {
   fetchUserDataFromFirestore,
 } from './fireBaseFunctions';
 import { roundTo1Comma } from './gallery';
+import { dataMovies } from './global';
 import { addLoaderFilmSpinner } from './loaderSpinnerFilmDetail';
 import { loadPage } from './loadPage';
 let addToWatchBtn;
@@ -28,9 +29,13 @@ const checkUpdateStatus = () => {
     newWatchFilmStatus
   );
 
+  modal.removeEventListener('click', modalClickListener);
+  document.removeEventListener('keydown', modalEscapeListener);
+
   if (
-    oldQueueFilmStatus != newQueueFilmStatus ||
-    oldWatchFilmStatus != newWatchFilmStatus
+    (oldQueueFilmStatus !== newQueueFilmStatus ||
+      oldWatchFilmStatus !== newWatchFilmStatus) &&
+    dataMovies.fetchType !== 'home'
   ) {
     console.log('przeładowanie');
     loadPage();
@@ -192,24 +197,28 @@ export const modalMovieInfo = async movieId => {
   modal.innerHTML = markup;
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-      modal.classList.add('is-hidden');
-      console.log('checks status wywołanie');
-      checkUpdateStatus();
-    }
-  });
-  modal.addEventListener('click', event => {
-    if (!document.querySelector('div.modal').contains(event.target)) {
-      modal.classList.add('is-hidden');
-      console.log('checks status wywołanie');
-      checkUpdateStatus();
-    }
-  });
+  document.addEventListener('keydown', modalEscapeListener);
+  modal.addEventListener('click', modalClickListener);
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
     addToQueueBtn = document.querySelector('.modal__queue-btn');
     addToWatchBtn.addEventListener('click', watchedHandler, true);
     addToQueueBtn.addEventListener('click', queueHandler, true);
+  }
+};
+
+const modalClickListener = event => {
+  if (!document.querySelector('div.modal').contains(event.target)) {
+    modal.classList.add('is-hidden');
+    console.log('checks status wywołanie');
+    checkUpdateStatus();
+  }
+};
+
+const modalEscapeListener = event => {
+  if (event.key === 'Escape') {
+    modal.classList.add('is-hidden');
+    console.log('checks status wywołanie');
+    checkUpdateStatus();
   }
 };

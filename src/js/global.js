@@ -23,6 +23,7 @@ export const db = getFirestore(app);
 export const dataMovies = {
   page: 1,
   totalPages: 1,
+  moviesPerPage: 20,
   query: '',
   fetchType: '',
   moviesPerPage: 6,

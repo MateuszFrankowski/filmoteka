@@ -15,9 +15,12 @@ import { changeUrlWithBrowser, checkStartUrl } from './urlSearchParams';
 
 const startPage = async () => {
   dataMovies.fetchType = 'home';
+  dataMovies.moviesPerPage = 20;
+  
   checkStartUrl();
   changeUrlWithBrowser();
   await loginHandling();
+
   // dataMovies.page = Number(location.hash.substr(5));
 
   await loadPage();

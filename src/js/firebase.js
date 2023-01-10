@@ -12,7 +12,9 @@ export const loginHandling = async () => {
 
   const signInIcon = document.querySelector('svg.icon-login');
   const signOutIcon = document.querySelector('svg.icon-logout');
-  const userDetails = document.querySelector('p.home-header__greeting, p.library-header__greeting')
+  const userDetails = document.querySelector(
+    'p.home-header__greeting, p.library-header__greeting'
+  );
 
   const provider = new GoogleAuthProvider();
   window.userSigned = false;
@@ -68,7 +70,7 @@ export const loginHandling = async () => {
       window.userUid = user.uid;
 
       unsubscribe = onSnapshot(doc(db, 'films', user.uid.toString()), doc => {
-        console.log('Current data: ', doc.data());
+        // console.log('Current data: ', doc.data());
       });
     } else {
       // Unsubscribe when the user signs out
@@ -77,8 +79,8 @@ export const loginHandling = async () => {
   });
 
   await getUserStatus()
-    .then(result => result)
-    .catch(error => error);
+    .then(user => user)
+    .catch(nouser => nouser);
 };
 // loginHandling();
 
