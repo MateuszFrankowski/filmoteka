@@ -77,7 +77,6 @@ export const changeDataMoviesFromUrl = () => {
   dataMovies.query = query;
   const fetchType = searchParams.get('type');
   !!fetchType ? dataMovies.fetchType = fetchType : null;
-  console.log('url fetch:',dataMovies.fetchType);
   if (dataMovies.fetchType === 'watched' || dataMovies.fetchType === 'queue') {
     startButtons();
   }
