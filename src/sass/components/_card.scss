@@ -7,11 +7,11 @@
     gap: 10px;
     border: solid 10px color-get('bg-primary');
     border-radius: 5px;
-    z-index: 0;
     background-color: color-get('text-alternative');
-  
     transition: box-shadow; @include transition-add('box-shadow'); @include transition-add('transform');
     cursor: pointer;
+    margin-inline-start: 20px;
+    margin-inline-end: 20px;
   
     &:hover,
     &:active,
@@ -24,14 +24,14 @@
   
   .thumb {
     /* position: relative; */
-    height: 100%;
+    // height: 100%;
     width: 100%;
   }
   
   .img {
     border-radius: 5px;
     display: block;
-    height: 100%;
+    // height: 100%;
     width: 100%;
     object-fit: cover;
   }
@@ -45,8 +45,10 @@
   }
   
   .details-wrapper {
+    color: color-get('text-shadow');
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
   }
   
