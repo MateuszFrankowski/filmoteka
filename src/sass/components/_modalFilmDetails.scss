@@ -146,7 +146,7 @@
 
   &__change-movie {
     position: absolute;
-    top: 50%;
+    top: 400px;
     transform: translateY(-50%);
     width: 50px;
     height: 50px;
@@ -154,17 +154,28 @@
     padding: 10px;
     border-radius: 50%;
     font-size: 50px;
-    color: var(--btn-focus-primary);
+    color:color-get('text-shadow');
     @include transition-add('transform');
     cursor: pointer;
 
-    &:hover,
-    &:focus {
-      scale: 120%;
+    @include media-mapp('tablet'){
+      top: 250px;
     }
 
-    &--left {
-      left: -50px;
+    @include media-mapp('desktop') {
+      top: 350px;
+    }
+
+    &--active {
+      color: color-get('btn-focus-primary');
+
+      &:hover,&:focus{
+        scale: 120%;
+      }
+    }
+    &--left{
+      left:-50px;
+
     }
 
     &--right {

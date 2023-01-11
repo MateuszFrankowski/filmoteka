@@ -65,7 +65,7 @@ export const loadPage = async (changePage = false) => {
   }
   if (movies.total_pages === 0) {
     const gallery = document.querySelector('.gallery');
-    gallery.innerHTML = "<div><p>Sorry, we can't find movies...</p></div>";
+    gallery.innerHTML = `<div><p>No movies added to '${fetchType.charAt(0).toUpperCase()+fetchType.slice(1)}' yet.</p></div>`;
     return;
   }
   dataMovies.totalPages = movies.total_pages;
