@@ -39,7 +39,7 @@ export const loadPage = async (changePage = false) => {
       id = await fetchWatchedFilmsPerPage(window.userUid, page);
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
-        page,
+        id.page,
         id.total_pages,
         id.amountOfWatchedFilms
       );
@@ -48,7 +48,7 @@ export const loadPage = async (changePage = false) => {
       id = await fetchQueueFilmsPerPage(window.userUid, page);
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
-        page,
+        id.page,
         id.total_pages,
         id.amountOfWatchedFilms
       );
@@ -63,10 +63,6 @@ export const loadPage = async (changePage = false) => {
   }
   dataMovies.totalPages = movies.total_pages;
   if (page === dataMovies.page) {
-    if (page > dataMovies.totalPages) {
-      page = dataMovies.totalPages;
-      dataMovies.page = page;
-    }
     newURLSearchParams();
     pagination();
     createMovies(movies);
