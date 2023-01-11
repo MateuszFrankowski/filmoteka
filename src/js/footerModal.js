@@ -1,4 +1,5 @@
-const modal = document.querySelector('.modal-footer-backdrop');
+const modalBackdrop = document.querySelector('.modal-footer-backdrop');
+const modal = document.querySelector('.modal-footer');
 const modalOpenButton = document.querySelector('.footer__link');
 const modalCloseButton = document.querySelector('.modal-footer__icon-close');
 const modalNextButton = document.querySelector('.modal-footer__icon-right');
@@ -23,14 +24,14 @@ const hideIcons = () => {
   } else modalNextButton.classList.add('modal-footer__icon-hidden');
 };
 
-const goNext = () => {
+const goNextHandler = () => {
   if (current < students.length - 1) {
     current++;
   }
   changeStudents();
   hideIcons();
 };
-const goPrevious = () => {
+const goPreviousHandler = () => {
   if (current > 0) {
     current--;
   }
@@ -38,29 +39,35 @@ const goPrevious = () => {
   hideIcons();
 };
 
+const modalCloseHandler = () => {
+  modalBackdrop.classList.add('is-hidden');
+  modal.classList.add('is-hidden');
+  setTimeout(() => {
+    students[current].classList.remove('modal-footer__student-active');
+    current = 0;
+    students[0].classList.add('modal-footer__student-active');
+  }, 500);
+};
+
+const escapeBtnHandler = event => {
+  if (event.key === 'Escape') {
+    modalCloseHandler();
+  }
+};
 export const footerModalFunction = () => {
   modalOpenButton.addEventListener('click', () => {
     hideIcons();
+    modalBackdrop.classList.remove('is-hidden');
     modal.classList.remove('is-hidden');
+    document.addEventListener('keydown', escapeBtnHandler);
   });
+
   modalCloseButton.addEventListener('click', () => {
-    modal.classList.add('is-hidden');
-    setTimeout(() => {
-      students[current].classList.remove('modal-footer__student-active');
-      current = 0;
-      students[0].classList.add('modal-footer__student-active');
-    }, 500);
+    modalCloseHandler();
+    document.removeEventListener('keydown', escapeBtnHandler);
   });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-      modal.classList.add('is-hidden');
-      setTimeout(() => {
-        students[current].classList.remove('modal-footer__student-active');
-        current = 0;
-        students[0].classList.add('modal-footer__student-active');
-      }, 500);
-    }
-  });
-  modalNextButton.addEventListener('click', goNext);
-  modalPreviousButton.addEventListener('click', goPrevious);
+
+  modalNextButton.addEventListener('click', goNextHandler);
+
+  modalPreviousButton.addEventListener('click', goPreviousHandler);
 };
