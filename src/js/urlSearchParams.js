@@ -39,6 +39,7 @@ export const newURLSearchParams = (pushReplace = 'push') => {
       '',
       urlAdress
     );
+    dataMovies.queryReplace = 'push';
   }
   if (pushReplace === 'replace') {
     window.history.replaceState(

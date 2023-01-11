@@ -22,6 +22,8 @@ const renderGallery = async () => {
     i += 1;
     return liElement(data, i);
   });
+  newURLSearchParams(dataMovies.queryReplace);
+  dataMovies.queryReplace = "replace";
   pagination();
   moviesGallery.classList.add('grid');
   moviesGallery.innerHTML = markupArr.join('');
