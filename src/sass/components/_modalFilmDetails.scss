@@ -154,7 +154,7 @@
     padding: 10px;
     border-radius: 50%;
     font-size: 50px;
-    color: color-var(-- 'btn-focus-primary');
+    color: var(--btn-focus-primary);
     @include transition-add('transform');
     cursor: pointer;
 
