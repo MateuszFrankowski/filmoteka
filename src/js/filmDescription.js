@@ -161,45 +161,7 @@ export const modalMovieInfo = async (movieId, movieNr) => {
   }
   const markup = `
     <div class="modal" data-movie_nr="${movieNr}">
-      ${modalInner(movie, btnInnerText)}
-    </div>`;
-  modal.innerHTML = markup; 
-  const closeModalBtn = document.querySelector('[data-modal-close]');
-  closeModalBtn.addEventListener('click', showModal);
-  document.addEventListener('keydown', modalEscapeListener);
-  modal.addEventListener('click', modalClickListener);
-  
-  const leftMovieBtn = document.querySelector('.modal__change-movie--left');
-  const rightMovieBtn = document.querySelector('.modal__change-movie--right');
-  leftMovieBtn.addEventListener('click', changeInnerModal)
-  rightMovieBtn.addEventListener('click', changeInnerModal)
-
-  if (isSigned) {
-    addToWatchBtn = document.querySelector('.modal__watched-btn');
-    addToQueueBtn = document.querySelector('.modal__queue-btn');
-    addToWatchBtn.addEventListener('click', watchedHandler, true);
-    addToQueueBtn.addEventListener('click', queueHandler, true);
-  }
-};
-
-const modalClickListener = event => {
-  if (event.target === event.currentTarget) {
-    modal.classList.add('is-hidden');
-    // console.log('checks status wywołanie');
-    checkUpdateStatus();
-  }
-};
-
-const modalEscapeListener = event => {
-  if (event.key === 'Escape') {
-    modal.classList.add('is-hidden');
-    // console.log('checks status wywołanie');
-    checkUpdateStatus();
-  }
-};
-
-const modalInner = (movie, btnInnerText) => {
-  return `<button class="modal__close-btn" data-modal-close>
+      <button class="modal__close-btn" data-modal-close>
         <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m8 8 14 14M8 22 22 8" stroke="#000" stroke-width="2"/></svg>
       </button>
       <img class="modal__poster" src="${movie.poster_path}"
@@ -239,20 +201,54 @@ const modalInner = (movie, btnInnerText) => {
         </div>
       </div>
       <div class="modal__change-movie modal__change-movie--left" data-move="left">&#x3c;</div>
-      <div class="modal__change-movie modal__change-movie--right" data-move="right">&#x3e;</div>`
-}
+      <div class="modal__change-movie modal__change-movie--right" data-move="right">&#x3e;</div>
+    </div>`;
+  modal.innerHTML = markup; 
+  const closeModalBtn = document.querySelector('[data-modal-close]');
+  closeModalBtn.addEventListener('click', showModal);
+  document.addEventListener('keydown', modalEscapeListener);
+  modal.addEventListener('click', modalClickListener);
+  
+  const leftMovieBtn = document.querySelector('.modal__change-movie--left');
+  const rightMovieBtn = document.querySelector('.modal__change-movie--right');
+  leftMovieBtn.addEventListener('click', changeInnerModal)
+  rightMovieBtn.addEventListener('click', changeInnerModal)
+
+  if (isSigned) {
+    addToWatchBtn = document.querySelector('.modal__watched-btn');
+    addToQueueBtn = document.querySelector('.modal__queue-btn');
+    addToWatchBtn.addEventListener('click', watchedHandler, true);
+    addToQueueBtn.addEventListener('click', queueHandler, true);
+  }
+};
+
+const modalClickListener = event => {
+  if (event.target === event.currentTarget) {
+    modal.classList.add('is-hidden');
+    // console.log('checks status wywołanie');
+    checkUpdateStatus();
+  }
+};
+
+const modalEscapeListener = event => {
+  if (event.key === 'Escape') {
+    modal.classList.add('is-hidden');
+    // console.log('checks status wywołanie');
+    checkUpdateStatus();
+  }
+};
 
 const changeInnerModal = async (e) => {
-  let movieNr = document.querySelector('[data-movie_nr]').dataset.movie_nr;
+  let movieNumber = document.querySelector('[data-movie_nr]').dataset.movie_nr;
   let move = 0;
   if (e.target.dataset.move === "right") { move += 1 };
   if (e.target.dataset.move === "left") { move -= 1 };
-  movieNr =Number(movieNr)+ Number(move);
-  if (movieNr < 1 || movieNr > dataMovies.moviesPerPage) {
+  movieNumber =Number(movieNumber)+ Number(move);
+  if (movieNumber < 1 || movieNumber > dataMovies.moviesPerPage) {
     return
   };
-  const galleryMovie = document.querySelector(`[data-film_nr="${movieNr}"]`);
+  const galleryMovie = document.querySelector(`[data-film_nr="${movieNumber}"]`);
   movieId = galleryMovie.dataset.film_id;
   showModal(false);
-  modalMovieInfo(movieId, movieNr);
+  modalMovieInfo(movieId, movieNumber);
 }
