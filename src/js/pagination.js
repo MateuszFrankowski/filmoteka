@@ -26,7 +26,7 @@ const markupPages = () => {
     }
   } else {
     for (let i = -4; i < 5; i++) {
-      markup.push(page + i);
+      markup.push(Number(page) + i);
     }
   }
   const markupFilter = markup.filter(page => page > 0 && page <= totalPages);
