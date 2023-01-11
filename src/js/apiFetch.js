@@ -2,7 +2,6 @@ import axios from 'axios';
 import { dataMovies } from './global';
 import noImage from '../images/no-movie-poster.jpg';
 
-console.log(noImage)
 // <========> IMPORT AXIOS FETCH <========>
 // import { fetchTheMovieDBList, fetchTheMovieDBMovie } from 'path/to/api'
 
@@ -174,7 +173,6 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
     const posterPath = !!result.poster_path
       ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
       : noImage;
-    // console.log(posterPath)
     movies.data.push({
       id: result.id,
       poster_path: posterPath,
@@ -191,7 +189,6 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
       movie.genres.push(newGenre[0].name);
     })
   );
-  console.log(movies)
   return movies;
 };
 
@@ -213,7 +210,6 @@ export const fetchTheMovieDBMovie = async idMovie => {
   const posterPath = !!poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
     : noImage;
-  // console.log('posterPath:', posterPath);
   const movie = {
     id,
     title,
