@@ -163,7 +163,11 @@ export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
   const filmsPerPage = checkMediaQueries();
 
   const numberofPages = Math.ceil(amountOfFilms / filmsPerPage);
-  const startIndex = filmsPerPage * (pageNr - 1);
+  let page = pageNr;
+  if (pageNr > numberofPages) {
+    page = numberofPages;
+  }
+  const startIndex = filmsPerPage * (page - 1);
   const endIndex =
     startIndex + filmsPerPage > amountOfFilms + 1
       ? amountOfFilms + 1
@@ -171,7 +175,7 @@ export const fetchQueueFilmsPerPage = async (userId, pageNr) => {
   const filmsOnPage = filmsCollection.slice(startIndex, endIndex);
   // console.log(startIndex, endIndex);
 
-  return { filmsOnPage, total_pages: numberofPages, amountOfFilms };
+  return { filmsOnPage, total_pages: numberofPages, amountOfFilms, page };
 };
 
 export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
@@ -180,8 +184,12 @@ export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
     await fetchUserDataFromFirestore(userId);
   const filmsPerPage = checkMediaQueries();
 
-  const numberofPages = Math.ceil(amountOfWatchedFilms / filmsPerPage);
-  const startIndex = filmsPerPage * (pageNr - 1);
+  let numberofPages = Math.ceil(amountOfWatchedFilms / filmsPerPage);
+  let page = pageNr;
+  if (pageNr > numberofPages) {
+    page = numberofPages;
+  }
+  const startIndex = filmsPerPage * (page - 1);
   const endIndex =
     startIndex + filmsPerPage > amountOfWatchedFilms + 1
       ? amountOfWatchedFilms + 1
@@ -189,5 +197,5 @@ export const fetchWatchedFilmsPerPage = async (userId, pageNr) => {
   const filmsOnPage = filmsWatched.slice(startIndex, endIndex);
   // console.log(startIndex, endIndex);
 
-  return { filmsOnPage, total_pages: numberofPages, amountOfWatchedFilms };
+  return { filmsOnPage, total_pages: numberofPages, amountOfWatchedFilms, page };
 };
