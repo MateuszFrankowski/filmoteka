@@ -2,15 +2,18 @@
  * Główny plik dla stylów.
  * Wszystkie partials podłączamy tutaj.
  */
- @use './utils/forward' as *;
+@use './utils/forward' as *;
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Titan+One&display=swap');
 
 body {
   font-family: 'DM Sans', sans-serif;
   scroll-behavior: smooth;
+  background-color: var(--bg-primary);
 }
 
-ul, li, figure {
+ul,
+li,
+figure {
   margin: 0;
   padding: 0;
 }
@@ -20,6 +23,7 @@ ul, li, figure {
   min-width: 320px;
   max-width: 1280px;
   margin: 0 auto;
+
   // padding-right: calc(100vw - 100%);
   @include media-mapp(tablet) {
     padding-inline: 71px;
@@ -32,7 +36,7 @@ ul, li, figure {
 
 @import './components/headerHome';
 @import './components/headerLibrary';
-@import './components/filmsDB';
+
 @import './components/modalFilmDetails';
 @import './components/pageSelector';
 @import './components/footer';
@@ -41,3 +45,4 @@ ul, li, figure {
 @import './components/grid';
 @import './components/loaderSpinner';
 @import './components/section';
+@import './components/tchemeWrapper';

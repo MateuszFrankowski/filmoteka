@@ -1,10 +1,10 @@
 .footer {
-  background-color: get(bg-secondary);
+  background-color: var(--bg-secondary);
   &__data {
     max-width: 320px;
     padding-top: 28px;
     padding-bottom: 29px;
-    color: get(text-secondary);
+    color: var(--text-secondary);
     text-align: center;
     font-family: 'Roboto';
     font-size: 14px;
@@ -24,7 +24,7 @@
     &:hover,
     &:focus {
       cursor: pointer;
-      color: get(bg-decorative);
+      color: var(--bg-decorative);
     }
   }
 }
