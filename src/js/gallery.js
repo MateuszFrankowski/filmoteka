@@ -30,7 +30,16 @@ export const createMovies = async movies => {
   const markup = movies.data.map(
     data => {
       i += 1;
-      return `<li  data-film_id="${data.id}" data-film_nr="${i}">
+      return liElement(data, i)
+    }
+  );
+
+  galleryContainer[0].classList.add('grid');
+  galleryContainer[0].innerHTML = markup.join('');
+};
+
+export const liElement = (data, movieNr) => {
+  return `<li  data-film_id="${data.id}" data-film_nr="${movieNr}">
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
 
@@ -51,12 +60,8 @@ export const createMovies = async movies => {
               </figure>
         </li>
           `
-    }
-  );
+}
 
-  galleryContainer[0].classList.add('grid');
-  galleryContainer[0].innerHTML = markup.join('');
-};
 //-------------- Function rounding rating to 1 place after comma--------------//
 // export function roundingMethodToFirstPlace(value) {
 //     let roundingValue = Number(Math.round(value + 'e+1') + 'e-1');
