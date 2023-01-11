@@ -9,6 +9,8 @@
   transition: opacity, visibility;
   transition-duration: 250ms;
   transition-timing-function: linear;
+  overflow-y:auto;
+  padding:20px 20px 40px;
 }
 .modal {
   width: 280px;
@@ -18,10 +20,10 @@
   padding-right: 20px;
   font-family: 'Roboto';
   font-weight: 500;
-  position: absolute;
-  top: 50%;
+  position: relative;
+  top: 0;
   left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(0);
 
   &__close-btn {
     border: none;
@@ -147,12 +149,14 @@
 @media screen and (min-width: 768px) {
   .modal {
     width: 618px;
-
     display: flex;
     flex-direction: row;
     gap: 32px;
     padding-left: 28px;
     padding-right: 30px;
+    top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
     &__description {
       display: flex;
       flex-direction: column;
@@ -184,7 +188,6 @@
   .modal {
     width: 882px;
     padding-left: 30px;
-
     &__poster {
       width: 396px;
       height: 100%;
