@@ -63,6 +63,10 @@ export const loadPage = async (changePage = false) => {
   }
   dataMovies.totalPages = movies.total_pages;
   if (page === dataMovies.page) {
+    if (page > dataMovies.totalPages) {
+      page = dataMovies.totalPages;
+      dataMovies.page = page;
+    }
     newURLSearchParams();
     pagination();
     createMovies(movies);
