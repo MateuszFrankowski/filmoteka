@@ -23,6 +23,7 @@
     transform: translateY(-50%);
     transition-property: fill;
     transition-duration: 250ms;
+    transform: translateX(50%) translateY(-50%);
     &:hover,
     &:focus {
       fill: get(text-secondary);

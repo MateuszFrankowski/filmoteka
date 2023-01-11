@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { dataMovies } from './global';
+import noImage from '../images/no-movie-poster.jpg';
 
 // <========> IMPORT AXIOS FETCH <========>
 // import { fetchTheMovieDBList, fetchTheMovieDBMovie } from 'path/to/api'
@@ -171,8 +172,7 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
   response.data.results.forEach(result => {
     const posterPath = !!result.poster_path
       ? `https://image.tmdb.org/t/p/w500${result.poster_path}`
-      : 'https://s9575.chomikuj.pl/ChomikImage.aspx?e=k2PFTZgbjbykP4qMDtOLVInuN00lY_3R1YKpq-3TgLC82x6Oick3r4PEZtwRTwfoDcarEHhIWh0wiNdTpWDm_0JbF0GEncHSXDRh3B_rImw&pv=2';
-  
+      : noImage;
     movies.data.push({
       id: result.id,
       poster_path: posterPath,
@@ -209,8 +209,7 @@ export const fetchTheMovieDBMovie = async idMovie => {
   } = response.data;
   const posterPath = !!poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
-    : './images/no-movie-poster.jpg';
-  // console.log('posterPath:', posterPath);
+    : noImage;
   const movie = {
     id,
     title,
@@ -246,10 +245,13 @@ export const fetchTheMovieDBMovieIdList = async (
     const response = await fetchTheMovieDB(urlSearch, params);
     const { id, title, poster_path, vote_average, genres, release_date } =
       response.data;
+    const posterPath = !!poster_path
+      ? `https://image.tmdb.org/t/p/w500${poster_path}`
+      : noImage;
     const movie = {
       id,
       title,
-      poster_path: `https://image.tmdb.org/t/p/w500${poster_path}`,
+      poster_path: posterPath,
       vote_average,
       genres: genres.map(genre => genre.name),
       release_year: `${new Date(release_date).getFullYear()}`,
