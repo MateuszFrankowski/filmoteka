@@ -175,11 +175,16 @@
     }
     &--left{
       left:-50px;
-
+      @media (max-width: 400px) {
+        left: -18px;
+      }
     }
 
     &--right {
       right: -50px;
+      @media (max-width: 400px) {
+        right: -18px;
+      }
     }
   }
 }
