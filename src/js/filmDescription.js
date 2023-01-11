@@ -248,7 +248,7 @@ const changeInnerModal = async (e) => {
     return
   };
   const galleryMovie = document.querySelector(`[data-film_nr="${movieNumber}"]`);
-  movieId = galleryMovie.dataset.film_id;
+  const movieId = galleryMovie.dataset.film_id;
   showModal(false);
   modalMovieInfo(movieId, movieNumber);
 }
