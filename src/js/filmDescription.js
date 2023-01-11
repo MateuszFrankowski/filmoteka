@@ -159,6 +159,8 @@ export const modalMovieInfo = async (movieId, movieNr) => {
       classWatched: '',
     };
   }
+  const classLeft = movieNr > 1 ? 'modal__change-movie--active' : '';
+  const classRight = movieNr < dataMovies.moviesPerPage ? 'modal__change-movie--active' : '';
   const markup = `
     <div class="modal" data-movie_nr="${movieNr}">
       <button class="modal__close-btn" data-modal-close>
@@ -200,8 +202,8 @@ export const modalMovieInfo = async (movieId, movieNr) => {
   }" ${btnInnerText.isDisabled}>${btnInnerText.filmInQueue}</button>
         </div>
       </div>
-      <div class="modal__change-movie modal__change-movie--left" data-move="left">&#x3c;</div>
-      <div class="modal__change-movie modal__change-movie--right" data-move="right">&#x3e;</div>
+      <div class="modal__change-movie modal__change-movie--left ${classLeft}" data-move="left">&#x3c;</div>
+      <div class="modal__change-movie modal__change-movie--right ${classRight}" data-move="right">&#x3e;</div>
     </div>`;
   modal.innerHTML = markup; 
   const closeModalBtn = document.querySelector('[data-modal-close]');
