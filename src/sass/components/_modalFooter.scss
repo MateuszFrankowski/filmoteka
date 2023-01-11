@@ -7,8 +7,8 @@
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  background-color: get(bg-secondary);
-  color: get(text-secondary);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
   text-align: center;
   font-family: 'Roboto';
   font-size: 14px;
@@ -18,14 +18,14 @@
     height: 25px;
     top: 30;
     right: 15;
-    fill: get(text-accent);
+    fill: var(--text-accent);
     z-index: 3;
     transform: translateY(-50%);
     transition-property: fill;
     transition-duration: 250ms;
     &:hover,
     &:focus {
-      fill: get(text-secondary);
+      fill: var(--text-secondary);
     }
   }
   &__icon-left {
@@ -80,7 +80,7 @@
     margin: 10px 0px;
   }
   &__info {
-    color: get(bg-decorative);
+    color: var(--bg-decorative);
     font-size: 10px;
   }
 }

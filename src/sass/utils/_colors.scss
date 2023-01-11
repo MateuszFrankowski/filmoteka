@@ -19,7 +19,6 @@ $colors: (
   'btn-hover-shadow': rgb(0, 0, 0, 0.5)
 );
 :root {
-  --text-primary: #c6c6c6;
   --text-primary: #000000;
   --text-secondary: #545454;
   --text-alternative: #ffffff;
@@ -41,15 +40,13 @@ $colors: (
 //dark mode
 html[data-theme='dark'] {
   --text-primary: #c6c6c6;
-  --text-primary: #000000;
   --text-secondary: #545454;
   --text-alternative: #ffffff;
   --text-accent: #ff6b08;
   --text-shadow: #8c8c8c;
-
   // Background
   --bg-primary: #262323;
-  --bg-secondary: #f7f7f7;
+  --bg-secondary: #302727;
   --bg-decorative: #ff6b08;
   --bg-alternative: #000000;
   --bg-modal: rgba(0, 0, 0, 0.2);
