@@ -34,13 +34,13 @@
 
     &:focus,
     &:hover {
-      color: color-get('text-accent');
+      color: var(--text-accent);
       @include transition-add('color');
     }
   }
 
   &__rim {
-    background-color: color-get('bg-secondary');
+    background-color: var(--bg-secondary);
     height: 40px;
     width: 40px;
     margin: 0;
@@ -50,21 +50,21 @@
 
       &:focus,
       &:hover {
-        color: color-get('text-primary');
+        color: var(--text-primary);
         @include transition-add('color');
       }
     }
   }
 
   &__active {
-    background-color: color-get('bg-decorative');
-    color: color-get('text-alternative');
+    background-color: var(--bg-decorative);
+    color: var(--text-alternative);
     height: 40px;
     width: 40px;
 
     &:focus,
     &:hover {
-      color: color-get('text-primary');
+      color: var(--text-primary);
       @include transition-add('color');
     }
   }
