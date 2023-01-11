@@ -43,7 +43,7 @@ export const liElement = (data, movieNr) => {
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
 
-                  <img class="img" src="https://www.themoviedb.org/t/p/w500${data.poster_path
+                  <img class="img" src="${data.poster_path
         }" />
 
                   </div>
