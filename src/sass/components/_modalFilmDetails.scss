@@ -144,6 +144,33 @@
       transition: box-shadow 0.25s linear;
     }
   }
+
+  &__change-movie{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width:50px;
+    height:50px;
+    line-height: 0.5;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 50px;
+    color:color-get('btn-focus-primary');
+    @include transition-add('transform');
+    cursor: pointer;
+
+    &:hover,&:focus{
+      scale: 120%;
+    }
+
+    &--left{
+      left:-50px;
+    }
+
+    &--right{
+      right:-50px;
+    }
+  }
 }
 
 @media screen and (min-width: 768px) {

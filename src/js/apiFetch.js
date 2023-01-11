@@ -210,7 +210,7 @@ export const fetchTheMovieDBMovie = async idMovie => {
   const posterPath = !!poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
     : './images/no-movie-poster.jpg';
-  console.log('posterPath:', posterPath);
+  // console.log('posterPath:', posterPath);
   const movie = {
     id,
     title,

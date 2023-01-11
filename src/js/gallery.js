@@ -26,15 +26,16 @@ export const createMovies = async movies => {
   const galleryContainer = document.getElementsByClassName('gallery');
   // console.log(galleryContainer[0]);
   // console.log(movies);
+  let i = 0;
   const markup = movies.data.map(
-    data =>
-      `<li  data-film_id="${data.id}">
+    data => {
+      i += 1;
+      return `<li  data-film_id="${data.id}" data-film_nr="${i}">
               <figure class="card">
                   <div class="thumb" data-id="${data.id}">
 
-                  <img class="img" src="https://www.themoviedb.org/t/p/w500${
-                    data.poster_path
-                  }" />
+                  <img class="img" src="https://www.themoviedb.org/t/p/w500${data.poster_path
+        }" />
 
                   </div>
                   <figcaption>
@@ -43,13 +44,14 @@ export const createMovies = async movies => {
                   <p>${data.genres.join(', ')}</p>
                   <p>${data.release_year}</p>
                   <div class="rating rating--visible">${roundTo1Comma(
-                    data.vote_average
-                  )}</div>
+          data.vote_average
+        )}</div>
                   </div>
                   </figcaption>
               </figure>
         </li>
           `
+    }
   );
 
   galleryContainer[0].classList.add('grid');
@@ -103,8 +105,9 @@ export const clickGallery = () => {
       return;
     }
     const movieId = goToLiElement(e.target).dataset.film_id;
-    console.log(movieId);
-    modalMovieInfo(movieId);
+    const movieNr = goToLiElement(e.target).dataset.film_nr;
+    // console.log(movieId, movieNr);
+    modalMovieInfo(movieId, movieNr);
     // function to open modal with movie id
   });
 
