@@ -1,3 +1,4 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchTheMovieDBMovie } from './apiFetch';
 import {
   updateUserWatchedData,
@@ -154,7 +155,7 @@ export const modalMovieInfo = async (movieId, movieNr) => {
       filmWatched: 'Add to watched',
       filmInQueue: 'Add to queue',
       class: 'no-active-btn',
-      isDisabled: 'disabled',
+      isDisabled: '',
       classQueue: '',
       classWatched: '',
     };
@@ -221,6 +222,13 @@ export const modalMovieInfo = async (movieId, movieNr) => {
     addToQueueBtn = document.querySelector('.modal__queue-btn');
     addToWatchBtn.addEventListener('click', watchedHandler, true);
     addToQueueBtn.addEventListener('click', queueHandler, true);
+  } else {
+    btnsArea = document.querySelector('.modal__add-btns');
+    btnsArea.addEventListener('click', () => {
+      Notify.info('You need to log in to use this feature.', {
+        position: 'left-top'
+      });
+    });
   }
 };
 

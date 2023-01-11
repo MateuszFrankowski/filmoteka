@@ -1,5 +1,6 @@
 // // Import the functions you need from the SDKs you need
 
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { onSnapshot } from 'firebase/firestore';
 import { signInWithPopup, signOut, GoogleAuthProvider } from 'firebase/auth';
 import { db, auth } from './global';
@@ -50,8 +51,13 @@ export const loginHandling = async () => {
       signOutIcon.classList.add('hidden');
       userDetails.innerHTML = '';
       myLibrary.classList.add('no-active-btn');
-      myLibrary.style = 'pointer-events: none';
       window.userUid = false;
+      myLibrary.addEventListener('click', (event) => {
+        event.preventDefault();
+        Notify.info('You need to log in to use this feature.', {
+          position: 'left-top'
+        });
+      })
 
       if (window.location.href.search('index.html') === -1) {
         console.log(window.location.href);
