@@ -29,6 +29,7 @@ export const loadPage = async (changePage = false) => {
   let movies = {};
 
   let id = {};
+  let reloadPage = false;
 
   switch (fetchType) {
     case 'home':
@@ -37,6 +38,9 @@ export const loadPage = async (changePage = false) => {
       break;
     case 'watched':
       id = await fetchWatchedFilmsPerPage(window.userUid, page);
+      if (id.page !== page) {
+        reloadPage = true;
+      };
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
         id.page,
@@ -46,6 +50,9 @@ export const loadPage = async (changePage = false) => {
       break;
     case 'queue':
       id = await fetchQueueFilmsPerPage(window.userUid, page);
+      if (id.page !== page) {
+        reloadPage = true;
+      };
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
         id.page,
@@ -63,6 +70,10 @@ export const loadPage = async (changePage = false) => {
   }
   dataMovies.totalPages = movies.total_pages;
   if (page === dataMovies.page) {
+    if (reloadPage) {
+      page = id.page;
+      dataMovies.page = page;
+    }
     newURLSearchParams();
     pagination();
     createMovies(movies);
