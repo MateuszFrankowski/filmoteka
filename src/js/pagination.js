@@ -121,7 +121,7 @@ const pageButtonListener = e => {
     dataMovies.page = Number(page) + 1;
   } else if (newPage === 'before') {
     dataMovies.page = Number(page) - 1;
-  } 
+  }
 
   dataMovies.queryReplace = 'push';
   loadPage(true);
@@ -143,7 +143,7 @@ export const mediaListener = () => {
       await loadPage();
     });
   window
-    .matchMedia('(min-width: 1200px)')
+    .matchMedia('(min-width: 1024px)')
     .addEventListener('change', async e => {
       const { page } = dataMovies;
       const { tablet, laptop } = moviesPerPageInLibrary;

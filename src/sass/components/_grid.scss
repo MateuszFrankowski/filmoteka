@@ -21,7 +21,7 @@
   padding: 0px;
 }
 
-// Tablet 768-1200//
+// Tablet 768-1024//
 @media screen and (min-width: 768px) {
   .grid,
   .library__grid {
@@ -29,8 +29,8 @@
   }
 }
 
-// Desktop 1200+//
-@media screen and (min-width: 1200px) {
+// Desktop 1024+//
+@media screen and (min-width: 1024px) {
   .grid,
   .library__grid {
     grid-template-columns: 1fr 1fr 1fr;
