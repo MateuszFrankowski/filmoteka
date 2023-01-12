@@ -8,6 +8,13 @@ import { doc } from 'firebase/firestore';
 import { loadPage } from './loadPage';
 
 //
+const libraryNotAvailable = (event) => {
+  event.preventDefault();
+  Notify.info('You need to log in to use this feature.', {
+    position: 'left-top'
+  });
+}
+
 export const loginHandling = async () => {
   const myLibrary = document.getElementById('libraryBtn');
 
@@ -45,6 +52,7 @@ export const loginHandling = async () => {
       myLibrary.classList.remove('no-active-btn');
       myLibrary.style = 'pointer-events: click';
       window.userUid = true;
+      myLibrary.removeEventListener('click', libraryNotAvailable);
     } else {
       // not signed in
       signInIcon.classList.remove('hidden');
@@ -52,12 +60,7 @@ export const loginHandling = async () => {
       userDetails.innerHTML = '';
       myLibrary.classList.add('no-active-btn');
       window.userUid = false;
-      myLibrary.addEventListener('click', (event) => {
-        event.preventDefault();
-        Notify.info('You need to log in to use this feature.', {
-          position: 'left-top'
-        });
-      })
+      myLibrary.addEventListener('click', libraryNotAvailable);
 
       if (window.location.href.search('index.html') === -1) {
         console.log(window.location.href);
