@@ -1,18 +1,18 @@
 // Mobile 320-768//
 
 .section {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+// Tablet 768-1024//
+@media screen and (min-width: 768px) {
+  .section {
+    padding-top: 30px;
+    padding-bottom: 60px;
   }
-  
-  // Tablet 768-1024//
-  @media screen and (min-width: 768px) {
-    .section {
-      padding-top: 60px;
-      padding-bottom: 60px;
-    }
-  }
-  
-  // Desktop 1024+//
-  @media screen and (min-width: 1024px) {
-  }
+}
+
+// Desktop 1024+//
+@media screen and (min-width: 1024px) {
+}

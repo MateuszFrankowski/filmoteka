@@ -37,6 +37,7 @@ $colors: (
   --btn-focus-secondary: #d5cdcd;
   //Shadows
   --btn-hover-shadow: rgb(0, 0, 0, 0.5);
+  --sun: #ffa500;
 }
 //dark mode
 html[data-theme='dark'] {
@@ -56,6 +57,9 @@ html[data-theme='dark'] {
   --btn-focus-secondary: #d5cdcd;
   //Shadows
   --btn-hover-shadow: rgb(0, 0, 0, 0.5);
+  //switch
+  --sun: #777;
+  --moon: #fff;
 }
 @function get($var) {
   @return map-get($colors, $var);
