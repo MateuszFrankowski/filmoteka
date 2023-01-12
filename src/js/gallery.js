@@ -50,7 +50,7 @@ export const liElement = (data, movieNr) => {
                   <figcaption>
                   <h3 class="title">${data.title}</h3>
                   <div class="details-wrapper">
-                  <p>${data.genres.join(', ')}</p>
+                  <p>${data.genres.join(', ')}</p>|
                   <p>${data.release_year}</p>
                   <div class="rating rating--visible">${roundTo1Comma(
           data.vote_average
