@@ -40,7 +40,7 @@ export const loadPage = async (changePage = false) => {
       id = await fetchWatchedFilmsPerPage(window.userUid, page);
       if (id.page !== page) {
         reloadPage = true;
-      };
+      }
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
         id.page,
@@ -52,7 +52,7 @@ export const loadPage = async (changePage = false) => {
       id = await fetchQueueFilmsPerPage(window.userUid, page);
       if (id.page !== page) {
         reloadPage = true;
-      };
+      }
       movies = await fetchTheMovieDBMovieIdList(
         id.filmsOnPage,
         id.page,
@@ -65,8 +65,13 @@ export const loadPage = async (changePage = false) => {
   }
   if (movies.total_pages === 0) {
     const gallery = document.querySelector('.gallery');
-    if (dataMovies.fetchType === 'watched' || dataMovies.fetchType === 'queue') {
-      gallery.innerHTML = `<div><p class="pages__no-movies">No movies added to '${fetchType.charAt(0).toUpperCase() + fetchType.slice(1)}' yet.</p></div>`;
+    if (
+      dataMovies.fetchType === 'watched' ||
+      dataMovies.fetchType === 'queue'
+    ) {
+      gallery.innerHTML = `<div><p class="pages__no-movies">No movies added to '${
+        fetchType.charAt(0).toUpperCase() + fetchType.slice(1)
+      }' yet.</p></div>`;
     } else if (!!dataMovies.query) {
       gallery.innerHTML = `<div><p class="pages__no-movies">Searching '${query}' have not result with movies.</p></div>`;
     } else {

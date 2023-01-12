@@ -8,9 +8,11 @@ export const newURLSearchParams = (pushReplace = 'push') => {
   let searchParams = new URLSearchParams(urlAdress.search);
   const { page, query, fetchType } = dataMovies;
 
-  for (const key of searchParams.keys()) {
-    searchParams.delete(key);
+  let deleteParams = [];
+  for (let key of searchParams.keys()) {
+    deleteParams.push(key);
   }
+  deleteParams.forEach(key => searchParams.delete(key));
   switch (fetchType) {
     case 'home':
       if (!!query) {
@@ -85,7 +87,7 @@ export const changeDataMoviesFromUrl = () => {
     const movieInput = document.querySelector('input.home-header__searchbar');
     movieInput.value = dataMovies.query;
   }
-}; 
+};
 
 export const changeUrlWithBrowser = () => {
   window.addEventListener('popstate', e => backNextUrl(e));
