@@ -97,9 +97,14 @@ export const liElement = (data, movieNr) => {
 //   libraryGrid.insertAdjacentHTML('beforeend', markup);
 
 export const roundTo1Comma = num => {
-  let roundNum = Math.round(num * 10) / 10;
-  if (roundNum === Math.round(roundNum)) {
-    roundNum = roundNum + '.0';
+  let roundNum;
+  if (!isNaN(num)) {
+    roundNum = Math.round(num * 10) / 10;
+    if (roundNum === Math.round(roundNum)) {
+      roundNum = roundNum + '.0';
+    }
+  } else {
+    roundNum = num;
   }
   return roundNum;
 };

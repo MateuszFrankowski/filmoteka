@@ -179,15 +179,19 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
       genre_ids: result.genre_ids,
       genres: [],
       release_year: `${new Date(result.release_date).getFullYear()}`,
-      vote_average: result.vote_average,
+      vote_average: result.vote_average > 0 ? result.vote_average : "-",
       title: result.title,
     });
   });
-  movies.data.forEach(movie =>
+  movies.data.forEach(movie => {
     movie.genre_ids.forEach(id => {
-      const newGenre = genres.filter(genre => genre.id === id);
-      movie.genres.push(newGenre[0].name);
-    })
+        const newGenre = genres.filter(genre => genre.id === id);
+        movie.genres.push(newGenre[0].name);
+      })
+      if (movie.genres.length === 0) {
+        movie.genres = ['...'];
+      }
+    }
   );
   return movies;
 };
@@ -196,7 +200,7 @@ export const fetchTheMovieDBMovie = async idMovie => {
   const urlSearch = `/movie/${idMovie}`;
   const params = {};
   const response = await fetchTheMovieDB(urlSearch, params);
-  const {
+  let {
     id,
     title,
     original_title,
@@ -210,6 +214,8 @@ export const fetchTheMovieDBMovie = async idMovie => {
   const posterPath = !!poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
     : noImage;
+  vote_average = vote_average > 0 ? vote_average : "-";
+  vote_count = vote_count > 0 ? vote_count : "-";
   const movie = {
     id,
     title,
@@ -223,7 +229,11 @@ export const fetchTheMovieDBMovie = async idMovie => {
   };
   let genresName = [];
   movie.genres.forEach(genre => genresName.push(genre.name));
-  movie.genres = genresName;
+  if (genresName.length > 0) {
+    movie.genres = genresName;
+  } else {
+    movie.genres = ['...'];
+  }
   return movie;
 };
 
@@ -243,17 +253,18 @@ export const fetchTheMovieDBMovieIdList = async (
   for (let i = 0; i < idMovies.length; i++) {
     const urlSearch = `/movie/${idMovies[i]}`;
     const response = await fetchTheMovieDB(urlSearch, params);
-    const { id, title, poster_path, vote_average, genres, release_date } =
+    let { id, title, poster_path, vote_average, genres, release_date } =
       response.data;
     const posterPath = !!poster_path
       ? `https://image.tmdb.org/t/p/w500${poster_path}`
       : noImage;
+    vote_average = vote_average > 0 ? vote_average : "-";
     const movie = {
       id,
       title,
       poster_path: posterPath,
       vote_average,
-      genres: genres.map(genre => genre.name),
+      genres: genres.length > 0 ? genres.map(genre => genre.name) : ['...'],
       release_year: `${new Date(release_date).getFullYear()}`,
     };
     movies.data.push(movie);
