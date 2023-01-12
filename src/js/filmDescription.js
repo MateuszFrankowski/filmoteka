@@ -223,7 +223,7 @@ export const modalMovieInfo = async (movieId, movieNr) => {
     addToWatchBtn.addEventListener('click', watchedHandler, true);
     addToQueueBtn.addEventListener('click', queueHandler, true);
   } else {
-    btnsArea = document.querySelector('.modal__add-btns');
+    const btnsArea = document.querySelector('.modal__add-btns');
     btnsArea.addEventListener('click', () => {
       Notify.info('You need to log in to use this feature.', {
         position: 'left-top'
