@@ -73,9 +73,9 @@ export const loadPage = async (changePage = false) => {
         fetchType.charAt(0).toUpperCase() + fetchType.slice(1)
       }' yet.</p></div>`;
     } else if (!!dataMovies.query) {
-      gallery.innerHTML = `<div><p class="pages__no-movies">Searching '${query}' have not result with movies.</p></div>`;
+      gallery.innerHTML = `<div><p class="pages__no-movies">We couldn't find any results for '${query}'. </br>Please check your search for any typos or try a different search term.</p></div>`;
     } else {
-      gallery.innerHTML = `<div><p class="pages__no-movies">Search result no successful. Enter the correct movie name and search again.</p></div>`;
+      gallery.innerHTML = `<div><p class="pages__no-movies">Search result not successful. Enter the correct movie name and search again.</p></div>`;
     }
     newURLSearchParams(dataMovies.queryReplace);
     dataMovies.page = 0;
