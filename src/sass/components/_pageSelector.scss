@@ -68,4 +68,14 @@
       @include transition-add('color');
     }
   }
+
+  &__no-movies{
+    text-align: center;
+    @include font-type(null, 20px);
+
+    @include media-mapp('tablet'){
+
+      @include font-type(null, 24px);
+    }
+  }
 }

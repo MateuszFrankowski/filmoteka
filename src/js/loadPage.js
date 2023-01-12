@@ -65,7 +65,17 @@ export const loadPage = async (changePage = false) => {
   }
   if (movies.total_pages === 0) {
     const gallery = document.querySelector('.gallery');
-    if (fetchType !== 'home') gallery.innerHTML = `<div><p>No movies added to '${fetchType.charAt(0).toUpperCase()+fetchType.slice(1)}' yet.</p></div>`;
+    if (dataMovies.fetchType === 'watched' || dataMovies.fetchType === 'queue') {
+      gallery.innerHTML = `<div><p class="pages__no-movies">No movies added to '${fetchType.charAt(0).toUpperCase() + fetchType.slice(1)}' yet.</p></div>`;
+    } else if (!!dataMovies.query) {
+      gallery.innerHTML = `<div><p class="pages__no-movies">Searching '${query}' have not result with movies.</p></div>`;
+    } else {
+      gallery.innerHTML = `<div><p class="pages__no-movies">Search result no successful. Enter the correct movie name and search again.</p></div>`;
+    }
+    newURLSearchParams(dataMovies.queryReplace);
+    dataMovies.page = 0;
+    const paginationList = document.querySelector('#pages');
+    paginationList.innerHTML = '';
     return;
   }
   dataMovies.totalPages = movies.total_pages;
@@ -74,7 +84,7 @@ export const loadPage = async (changePage = false) => {
       page = id.page;
       dataMovies.page = page;
     }
-    newURLSearchParams();
+    newURLSearchParams(dataMovies.queryReplace);
     pagination();
     createMovies(movies);
     if (changePage) {

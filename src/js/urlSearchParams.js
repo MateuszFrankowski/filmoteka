@@ -81,7 +81,11 @@ export const changeDataMoviesFromUrl = () => {
   if (dataMovies.fetchType === 'watched' || dataMovies.fetchType === 'queue') {
     startButtons();
   }
-};
+  if (dataMovies.fetchType === 'home' && !!dataMovies.query) {
+    const movieInput = document.querySelector('input.home-header__searchbar');
+    movieInput.value = dataMovies.query;
+  }
+}; 
 
 export const changeUrlWithBrowser = () => {
   window.addEventListener('popstate', e => backNextUrl(e));

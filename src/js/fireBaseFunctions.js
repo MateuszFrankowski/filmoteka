@@ -140,7 +140,7 @@ export const deleteUserData = async userId => {
   const updateDocument = await deleteDoc(doc(db, 'films', userId.toString()));
 };
 const checkMediaQueries = () => {
-  if (window.matchMedia('(min-width: 1200px)').matches) {
+  if (window.matchMedia('(min-width: 1024px)').matches) {
     return moviesPerPageInLibrary.laptop;
   }
   if (window.matchMedia('(min-width: 768px)').matches) {
