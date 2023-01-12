@@ -15,18 +15,20 @@ const renderGallery = async () => {
   dataMovies.page = 1;
   dataMovies.fetchType = 'home';
   dataMovies.query = movieInput.value;
-  const result = await fetchTheMovieDBList(dataMovies.page, movieInput.value);
-  dataMovies.totalPages = result.total_pages;
-  let i = 0;
-  const markupArr = result.data.map(data => {
-    i += 1;
-    return liElement(data, i);
-  });
-  newURLSearchParams(dataMovies.queryReplace);
+  await loadPage();
   dataMovies.queryReplace = "replace";
-  pagination();
-  moviesGallery.classList.add('grid');
-  moviesGallery.innerHTML = markupArr.join('');
+  // const result = await fetchTheMovieDBList(dataMovies.page, movieInput.value);
+  // dataMovies.totalPages = result.total_pages;
+  // let i = 0;
+  // const markupArr = result.data.map(data => {
+  //   i += 1;
+  //   return liElement(data, i);
+  // });
+  // newURLSearchParams(dataMovies.queryReplace);
+  // dataMovies.queryReplace = "replace";
+  // pagination();
+  // moviesGallery.classList.add('grid');
+  // moviesGallery.innerHTML = markupArr.join('');
 };
 
 movieInput.addEventListener(

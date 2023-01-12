@@ -121,8 +121,9 @@ const pageButtonListener = e => {
     dataMovies.page = Number(page) + 1;
   } else if (newPage === 'before') {
     dataMovies.page = Number(page) - 1;
-  }
+  } 
 
+  dataMovies.queryReplace = 'push';
   loadPage(true);
 };
 
