@@ -70,7 +70,7 @@ export const loadPage = async (changePage = false) => {
     } else if (!!dataMovies.query) {
       gallery.innerHTML = `<div><p class="pages__no-movies">Searching '${query}' have not result with movies.</p></div>`;
     } else {
-      gallery.innerHTML = `<div><p class="pages__no-movies">Sorry, it is problem with load movies...</p></div>`;
+      gallery.innerHTML = `<div><p class="pages__no-movies">Search result no successful. Enter the correct movie name and search again.</p></div>`;
     }
     newURLSearchParams(dataMovies.queryReplace);
     dataMovies.page = 0;
