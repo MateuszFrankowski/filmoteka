@@ -1,0 +1,155 @@
+.home-header {
+  background-image: url(../images/hdrBackgroundHome-320.webp),
+    linear-gradient(to right, #0000008f, #0000008f);
+  display: block;
+  background-size: cover;
+  @media (min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi),
+    (min-resolution: 2dppx) {
+    background-image: url(../images/hdrBackgroundHome-640.webp),
+      linear-gradient(to right, #0000008f, #0000008f);
+  }
+  @media (min-width: 768px) {
+    background-image: url(../images/hdrBackgroundHome-768.webp),
+      linear-gradient(to right, #0000008f, #0000008f);
+  }
+  @media (min-device-pixel-ratio: 2) and (min-width: 768px),
+    (min-resolution: 192dpi) and (min-width: 768px),
+    (min-resolution: 2dppx) and (min-width: 768px) {
+    background-image: url(../images/hdrBackgroundHome-1536.webp),
+      linear-gradient(to right, #0000008f, #0000008f);
+  }
+  @media (min-width: 1024px) {
+    background-image: url(../images/hdrBackgroundHome-1024.webp),
+      linear-gradient(to right, #0000008f, #0000008f);
+  }
+  @media (min-device-pixel-ratio: 2) and (min-width: 1024px),
+    (min-resolution: 192dpi) and (min-width: 1024px),
+    (min-resolution: 2dppx) and (min-width: 1024px) {
+    background-image: url(../images/hdrBackgroundHome-2048.webp),
+      linear-gradient(to right, #0000008f, #0000008f);
+  }
+  &__navigation {
+    padding-top: 48px;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__home {
+    text-decoration: none;
+  }
+  &__logo {
+    width: 24px;
+    height: 24px;
+  }
+  &__name {
+    display: none;
+    text-decoration: none;
+    color: var(--text-alternative);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.16;
+    @media (min-width: 768px) {
+      display: inline;
+    }
+  }
+  &__subsite {
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    line-height: 1.17;
+    color: var(--text-alternative);
+    &:first-child {
+      margin-right: 40px;
+    }
+    &--active {
+      position: relative;
+      &::after {
+        content: '';
+        background-color: var(--bg-decorative);
+        width: 100%;
+        height: 4px;
+        border-radius: 2px;
+        display: block;
+        position: absolute;
+        top: 30px;
+        right: 0px;
+      }
+    }
+    &--library {
+      margin-right: 40px;
+    }
+  }
+  &__icons-box {
+    display: inline;
+    position: relative;
+  }
+  &__greeting {
+    color: var(--text-alternative);
+    position: absolute;
+    right: -5px;
+    white-space: nowrap;
+    top: 27px;
+    font-size: 18px;
+    @media (min-width: 768px) {
+      right: -25px;
+    }
+  }
+  &__input-box {
+    position: relative;
+    text-align: center;
+  }
+  &__searchbar {
+    padding-right: 20px;
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 100px;
+    background: none;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    color: var(--text-alternative);
+    &:focus {
+      outline-width: 0;
+    }
+    &::placeholder {
+      color: var(--text-alternative);
+    }
+    @media (min-width: 768px) {
+      width: 50%;
+    }
+    @media (min-width: 1024px) {
+      width: 33.3%;
+    }
+  }
+  &__loupe {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 45px;
+    right: 5px;
+    @media (min-width: 768px) {
+      right: calc(25% + 5px);
+    }
+    @media (min-width: 1024px) {
+      right: calc(33.3% + 5px);
+    }
+  }
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  stroke-width: 0;
+  fill: var(--text-alternative);
+  cursor: pointer;
+  overflow: visible;
+  position: absolute;
+  right: -10px;
+  @media (min-width: 768px) {
+    right: -25px;
+  }
+}
+
+.hidden {
+  display: none;
+}

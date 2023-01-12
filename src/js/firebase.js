@@ -1,21 +1,108 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// // Import the functions you need from the SDKs you need
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: 'AIzaSyAueRO-9rLbY-tP-PLu41y09SRjp5P2-ro',
-  authDomain: 'filmoteka-24db4.firebaseapp.com',
-  projectId: 'filmoteka-24db4',
-  storageBucket: 'filmoteka-24db4.appspot.com',
-  messagingSenderId: '683163081136',
-  appId: '1:683163081136:web:6d5abe4c2dc4cdde999e75',
-  measurementId: 'G-8CWBNRF3VK',
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { onSnapshot } from 'firebase/firestore';
+import { signInWithPopup, signOut, GoogleAuthProvider } from 'firebase/auth';
+import { db, auth } from './global';
+import { doc } from 'firebase/firestore';
+import { loadPage } from './loadPage';
+
+//
+const libraryNotAvailable = (event) => {
+  event.preventDefault();
+  Notify.info('You need to log in to use this feature.', {
+    position: 'left-top'
+  });
+}
+
+export const loginHandling = async () => {
+  const myLibrary = document.getElementById('libraryBtn');
+
+  const signInIcon = document.querySelector('svg.icon-login');
+  const signOutIcon = document.querySelector('svg.icon-logout');
+  const userDetails = document.querySelector(
+    'p.home-header__greeting, p.library-header__greeting'
+  );
+
+  const provider = new GoogleAuthProvider();
+  window.userSigned = false;
+  window.userUid = '';
+
+  /// Sign in event handlers
+  signInIcon.onclick = () => signInWithPopup(auth, provider);
+
+  signOutIcon.onclick = () =>
+    signOut(auth)
+      .then(() => {
+        window.userSigned = false;
+      })
+      .catch(error => {
+        // An error happened.
+      });
+
+  // console.log('2a) before function to add uid');
+
+  auth.onAuthStateChanged(user => {
+    // console.log('2b) add uid');
+    if (user) {
+      // signed in
+      signInIcon.classList.add('hidden');
+      signOutIcon.classList.remove('hidden');
+      userDetails.innerHTML = `Hello ${user.displayName}!`;
+      myLibrary.classList.remove('no-active-btn');
+      myLibrary.style = 'pointer-events: click';
+      window.userUid = true;
+      myLibrary.removeEventListener('click', libraryNotAvailable);
+    } else {
+      // not signed in
+      signInIcon.classList.remove('hidden');
+      signOutIcon.classList.add('hidden');
+      userDetails.innerHTML = '';
+      myLibrary.classList.add('no-active-btn');
+      window.userUid = false;
+      myLibrary.addEventListener('click', libraryNotAvailable);
+
+      if (window.location.href.search('index.html') === -1) {
+        console.log(window.location.href);
+        window.location.href = 'index.html';
+      }
+    }
+  });
+  // console.log('2c) after function to add uid');
+  ///// Firestore /////
+
+  let unsubscribe;
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      // Database Reference
+
+      window.userSigned = true;
+      window.userUid = user.uid;
+
+      unsubscribe = onSnapshot(doc(db, 'films', user.uid.toString()), doc => {
+        // console.log('Current data: ', doc.data());
+      });
+    } else {
+      // Unsubscribe when the user signs out
+      unsubscribe && unsubscribe();
+    }
+  });
+
+  await getUserStatus()
+    .then(user => user)
+    .catch(nouser => nouser);
 };
+// loginHandling();
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const getUserStatus = async store => {
+  return new Promise(function (resolve, reject) {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        resolve(user.uid);
+      } else {
+        reject(Error('It broke'));
+      }
+    });
+  });
+};

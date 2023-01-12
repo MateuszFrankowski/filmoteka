@@ -1,0 +1,44 @@
+<header class="home-header">
+  <div class="container">
+    <nav class="home-header__navigation">
+      <a class="home-header__home" href="index.html">
+        <svg class="home-header__logo">
+          <use href="./images/icons.svg#logo"></use>
+        </svg>
+        <span class="home-header__name">Filmoteka</span>
+      </a>
+      <div class="home-header__subsites">
+        <a
+          href="index.html"
+          class="home-header__subsite home-header__subsite--active"
+          >Home</a
+        >
+        <a
+          href="library.html"
+          id="libraryBtn"
+          class="home-header__subsite home-header__subsite--library"
+          >My library</a
+        >
+        <div class="home-header__icons-box">
+          <svg class="icon icon-login">
+            <use href="./images/icons.svg#icon-enter"></use>
+          </svg>
+          <svg class="icon icon-logout hidden">
+            <use href="./images/icons.svg#icon-exit"></use>
+          </svg>
+          <p class="home-header__greeting"></p>
+        </div>
+      </div>
+    </nav>
+    <div class="home-header__input-box">
+      <input
+        placeholder="Search for movie..."
+        type="text"
+        class="home-header__searchbar"
+      />
+      <svg class="home-header__loupe">
+        <use href="./images/icons.svg#loupe"></use>
+      </svg>
+    </div>
+  </div>
+</header>
