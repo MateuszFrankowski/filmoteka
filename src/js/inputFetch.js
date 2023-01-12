@@ -15,8 +15,14 @@ const renderGallery = async () => {
   dataMovies.page = 1;
   dataMovies.fetchType = 'home';
   dataMovies.query = movieInput.value;
+  if (!dataMovies.query) {
+    dataMovies.queryReplace = 'push';
+  }
+  console.log(dataMovies.queryReplace);
   await loadPage();
-  dataMovies.queryReplace = "replace";
+  if (!!dataMovies.query) {
+    dataMovies.queryReplace = 'replace';
+  }
   // const result = await fetchTheMovieDBList(dataMovies.page, movieInput.value);
   // dataMovies.totalPages = result.total_pages;
   // let i = 0;
