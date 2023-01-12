@@ -4,7 +4,6 @@
     max-width: 320px;
     padding-top: 28px;
     padding-bottom: 29px;
-    color: var(--text-secondary);
     text-align: center;
     font-family: 'Roboto';
     font-size: 14px;
@@ -12,6 +11,7 @@
     letter-spacing: 1px;
   }
   &__text {
+    color: var(--text-secondary);
     margin: 0;
   }
   &__icon {
