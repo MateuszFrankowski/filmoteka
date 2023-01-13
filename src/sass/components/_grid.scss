@@ -11,7 +11,7 @@
 
 .grid,
 .library__grid {
-  @include flex-display(wrap, 50px, center, stretch);
+  @include flex-display(wrap, 10px, center, stretch);
   // display: flex;
   // flex-wrap: wrap;
   // gap: 10px;
@@ -35,13 +35,13 @@
     justify-content: start;
   }
   .grid>li{
-    flex-basis:calc((100% - 50px) / 2);
+    flex-basis:calc((100% - 10px) / 2);
   }
 }
 
 // Desktop 1024+//
 @media screen and (min-width: 1024px) {
   .grid>li {
-      flex-basis: calc((100% - 100px) / 3);
+      flex-basis: calc((100% - 20px) / 3);
     }
 }

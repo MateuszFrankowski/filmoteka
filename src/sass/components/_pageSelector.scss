@@ -1,9 +1,6 @@
 @use '../utils/forward' as *;
 
 .pages {
-  width: 100%;
-  @include flex-display(null, null, center);
-  @include font-type(500, 12px, 1.33);
 
   &--none {
     display: none;
@@ -15,7 +12,9 @@
 
   &__list {
     list-style: none;
+    margin-top: 40px;
     @include flex-display(row, 0px, center, center);
+    @include font-type(500, 12px, 1.33);
   }
 
   &__item {
