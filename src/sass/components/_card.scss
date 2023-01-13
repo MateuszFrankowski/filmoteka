@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  justify-content: start;
+  height: 100%;
   border: solid 10px var(--bg-primary);
   border-radius: 5px;
   background-color: var(--bg-primary);
@@ -12,8 +14,6 @@
   @include transition-add('box-shadow');
   @include transition-add('transform');
   cursor: pointer;
-  margin-inline-start: 20px;
-  margin-inline-end: 20px;
 
   &:hover,
   &:active,
@@ -50,7 +50,7 @@
   color: var(--text-shadow);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: left;
   gap: 10px;
 }
 
@@ -64,7 +64,8 @@
 }
 
 .rating {
-  display: none;
+  // display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-alternative);
@@ -76,9 +77,9 @@
   height: 16px;
   margin: 0;
 
-  &--visible {
-    display: inline-flex;
-  }
+  // &--visible {
+  //   display: inline-flex;
+  // }
 }
 
 // Tablet 768-1200//

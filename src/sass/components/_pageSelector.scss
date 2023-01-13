@@ -15,7 +15,7 @@
 
   &__list {
     list-style: none;
-    @include flex-display(row, null, center, center);
+    @include flex-display(row, 0px, center, center);
   }
 
   &__item {
@@ -28,6 +28,7 @@
   &__btn {
     height: 40px;
     width: 40px;
+
     @include flex-display(null, null, center, center);
     border: none;
     border-radius: 5px;
@@ -37,8 +38,9 @@
 
     &:focus,
     &:hover {
+      color: var(--text-primary);
       background-color: var(--bg-decorative);
-      @include transition-add('background-color');
+      @include transition-add('background-color' 'color');
     }
   }
 
@@ -46,15 +48,24 @@
     background-color: var(--bg-secondary);
     height: 40px;
     width: 40px;
-    margin: 0;
+    margin-inline: 16px;
+    color: var(--text-primary);
+    
+    &:focus,
+    &:hover {
+      background-color: var(--bg-decorative);
+      color: var(--text-primary);
+      @include transition-add('background-color' 'color');
+    }
 
     &--disabled {
       cursor: auto;
 
       &:focus,
       &:hover {
+        background-color: var(--bg-secondary);
         color: var(--text-primary);
-        @include transition-add('color');
+        @include transition-add('background-color' 'color');
       }
     }
   }
