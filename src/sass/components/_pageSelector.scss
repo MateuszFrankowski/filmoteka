@@ -15,27 +15,30 @@
 
   &__list {
     list-style: none;
-    @include flex-display(row, 16px, center, center);
+    @include flex-display(row, null, center, center);
   }
 
   &__item {
     transform: translateY(-30%);
     @include flex-display(null, null, center, center);
     height: 10px;
+    width: 40px;
   }
 
   &__btn {
     height: 40px;
+    width: 40px;
     @include flex-display(null, null, center, center);
     border: none;
     border-radius: 5px;
     background-color: transparent;
     cursor: pointer;
+    color: var(--text-primary);
 
     &:focus,
     &:hover {
-      color: var(--text-accent);
-      @include transition-add('color');
+      background-color: var(--bg-decorative);
+      @include transition-add('background-color');
     }
   }
 
@@ -69,12 +72,11 @@
     }
   }
 
-  &__no-movies{
+  &__no-movies {
     text-align: center;
     @include font-type(null, 20px);
 
-    @include media-mapp('tablet'){
-
+    @include media-mapp('tablet') {
       @include font-type(null, 24px);
     }
   }
