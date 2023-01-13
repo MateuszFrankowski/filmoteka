@@ -3,36 +3,45 @@
 *::before,
 *::after {
   box-sizing: inherit;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 // Mobile 320-768//
 
 .grid,
 .library__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 10px;
+  @include flex-display(wrap, 50px, center, stretch);
+  // display: flex;
+  // flex-wrap: wrap;
+  // gap: 10px;
   list-style-type: none;
   position: relative;
-  justify-content: center;
+  // justify-content: left;
+  // align-items: stretch;
   margin: 0px;
   padding: 0px;
 }
 
+.grid>li {
+  flex-basis: calc(100%);
+  display: flex;
+  // justify-content: space-between;
+}
+
 // Tablet 768-1024//
 @media screen and (min-width: 768px) {
-  .grid,
-  .library__grid {
-    grid-template-columns: 1fr 1fr;
+  .grid{
+    justify-content: start;
+  }
+  .grid>li{
+    flex-basis:calc((100% - 50px) / 2);
   }
 }
 
 // Desktop 1024+//
 @media screen and (min-width: 1024px) {
-  .grid,
-  .library__grid {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+  .grid>li {
+      flex-basis: calc((100% - 100px) / 3);
+    }
 }
