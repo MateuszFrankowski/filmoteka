@@ -19,37 +19,24 @@ let newQueueFilmStatus;
 let newWatchFilmStatus;
 const modal = document.querySelector('[data-modal]');
 const checkUpdateStatus = () => {
-  // console.log(
-  //   'oldQueueFilmStatus,',
-  //   oldQueueFilmStatus,
-  //   'newQueueFilmStatus ,',
-  //   newQueueFilmStatus,
-  //   'oldWatchFilmStatus,',
-  //   oldWatchFilmStatus,
-  //   '   newWatchFilmStatus,',
-  //   newWatchFilmStatus
-  // );
-
   modal.removeEventListener('click', modalClickListener);
   document.removeEventListener('keydown', modalEscapeListener);
 
-  // if (
-  //   (oldQueueFilmStatus !== newQueueFilmStatus ||
-  //     oldWatchFilmStatus !== newWatchFilmStatus) &&
-  //   dataMovies.fetchType !== 'home'
-  // ) {
-  //   // console.log('przeładowanie');
-  //   loadPage();
-  // }
-
-  if (oldQueueFilmStatus !== newQueueFilmStatus && dataMovies.fetchType === "queue") {
+  if (
+    oldQueueFilmStatus !== newQueueFilmStatus &&
+    dataMovies.fetchType === 'queue'
+  ) {
     loadPage();
   }
 
-  if (oldWatchFilmStatus !== newWatchFilmStatus && dataMovies.fetchType === "watched") {
+  if (
+    oldWatchFilmStatus !== newWatchFilmStatus &&
+    dataMovies.fetchType === 'watched'
+  ) {
     loadPage();
   }
 };
+
 const watchedHandler = event => {
   if (event.target.classList.contains('modal__watched-btn') !== true) return;
   if (event.target.classList.contains('active-btn') != true) {
@@ -68,8 +55,8 @@ const watchedHandler = event => {
     newWatchFilmStatus = false;
   }
 };
+
 const queueHandler = event => {
-  // console.log('hello', event.target.classList.contains('modal__queue-btn'));
   if (event.target.classList.contains('modal__queue-btn') !== true) return;
   if (event.target.classList.contains('active-btn') != true) {
     addToWatchBtn.classList.remove('active-btn');
@@ -87,6 +74,7 @@ const queueHandler = event => {
     newQueueFilmStatus = false;
   }
 };
+
 const checkIfFilmInBase = (films, id) => {
   let inWatched;
   let inQueue;
@@ -120,16 +108,17 @@ const checkIfFilmInBase = (films, id) => {
     queueClass: classQueue,
   };
 };
+
 let signedIn = false;
 function showModal() {
   modal.classList.toggle('is-hidden');
   if (modal.classList.contains('is-hidden') && signedIn) {
     addToQueueBtn.removeEventListener('click', queueHandler, true);
     addToWatchBtn.removeEventListener('click', watchedHandler, true);
-    // console.log('checks status wywołanie');
     checkUpdateStatus();
   }
 }
+
 export const modalMovieInfo = async (movieId, movieNr) => {
   showModal(false);
   addLoaderFilmSpinner();
@@ -161,7 +150,8 @@ export const modalMovieInfo = async (movieId, movieNr) => {
     };
   }
   const classLeft = movieNr > 1 ? 'modal__change-movie--active' : '';
-  const classRight = movieNr < dataMovies.moviesPerPage ? 'modal__change-movie--active' : '';
+  const classRight =
+    movieNr < dataMovies.moviesPerPage ? 'modal__change-movie--active' : '';
   const markup = `
     <div class="modal" data-movie_nr="${movieNr}">
       <button class="modal__close-btn" data-modal-close>
@@ -170,13 +160,13 @@ export const modalMovieInfo = async (movieId, movieNr) => {
       <img class="modal__poster" src="${movie.poster_path}"
           alt="poster image of ${movie.title}" />
       <div class="modal__description">
-        <h2 class="modal__title">${movie.title}</h2>
+        <h2 class="modal__title">${movie.title} (${movie.release_year})</h2>
         <ul class="modal__list">
           <li class="modal__items">
             <p class="modal__info">Vote / Votes</p>
             <p class="modal__data"><span class="modal__vote">${roundTo1Comma(
-    movie.vote_average
-  )}</span><span class="modal__info"> / </span>${movie.vote_count}</p>
+              movie.vote_average
+            )}</span><span class="modal__info"> / </span>${movie.vote_count}</p>
           </li>
           <li class="modal__items">
             <p class="modal__info">Popularity</p>
@@ -184,8 +174,9 @@ export const modalMovieInfo = async (movieId, movieNr) => {
           </li>
           <li class="modal__items">
             <p class="modal__info">Original Title</p>
-            <p class="modal__data modal__data-original-title">${movie.original_title
-  }</p>
+            <p class="modal__data modal__data-original-title">${
+              movie.original_title
+            }</p>
           </li>
           <li class="modal__items">
             <p class="modal__info">Genre</p>
@@ -197,25 +188,27 @@ export const modalMovieInfo = async (movieId, movieNr) => {
           <p class="modal__more">${movie.overview}</p>
         </div>
         <div class="modal__add-btns">
-          <button class="modal__watched-btn ${btnInnerText.class}${btnInnerText.classWatched
+          <button class="modal__watched-btn ${btnInnerText.class}${
+    btnInnerText.classWatched
   }" ${btnInnerText.isDisabled}>${btnInnerText.filmWatched}</button>
-          <button class="modal__queue-btn ${btnInnerText.class}${btnInnerText.classQueue
+          <button class="modal__queue-btn ${btnInnerText.class}${
+    btnInnerText.classQueue
   }" ${btnInnerText.isDisabled}>${btnInnerText.filmInQueue}</button>
         </div>
       </div>
       <div class="modal__change-movie modal__change-movie--left ${classLeft}" data-move="left">&#x3c;</div>
       <div class="modal__change-movie modal__change-movie--right ${classRight}" data-move="right">&#x3e;</div>
     </div>`;
-  modal.innerHTML = markup; 
+  modal.innerHTML = markup;
   const closeModalBtn = document.querySelector('[data-modal-close]');
   closeModalBtn.addEventListener('click', showModal);
   document.addEventListener('keydown', modalEscapeListener);
   modal.addEventListener('click', modalClickListener);
-  
+
   const leftMovieBtn = document.querySelector('.modal__change-movie--left');
   const rightMovieBtn = document.querySelector('.modal__change-movie--right');
-  leftMovieBtn.addEventListener('click', changeInnerModal)
-  rightMovieBtn.addEventListener('click', changeInnerModal)
+  leftMovieBtn.addEventListener('click', changeInnerModal);
+  rightMovieBtn.addEventListener('click', changeInnerModal);
 
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
@@ -226,7 +219,7 @@ export const modalMovieInfo = async (movieId, movieNr) => {
     const btnsArea = document.querySelector('.modal__add-btns');
     btnsArea.addEventListener('click', () => {
       Notify.info('You need to log in to use this feature.', {
-        position: 'left-top'
+        position: 'left-top',
       });
     });
   }
@@ -235,7 +228,6 @@ export const modalMovieInfo = async (movieId, movieNr) => {
 const modalClickListener = event => {
   if (event.target === event.currentTarget) {
     modal.classList.add('is-hidden');
-    // console.log('checks status wywołanie');
     checkUpdateStatus();
   }
 };
@@ -243,22 +235,27 @@ const modalClickListener = event => {
 const modalEscapeListener = event => {
   if (event.key === 'Escape') {
     modal.classList.add('is-hidden');
-    // console.log('checks status wywołanie');
     checkUpdateStatus();
   }
 };
 
-const changeInnerModal = async (e) => {
+const changeInnerModal = async e => {
   let movieNumber = document.querySelector('[data-movie_nr]').dataset.movie_nr;
   let move = 0;
-  if (e.target.dataset.move === "right") { move += 1 };
-  if (e.target.dataset.move === "left") { move -= 1 };
-  movieNumber =Number(movieNumber)+ Number(move);
+  if (e.target.dataset.move === 'right') {
+    move += 1;
+  }
+  if (e.target.dataset.move === 'left') {
+    move -= 1;
+  }
+  movieNumber = Number(movieNumber) + Number(move);
   if (movieNumber < 1 || movieNumber > dataMovies.moviesPerPage) {
-    return
-  };
-  const galleryMovie = document.querySelector(`[data-film_nr="${movieNumber}"]`);
+    return;
+  }
+  const galleryMovie = document.querySelector(
+    `[data-film_nr="${movieNumber}"]`
+  );
   const movieId = galleryMovie.dataset.film_id;
   showModal(false);
   modalMovieInfo(movieId, movieNumber);
-}
+};

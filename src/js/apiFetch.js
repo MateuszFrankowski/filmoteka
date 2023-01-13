@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { dataMovies } from './global';
 import noImage from '../images/no-movie-poster.jpg';
+import { over } from 'lodash';
 
 // <========> IMPORT AXIOS FETCH <========>
 // import { fetchTheMovieDBList, fetchTheMovieDBMovie } from 'path/to/api'
@@ -178,21 +179,22 @@ export const fetchTheMovieDBList = async (pageNr, searchQuery) => {
       poster_path: posterPath,
       genre_ids: result.genre_ids,
       genres: [],
-      release_year: `${new Date(result.release_date).getFullYear()}`,
-      vote_average: result.vote_average > 0 ? result.vote_average : "-",
+      release_year: !!result.release_date
+        ? `${new Date(result.release_date).getFullYear()}`
+        : 'unknown',
+      vote_average: result.vote_average > 0 ? result.vote_average : '-',
       title: result.title,
     });
   });
   movies.data.forEach(movie => {
     movie.genre_ids.forEach(id => {
-        const newGenre = genres.filter(genre => genre.id === id);
-        movie.genres.push(newGenre[0].name);
-      })
-      if (movie.genres.length === 0) {
-        movie.genres = ['...'];
-      }
+      const newGenre = genres.filter(genre => genre.id === id);
+      movie.genres.push(newGenre[0].name);
+    });
+    if (movie.genres.length === 0) {
+      movie.genres = ['...'];
     }
-  );
+  });
   return movies;
 };
 
@@ -203,6 +205,7 @@ export const fetchTheMovieDBMovie = async idMovie => {
   let {
     id,
     title,
+    release_date,
     original_title,
     poster_path,
     vote_average,
@@ -214,11 +217,18 @@ export const fetchTheMovieDBMovie = async idMovie => {
   const posterPath = !!poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
     : noImage;
-  vote_average = vote_average > 0 ? vote_average : "-";
-  vote_count = vote_count > 0 ? vote_count : "-";
+  vote_average = vote_average > 0 ? vote_average : '-';
+  vote_count = vote_count > 0 ? vote_count : '-';
+  popularity = popularity > 0 ? popularity : '-';
+  overview = !!overview ? overview : 'This movie has no reviews yet...';
+  original_title = !!original_title ? original_title : '';
+  genres = !!genres ? genres : '';
   const movie = {
     id,
     title,
+    release_year: !!release_date
+      ? `${new Date(release_date).getFullYear()}`
+      : '-',
     original_title,
     poster_path: posterPath,
     vote_average,
@@ -258,14 +268,16 @@ export const fetchTheMovieDBMovieIdList = async (
     const posterPath = !!poster_path
       ? `https://image.tmdb.org/t/p/w500${poster_path}`
       : noImage;
-    vote_average = vote_average > 0 ? vote_average : "-";
+    vote_average = vote_average > 0 ? vote_average : '-';
     const movie = {
       id,
       title,
       poster_path: posterPath,
       vote_average,
       genres: genres.length > 0 ? genres.map(genre => genre.name) : ['...'],
-      release_year: `${new Date(release_date).getFullYear()}`,
+      release_year: !!release_date
+        ? `${new Date(release_date).getFullYear()}`
+        : 'unknown',
     };
     movies.data.push(movie);
   }
