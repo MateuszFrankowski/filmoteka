@@ -209,6 +209,7 @@ export const modalMovieInfo = async (movieId, movieNr) => {
   const rightMovieBtn = document.querySelector('.modal__change-movie--right');
   leftMovieBtn.addEventListener('click', changeInnerModal);
   rightMovieBtn.addEventListener('click', changeInnerModal);
+  document.addEventListener('keydown', changeInnerModal)
 
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
@@ -240,12 +241,13 @@ const modalEscapeListener = event => {
 };
 
 const changeInnerModal = async e => {
+  if (e.code !== "ArrowLeft" && e.code !== "ArrowRight" && e.type !== "click") return;
   let movieNumber = document.querySelector('[data-movie_nr]').dataset.movie_nr;
   let move = 0;
-  if (e.target.dataset.move === 'right') {
+  if (e.target.dataset.move === 'right' || e.code === "ArrowRight") {
     move += 1;
   }
-  if (e.target.dataset.move === 'left') {
+  if (e.target.dataset.move === 'left' || e.code === "ArrowLeft") {
     move -= 1;
   }
   movieNumber = Number(movieNumber) + Number(move);

@@ -1,4 +1,8 @@
 import { modalMovieInfo } from './filmDescription';
+import { dataMovies } from './global';
+import { updateUserWatchedData } from './fireBaseFunctions'
+import { updateUserQueueData } from './fireBaseFunctions'
+import { loadPage } from './loadPage';
 
 export const createMovies = async movies => {
   const galleryContainer = document.getElementsByClassName('gallery');
@@ -28,6 +32,11 @@ export const liElement = (data, movieNr) => {
                   )}</div>
                 </div>
               </figcaption>
+              ${dataMovies.fetchType !== 'home' 
+              ? `<button class="delete-cross">
+              <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="m8 8 14 14M8 22 22 8" stroke-width="2"/></svg>
+              </button>`
+              : ``}
             </figure>
           </li>
         `;
@@ -47,12 +56,21 @@ export const roundTo1Comma = num => {
 };
 
 export const clickGallery = () => {
-  document.querySelector('.gallery').addEventListener('click', e => {
+  document.querySelector('.gallery').addEventListener('click', async e => {
     if (e.target === e.currentTarget) {
       return;
     }
     const movieId = goToLiElement(e.target).dataset.film_id;
     const movieNr = goToLiElement(e.target).dataset.film_nr;
+    if (e.target.closest('button.delete-cross') !== null) {
+      if (dataMovies.fetchType === 'watched') {
+        await updateUserWatchedData(window.userUid, parseFloat(movieId), false);
+      } else {
+        await updateUserQueueData(window.userUid, parseFloat(movieId), false);
+      }
+      loadPage();
+      return;
+    }
     modalMovieInfo(movieId, movieNr);
   });
 
