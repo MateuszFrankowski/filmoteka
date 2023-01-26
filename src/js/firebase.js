@@ -28,14 +28,14 @@ export const loginHandling = async () => {
   const signOutIcon = document.querySelector('svg.icon-logout');
   const signInGoogle = document.querySelector('a.btn-google');
   const signInFacebook = document.querySelector('a.btn-face');
-  const registerByEmail = document.querySelector('.btn.register');
-  const loginByEmail = document.querySelector('.btn.signIn');
+  const registerByEmail = document.querySelector('.form-register');
+  const loginByEmail = document.querySelector('.form-login');
   const userDetails = document.querySelector(
     'p.home-header__greeting, p.library-header__greeting'
   );
 
   const createAccount = event => {
-    Notify.failure('elo');
+    alert('elo');
     event.preventDefault();
     if (event.target.classList.contains('svg.icon-login') !== true) return;
 
@@ -55,6 +55,7 @@ export const loginHandling = async () => {
 
   const emailLogin = event => {
     event.preventDefault();
+
     if (event.target.classList.contains('svg.icon-login') !== true) return;
 
     signInWithEmailAndPassword(auth, email, password)
