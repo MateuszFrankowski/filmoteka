@@ -1,3 +1,4 @@
+import { SwipeEventListener } from 'swipe-event-listener';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchTheMovieDBMovie } from './apiFetch';
 import {
@@ -18,6 +19,9 @@ let oldWatchFilmStatus;
 let newQueueFilmStatus;
 let newWatchFilmStatus;
 const modal = document.querySelector('[data-modal]');
+const { swipeArea, updateOptions } = SwipeEventListener({
+  swipeArea: modal,
+});
 const checkUpdateStatus = () => {
   modal.removeEventListener('click', modalClickListener);
   document.removeEventListener('keydown', modalEscapeListener);
@@ -210,6 +214,8 @@ export const modalMovieInfo = async (movieId, movieNr) => {
   leftMovieBtn.addEventListener('click', changeInnerModal);
   rightMovieBtn.addEventListener('click', changeInnerModal);
   document.addEventListener('keydown', changeInnerModal)
+  swipeArea.addEventListener('swipeRight', changeInnerModal);
+  swipeArea.addEventListener('swipeLeft', changeInnerModal);
 
   if (isSigned) {
     addToWatchBtn = document.querySelector('.modal__watched-btn');
@@ -241,13 +247,13 @@ const modalEscapeListener = event => {
 };
 
 const changeInnerModal = async e => {
-  if (e.code !== "ArrowLeft" && e.code !== "ArrowRight" && e.type !== "click") return;
+  if (e.code !== "ArrowLeft" && e.code !== "ArrowRight" && e.type === "keydown") return;
   let movieNumber = document.querySelector('[data-movie_nr]').dataset.movie_nr;
   let move = 0;
-  if (e.target.dataset.move === 'right' || e.code === "ArrowRight") {
+  if (e.target.dataset.move === 'right' || e.code === "ArrowRight" || e.type === 'swipeLeft') {
     move += 1;
   }
-  if (e.target.dataset.move === 'left' || e.code === "ArrowLeft") {
+  if (e.target.dataset.move === 'left' || e.code === "ArrowLeft" || e.type === 'swipeRight') {
     move -= 1;
   }
   movieNumber = Number(movieNumber) + Number(move);
