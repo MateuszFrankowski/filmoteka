@@ -1,0 +1,124 @@
+<div class="backdrop is-hidden" data-modal-login>
+  <div class="modal-login">
+    <div class="modal-login__actionChose">
+      <button type="button" class="modal-login__loginBtn">Sing in With</button>
+      <button type="button" class="modal-login__registerBtn">Register</button>
+    </div>
+    <div class="modal-login login-window">
+      <div class="modal-login__buttons">
+        <a href="#" class="btn-face">
+          <i class="fa fa-facebook-official"></i>
+          Facebook
+        </a>
+
+        <a href="#" class="btn-google">
+          <img src="images/icons/icon-google.png" alt="GOOGLE" />
+          Google
+        </a>
+      </div>
+      <form class="form">
+        <div class="form__set">
+          <input
+            type="email"
+            class="form__input"
+            name="checkbox"
+            id="email"
+            required
+          />
+
+          <label for="email" class="form__label"
+            ><span class="label-text">email</span>
+          </label>
+        </div>
+        <div class="form__set">
+          <input
+            type="password"
+            class="form__input"
+            name="tel"
+            id="pass"
+            required
+          />
+
+          <label for="pass" class="form__label"
+            ><span class="label-text">password</span>
+          </label>
+        </div>
+
+        <div class="form__policy-box">
+          <input
+            type="checkbox"
+            class="form__policy visually-hidden"
+            name="mail"
+            id="user-policy"
+          />
+
+          <label for="user-policy" class="form__policy-text">
+            By logging in, you accept the regulations of the Filmoteka.pl
+            website in its current wording.
+            <a href="" class="form__consents"></a> i
+            <a href="" class="form__consents"> privacy policy</a></label
+          >
+        </div>
+        <button type="submit" class="btn signIn">Sign In</button>
+      </form>
+    </div>
+    <div class="modal-login register-window visually-hidden">
+      <form class="form">
+        <div class="form__set">
+          <input
+            type="email"
+            class="form__input"
+            name="checkbox"
+            id="emailLogin"
+            required
+          />
+
+          <label for="emailLogin" class="form__label"
+            ><span class="label-text">email</span>
+          </label>
+        </div>
+        <div class="form__set">
+          <input
+            type="password"
+            class="form__input"
+            name="tel"
+            id="passLogin"
+            required
+          />
+
+          <label for="passLogin" class="form__label"
+            ><span class="label-text">password</span>
+          </label>
+        </div>
+        <div class="modal-login__buttons">
+          <a href="#" class="btn-face">
+            <i class="fa fa-facebook-official"></i>
+            Facebook
+          </a>
+
+          <a href="#" class="btn-google">
+            <img src="images/icons/icon-google.png" alt="GOOGLE" />
+            Google
+          </a>
+        </div>
+        <div class="form__policy-box">
+          <input
+            type="checkbox"
+            class="form__policy visually-hidden"
+            name="mail"
+            id="user-policy2"
+          />
+
+          <label for="user-policy2" class="form__policy-text">
+            By logging in, you accept the regulations of the Filmoteka.pl
+            website in its current wording.
+            <a href="" class="form__consents"></a> i
+            <a href="" class="form__consents"> privacy policy</a></label
+          >
+        </div>
+        <button type="submit" class="btn register">Register</button>
+      </form>
+    </div>
+    <button type="button" class="form__close-btn" data-modal-close>X</button>
+  </div>
+</div>
