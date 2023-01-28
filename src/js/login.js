@@ -1,28 +1,13 @@
-const loginModal = document.querySelector('[data-modal-login]');
+export const userHandling = (hide = false) => {
+  //modal swtich
 
-function showModal() {
-  const loginWindowBtn = document.querySelector('.modal-login__loginBtn');
-  loginWindowBtn.classList.add('actual-page');
-  loginModal.classList.toggle('is-hidden');
-  swiitchModal();
-}
-const signInIcon = document.querySelector('svg.icon-login');
-signInIcon.onclick = () => {
-  showModal();
-};
-
-const loginEscapeListener = event => {
-  if (event.key === 'Escape') {
-    loginModal.classList.add('is-hidden');
-  }
-};
-document.addEventListener('keydown', loginEscapeListener);
-//modal swtich
-const swiitchModal = () => {
+  const loginModal = document.querySelector('[data-modal-login]');
   const loginWindow = document.querySelector('.login-window');
   const registerWindow = document.querySelector('.register-window');
   const loginWindowBtn = document.querySelector('.modal-login__loginBtn');
   const registerWindowBtn = document.querySelector('.modal-login__registerBtn');
+  const closeloginBtn = document.querySelector('.form__close-btn');
+  const modalLoginWindow = document.querySelector('.modal-login');
   const changeToLogin = () => {
     loginWindow.classList.remove('visually-hidden');
     registerWindow.classList.add('visually-hidden');
@@ -35,6 +20,33 @@ const swiitchModal = () => {
     loginWindow.classList.add('visually-hidden');
     loginWindowBtn.classList.remove('actual-page');
   };
-  loginWindowBtn.addEventListener('click', changeToLogin);
-  registerWindowBtn.addEventListener('click', changeToRegister);
+  if (hide == false) {
+    loginWindowBtn.addEventListener('click', changeToLogin);
+    registerWindowBtn.addEventListener('click', changeToRegister);
+  }
+  //modal close
+  const hideModal = () => {
+    loginWindowBtn.removeEventListener('click', changeToLogin);
+    registerWindowBtn.removeEventListener('click', changeToRegister);
+    modalLoginWindow.removeEventListener('click', loginClickBackdropListener);
+    loginModal.classList.add('is-hidden');
+    return;
+  };
+  const loginEscapeListener = event => {
+    if (event.key === 'Escape') {
+      hideModal();
+    }
+  };
+  const loginXkeyListener = event => {
+    if (event.target.classList.contains('form__close-btn') !== true) return;
+    hideModal();
+  };
+  const loginClickBackdropListener = event => {
+    if (event.target.classList.contains('backdrop') !== true) return;
+    hideModal();
+  };
+  if (hide) return hideModal();
+  document.addEventListener('keydown', loginEscapeListener);
+  closeloginBtn.addEventListener('click', loginXkeyListener);
+  document.addEventListener('click', loginClickBackdropListener);
 };

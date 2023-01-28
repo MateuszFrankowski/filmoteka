@@ -10,11 +10,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import { userHandling } from './login';
 import { db, auth } from './global';
 import { doc } from 'firebase/firestore';
 import { loadPage } from './loadPage';
 
-//
 const libraryNotAvailable = event => {
   event.preventDefault();
   Notify.info('You need to log in to use this feature.', {
@@ -23,6 +23,13 @@ const libraryNotAvailable = event => {
 };
 
 export const loginHandling = async () => {
+  function showModal() {
+    const loginModal = document.querySelector('[data-modal-login]');
+    const loginWindowBtn = document.querySelector('.modal-login__loginBtn');
+    loginWindowBtn.classList.add('actual-page');
+    loginModal.classList.remove('is-hidden');
+  }
+
   const myLibrary = document.getElementById('libraryBtn');
   const signInIcon = document.querySelector('svg.icon-login');
   const signOutIcon = document.querySelector('svg.icon-logout');
@@ -33,21 +40,35 @@ export const loginHandling = async () => {
   const userDetails = document.querySelector(
     'p.home-header__greeting, p.library-header__greeting'
   );
-
+  const emailRegisterInput = document.querySelector(
+    'input[name="emailRegister"]'
+  );
+  const passwordRegisterInput = document.querySelector(
+    'input[name="passwordRegister"]'
+  );
+  const emailLoginInput = document.querySelector('input[name="emailLogin"]');
+  const passwordLoginInput = document.querySelector(
+    'input[name="passwordLogin"]'
+  );
+  signInIcon.onclick = () => {
+    showModal();
+    userHandling();
+  };
   const createAccount = event => {
-    alert('elo');
     event.preventDefault();
-    if (event.target.classList.contains('svg.icon-login') !== true) return;
+    const email = emailRegisterInput.value;
+    const password = passwordRegisterInput.value;
+
+    if (event.target.classList.contains('form-register') !== true) return;
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
-        // Signed in
         const user = userCredential.user;
-        // ...
       })
       .catch(error => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
         Notify.failure(errorMessage);
         // ..
       });
@@ -55,14 +76,14 @@ export const loginHandling = async () => {
 
   const emailLogin = event => {
     event.preventDefault();
-
-    if (event.target.classList.contains('svg.icon-login') !== true) return;
+    const email = emailLoginInput.value;
+    const password = passwordLoginInput.value;
+    if (event.target.classList.contains('form-login') !== true) return;
 
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         // Signed in
         const user = userCredential.user;
-        // ...
       })
       .catch(error => {
         const errorCode = error.code;
@@ -81,20 +102,15 @@ export const loginHandling = async () => {
   signInGoogle.onclick = () =>
     signInWithPopup(auth, providerGoogle)
       .then(result => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
-        // The signed-in user info.
         const user = result.user;
         // ...
       })
       .catch(error => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.customData.email;
-        // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         Notify.failure(errorMessage + 'for email: ' + email);
         // ...
@@ -102,43 +118,39 @@ export const loginHandling = async () => {
   signInFacebook.onclick = () =>
     signInWithPopup(auth, providerFacebook)
       .then(result => {
-        // The signed-in user info.
         const user = result.user;
-
-        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
 
         // ...
       })
       .catch(error => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.customData.email;
-        // The AuthCredential type that was used.
         const credential = FacebookAuthProvider.credentialFromError(error);
         Notify.failure(errorMessage + 'for email: ' + email);
         // ...
       });
-  signOut(auth)
-    .then(() => {
-      window.userSigned = false;
-    })
-    .catch(error => {
-      // An error happened.
-    });
+  signOutIcon.onclick = () =>
+    signOut(auth)
+      .then(() => {
+        window.userSigned = false;
+      })
+      .catch(error => {
+        // An error happened.
+      });
 
   // console.log('2a) before function to add uid');
   let unsubscribe;
   auth.onAuthStateChanged(user => {
     // console.log('2b) add uid');
     if (user) {
-      // signed in
+      userHandling(true);
+      const greetings = !!user.displayName ? user.displayName : user.email;
       signInIcon.classList.add('hidden');
       signOutIcon.classList.remove('hidden');
-      userDetails.innerHTML = `Hello ${user.displayName}!`;
+      userDetails.innerHTML = `Hello ${greetings}!`;
       myLibrary.classList.remove('no-active-btn');
       myLibrary.style = 'pointer-events: click';
       window.userUid = true;
@@ -173,7 +185,7 @@ export const loginHandling = async () => {
 };
 // loginHandling();
 
-const getUserStatus = async store => {
+export const getUserStatus = async store => {
   return new Promise(function (resolve, reject) {
     auth.onAuthStateChanged(user => {
       if (user) {
