@@ -9,6 +9,7 @@ body {
   font-family: 'DM Sans', sans-serif;
   scroll-behavior: smooth;
   background-color: var(--bg-primary);
+  overflow: visible;
 }
 
 ul,
@@ -46,3 +47,4 @@ figure {
 @import './components/loaderSpinner';
 @import './components/section';
 @import './components/tchemeWrapper';
+@import './components/login';
