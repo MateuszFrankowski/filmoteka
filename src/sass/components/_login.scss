@@ -9,7 +9,6 @@
   z-index: 2;
   background: var(--bg-secondary);
   padding: 40px;
-  cursor: pointer;
 
   &__actionChose {
     position: relative;
@@ -130,6 +129,7 @@
     font-size: 12px;
     line-height: 1.16;
     appearance: none;
+    cursor: pointer;
   }
   &__consents {
     color: var(--bg-decorative);
@@ -148,6 +148,7 @@
       border-radius: 2px;
       appearance: none;
       overflow: hidden;
+      cursor: pointer;
     }
   }
 }
@@ -197,11 +198,6 @@
   background-color: #1976d2;
 }
 @media screen and (min-width: 1200px) {
-  .modal {
-    width: 528px;
-    max-width: 528px;
-    min-height: 581px;
-  }
   .form {
     &__policy-box {
       font-size: 14px;
@@ -237,6 +233,7 @@
   transition: all 0.4s;
   position: relative;
   z-index: 1;
+  text-decoration: none;
 }
 .btn-google::before,
 .btn-face::before {

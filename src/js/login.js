@@ -26,6 +26,7 @@ export const userHandling = (hide = false) => {
   }
   //modal close
   const hideModal = () => {
+    changeToLogin();
     loginWindowBtn.removeEventListener('click', changeToLogin);
     registerWindowBtn.removeEventListener('click', changeToRegister);
     modalLoginWindow.removeEventListener('click', loginClickBackdropListener);
